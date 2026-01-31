@@ -14,7 +14,7 @@ class ContinuousPaidLeaveSourceImpl implements ContinuousPaidLeaveSource {
       CheckContinuousPaidLeavePayload payload) async {
     try {
       final Map<String, dynamic> json = await PostApiBase.instance.post(
-          url: NetworkConfig.checkContinuousPaidLeave, body: payload.toJson());
+          url: "", body: payload.toJson());
       return {json['statuscode']: json['message']};
     } catch (e) {
       return {400: e.toString()};

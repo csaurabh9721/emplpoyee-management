@@ -15,7 +15,7 @@ class LoginDataSourceImpl implements LoginDataSource {
     try {
       final Map<String, dynamic> response =
           await PostApiBase.instance.postApiWithBasicAuth(
-        url: NetworkConfig.generateToken,
+        url: "",
         body: userLoginModel.toJson(),
       );
       return LoginModel.fromJson(response);

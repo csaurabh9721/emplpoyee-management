@@ -28,7 +28,7 @@ class LeaveLedgerSourceImpl implements LeaveLedgerSource {
         "todate": endDate
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.viewLeaveLedger, body: payload);
+          .post(url: "", body: payload);
       return ViewLeaveLedgerModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());
@@ -47,7 +47,7 @@ class LeaveLedgerSourceImpl implements LeaveLedgerSource {
         "todate": endDate,
       };
       final Uint8List json = await BytePostApiBase.instance
-          .post(url: NetworkConfig.getLeaveLedgerPdfReport, body: payload);
+          .post(url: "", body: payload);
       return json;
     } catch (e) {
       throw AppException(e.toString());

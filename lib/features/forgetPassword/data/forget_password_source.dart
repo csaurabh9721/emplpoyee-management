@@ -13,7 +13,7 @@ class ForgetPasswordSourceImpl implements ForgetPasswordSource {
     try {
       final Map<String, String> payload = {"employeecode": empCode, "dob": dob};
       final Map<String, dynamic> response = await PostApiBase.instance
-          .post(url: NetworkConfig.forgotPassword, body: payload);
+          .post(url: "", body: payload);
       final String status =
           (response["status"] ?? response["statuscode"]).toString();
       if (status == "200") {

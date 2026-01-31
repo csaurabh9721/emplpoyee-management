@@ -24,7 +24,7 @@ class LeaveApprovalSourceImpl implements LeaveApprovalSource {
     };
     try {
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.leaveApproval, body: payload);
+          .post(url: "", body: payload);
       final String message =
           json["message"] ?? json["status"] ?? "Failed to approve leave.";
       if (json["statuscode"] != 200) {
@@ -51,7 +51,7 @@ class LeaveApprovalSourceImpl implements LeaveApprovalSource {
 
     try {
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.leaveApproval, body: payload);
+          .post(url: "", body: payload);
       final String message =
           json["message"] ?? json["status"] ?? "Failed to reject leave.";
       if (json["statuscode"] != 200) {

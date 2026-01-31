@@ -20,7 +20,7 @@ class ChangePasswordSourceImpl implements ChangePasswordSource {
         "confirmpassword": newPassword
       };
       final Map<String, dynamic> response = await PostApiBase.instance
-          .post(url: NetworkConfig.changePassword, body: payload);
+          .post(url: "", body: payload);
       if (response["statuscode"].toString() == "200" ||
           response["status"].toString() == "200") {
         return response["message"];

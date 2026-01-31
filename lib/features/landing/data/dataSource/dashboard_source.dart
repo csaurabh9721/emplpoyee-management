@@ -19,7 +19,7 @@ class DashboardSourceImpl implements DashboardSource {
         "employeecode": Sessions.getEmployeeCode()
       };
       final Map<String, dynamic> response = await PostApiBase.instance
-          .post(url: NetworkConfig.dashboard, body: payload);
+          .post(url: "", body: payload);
       final DashboardResponseModel data =
           DashboardResponseModel.fromJson(response);
       return data;

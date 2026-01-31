@@ -24,7 +24,7 @@ class PayslipSourceImpl implements PayslipSource {
         "yearmonth": date.yyyyMm,
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getSalarySlipView, body: body);
+          .post(url: "", body: body);
       return PayslipResponseMode.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());
@@ -40,7 +40,7 @@ class PayslipSourceImpl implements PayslipSource {
         "yearmonth": date.yyyyMm,
       };
       final Uint8List json = await BytePostApiBase.instance
-          .post(url: NetworkConfig.getSalarySlipReport, body: body);
+          .post(url: "", body: body);
       return json;
     } catch (e) {
       throw AppException(e.toString());

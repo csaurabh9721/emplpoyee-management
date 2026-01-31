@@ -17,7 +17,7 @@ class LeaveCodeSourceImpl implements LeaveCodeSource {
         "employeeid": Sessions.getEmployeeId()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.leaveDetail, body: payload);
+          .post(url: "", body: payload);
       return LeaveCodeResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

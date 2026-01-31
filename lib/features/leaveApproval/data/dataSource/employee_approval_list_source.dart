@@ -19,7 +19,7 @@ class EmployeeApprovalListSourceImpl implements EmployeeApprovalListSource {
         "selectedEmployeeId": empId,
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.employeeApprovalList, body: body);
+          .post(url: "", body: body);
       return EmployeeApprovalListModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

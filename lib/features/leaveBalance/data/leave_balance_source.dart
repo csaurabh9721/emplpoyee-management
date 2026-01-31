@@ -19,7 +19,7 @@ class LeaveBalanceSourceImpl implements LeaveBalanceSource {
         "asOnDate": date
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.emplLeaveBalance, body: body);
+          .post(url: "", body: body);
       return LeaveBalanceModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

@@ -34,7 +34,7 @@ class AttendanceSourceImpl implements AttendanceSource {
         "userid": Sessions.getUserId(),
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getSelfAttendance, body: body);
+          .post(url: "", body: body);
       return GetSelfAttendanceResponse.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

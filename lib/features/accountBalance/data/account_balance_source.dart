@@ -19,7 +19,7 @@ class AccountBalanceSourceImpl extends AccountBalanceSource {
         "companyid": Sessions.getCompanyId()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getAccountBalance, body: payload);
+          .post(url: "", body: payload);
       final AccountBalanceModel response = AccountBalanceModel.fromJson(json);
       return response;
     } catch (e) {

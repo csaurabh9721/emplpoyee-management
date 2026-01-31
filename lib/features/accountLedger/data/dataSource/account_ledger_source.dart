@@ -27,7 +27,7 @@ class AccountLedgerSourceImpl implements AccountLedgerSource {
         "profitcentrecode": Sessions.getProfitCentreCode(),
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.viewAccountLedger, body: payload);
+          .post(url:"", body: payload);
       return AccountLedgerResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

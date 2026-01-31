@@ -20,7 +20,7 @@ class GetLeaveBalanceDataSourceImpl implements GetLeaveBalanceDataSource {
         "employeecode": Sessions.getEmployeeCode()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.validateHoliday, body: payload);
+          .post(url: "", body: payload);
       return ApplyLeaveBalanceResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

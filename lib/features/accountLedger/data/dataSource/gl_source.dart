@@ -13,7 +13,7 @@ class GlSourceImpl implements GlSource {
   Future<GlResponseModel> getGl() async {
     try {
       final Map<String, dynamic> json =
-          await PostApiBase.instance.post(url: NetworkConfig.subGlCode);
+          await PostApiBase.instance.post(url: "");
       return GlResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

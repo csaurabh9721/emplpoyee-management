@@ -32,7 +32,7 @@ class LeaveStatusSourceImpl implements LeaveStatusSource {
         "leavestatus": leaveStatus.toUpperCase()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.leaveStatus, body: payload);
+          .post(url: "", body: payload);
       return LeaveStatusResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());
@@ -48,7 +48,7 @@ class LeaveStatusSourceImpl implements LeaveStatusSource {
         "reason": withdrawReason
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.leaveWithdraw, body: payload);
+          .post(url: "", body: payload);
       if (json['status'] == "200") {
         return true;
       } else {

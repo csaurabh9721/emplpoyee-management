@@ -18,7 +18,7 @@ class EmployeeListSourceImpl implements EmployeeListSource {
         "payrollareaid": Sessions.getPayrollAreaId()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.employeeList, body: body);
+          .post(url: "", body: body);
       return EmployeeListModelForApproval.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

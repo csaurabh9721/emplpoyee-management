@@ -17,7 +17,7 @@ class ExportAccountLedgerSource {
         "employeecode": Sessions.getEmployeeCode(),
       };
       final Uint8List json = await BytePostApiBase.instance
-          .post(url: NetworkConfig.downloadAccountLedgerReport, body: body);
+          .post(url: "", body: body);
 
       return json;
     } catch (e) {

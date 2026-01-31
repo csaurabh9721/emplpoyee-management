@@ -18,7 +18,7 @@ class ProfileSourceImpl implements ProfileSource {
     try {
       final Map<String, String> body = {"employeeid": Sessions.getEmployeeId()};
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getProfileInfo, body: body);
+          .post(url: "", body: body);
       final ProfileInfoModel data = ProfileInfoModel.fromJson(json);
       return data;
     } catch (e) {
@@ -31,7 +31,7 @@ class ProfileSourceImpl implements ProfileSource {
     try {
       final Map<String, String> body = {"employeeid": Sessions.getEmployeeId()};
       final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getAddressInfo, body: body);
+          .post(url: "", body: body);
       final AddressInfoModel data = AddressInfoModel.fromJson(json);
       return data;
     } catch (e) {

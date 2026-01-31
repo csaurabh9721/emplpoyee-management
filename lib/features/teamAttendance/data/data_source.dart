@@ -14,8 +14,7 @@ class TeamAttendanceImpl implements TeamAttendanceSource {
   Future<TeamAttendanceResponse> getAttendance(
       TeamAttendancePayload payload) async {
     try {
-      final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: NetworkConfig.getTeamAttendance, body: payload.toJson);
+      final Map<String, dynamic> json = await PostApiBase.instance.post(url: "", body: payload.toJson);
       return TeamAttendanceResponse.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());
