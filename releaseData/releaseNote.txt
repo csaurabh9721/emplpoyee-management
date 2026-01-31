@@ -1,0 +1,4 @@
+Path : /Users/jilitinfo/MyData/Work/JILITESS/releaseData/Untitled.jks
+Password : 123jilitess456
+Alias : jilitess
+Alias Password : 123jilitess456

@@ -1,0 +1,61 @@
+#
+#include: package:flutter_lints/flutter.yaml
+#
+#linter:
+#
+#  rules:
+#
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+
+linter:
+  rules:
+    # Flutter best practices
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_final_locals: true
+    always_declare_return_types: true
+    avoid_print: true
+    sort_constructors_first: true
+    unnecessary_this: true
+    use_super_parameters: true
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 15        # max decision paths per function
+    lines-of-code: 80                # max lines per function
+    number-of-parameters: 4          # max params per function
+    maximum-nesting-level: 5         # max nested if/else/switch
+    source-lines-of-code: 80
+    maintainability-index: 50        # below = poor maintainability
+
+  metrics-exclude:
+    - test/**
+    - lib/generated/**
+    - lib/**/*.g.dart
+
+  rules:
+    # Style / maintainability
+    - prefer-trailing-comma
+    - prefer-const-border-radius
+    - prefer-single-widget-per-file
+    - avoid-returning-widgets
+    - avoid-global-state
+    - avoid-long-functions
+    - avoid-nested-conditional-expressions
+
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+
+  # 🚀 Layer-specific checks for Clean Architecture
+  # You can expand these for stricter boundaries
+  rules-exclude:
+    - lib/domain/**:
+        - avoid-returning-widgets   # domain must not contain Flutter widgets
+        - prefer-const-constructors # domain should be pure Dart, no const widget checks
+    - lib/data/**:
+        - avoid-returning-widgets   # data layer should not use Flutter UI
