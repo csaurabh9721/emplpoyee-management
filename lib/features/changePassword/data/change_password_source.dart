@@ -14,7 +14,6 @@ class ChangePasswordSourceImpl implements ChangePasswordSource {
       String oldPassword, String newPassword, String confirmPassword) async {
     try {
       final Map<String, String> payload = {
-        "employeeid": Sessions.getEmployeeId(),
         "oldpassword": oldPassword,
         "newpassword": newPassword,
         "confirmpassword": newPassword

@@ -19,7 +19,6 @@ linter:
     prefer_final_locals: true
     always_declare_return_types: true
     avoid_print: true
-    sort_constructors_first: true
     unnecessary_this: true
     use_super_parameters: true
 

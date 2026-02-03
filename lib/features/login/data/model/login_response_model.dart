@@ -19,30 +19,12 @@ class LoginModel {
 
 class Response extends LoginResponseEntity {
   Response({
-    required super.payrollAreaCode,
-    required super.payrollAreaId,
-    required super.companyId,
-    required super.payrollUniqueId,
     required super.userId,
-    required super.employeeId,
-    required super.placeOfPostingId,
-    required super.employeeTypeId,
-    required super.profitCentreId,
-    required super.profitCentreCode,
     required super.token,
   });
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
-        payrollAreaCode: json["payrollareacode"],
-        payrollAreaId: json["payrollareaid"],
-        companyId: json["companyid"],
-        payrollUniqueId: json["payrolluniqueid"],
         userId: json["userid"],
-        employeeId: json["employeeid"],
-        placeOfPostingId: json["placeofpostingid"],
-        employeeTypeId: json["employeetypeid"],
-        profitCentreId: json["profitcentreid"],
-        profitCentreCode: json["profitcentrecode"],
         token: json["token"],
       );
 }

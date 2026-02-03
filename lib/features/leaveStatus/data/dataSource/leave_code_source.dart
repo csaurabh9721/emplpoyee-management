@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/network/apiClients/get_api_base.dart';
 import 'package:clientone_ess/core/network/apiClients/post_api_base.dart';
 import 'package:clientone_ess/core/network/config/network_config.dart';
 import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
@@ -13,11 +14,9 @@ class LeaveCodeSourceImpl implements LeaveCodeSource {
   @override
   Future<LeaveCodeResponseModel> getLeaveCode() async {
     try {
-      final Map<String, String> payload = {
-        "employeeid": Sessions.getEmployeeId()
-      };
-      final Map<String, dynamic> json = await PostApiBase.instance
-          .post(url: "", body: payload);
+
+      final Map<String, dynamic> json = await GetApiBase.instance
+          .getApi(url: "");
       return LeaveCodeResponseModel.fromJson(json);
     } catch (e) {
       throw AppException(e.toString());

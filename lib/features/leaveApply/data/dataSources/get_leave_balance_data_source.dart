@@ -15,9 +15,6 @@ class GetLeaveBalanceDataSourceImpl implements GetLeaveBalanceDataSource {
     try {
       final Map<String, String> payload = {
         "fromdate": date,
-        "payrollareaid": Sessions.getPayrollAreaId(),
-        "employeeid": Sessions.getEmployeeId(),
-        "employeecode": Sessions.getEmployeeCode()
       };
       final Map<String, dynamic> json = await PostApiBase.instance
           .post(url: "", body: payload);

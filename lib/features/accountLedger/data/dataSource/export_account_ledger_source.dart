@@ -11,8 +11,6 @@ class ExportAccountLedgerSource {
       final Map<String, String> body = {
         "fromdate": startDate,
         "todate": endDate,
-        "profitcentreid": Sessions.getProfitCentreId(),
-        "companyid": Sessions.getCompanyId(),
         "glid": gl,
         "employeecode": Sessions.getEmployeeCode(),
       };

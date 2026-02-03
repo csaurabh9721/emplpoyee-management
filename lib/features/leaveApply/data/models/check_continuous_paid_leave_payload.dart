@@ -34,14 +34,11 @@ class CheckContinuousPaidLeavePayload {
 
   Map<String, dynamic> toJson() => {
         "fromdate": _fromDate,
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "employeecode": Sessions.getEmployeeCode(),
         "paidtype": _paidType,
         "startfromfhsh": _startFromFHSH,
         "leavetypeid": _leaveTypeId,
         "numberofdaysapplied": _numberOfDaysApplied,
-        "companyid": Sessions.getCompanyId(),
-        "employeeid": Sessions.getEmployeeId(),
         "userid": Sessions.getUserId(),
       };
 }

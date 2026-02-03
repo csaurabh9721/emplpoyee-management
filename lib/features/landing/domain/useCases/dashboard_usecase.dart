@@ -11,7 +11,7 @@ class DashboardUseCaseImpl implements DashboardUseCase {
   final DashboardRepository _repository;
 
   @override
-  Future<DashboardResponseEntity> call() async {
-    return await _repository.getDashBoardData();
+  Future<DashboardResponseEntity> call()  {
+    return  _repository.getDashBoardData();
   }
 }

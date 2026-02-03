@@ -13,8 +13,3 @@ final class RefreshDashboard extends LandingEvent {
   const RefreshDashboard();
 }
 
-final class LandingPageChangeEvent extends LandingEvent {
-
-  const LandingPageChangeEvent(this.index);
-  final int index;
-}

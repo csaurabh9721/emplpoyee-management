@@ -14,8 +14,6 @@ class EmployeeApprovalListSourceImpl implements EmployeeApprovalListSource {
   Future<EmployeeApprovalListModel> getData(String empId) async {
     try {
       final Map<String, String> body = {
-        "aaprovalEmployeeId": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "selectedEmployeeId": empId,
       };
       final Map<String, dynamic> json = await PostApiBase.instance

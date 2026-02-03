@@ -3,313 +3,112 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clientone_ess/core/routes/routes_name.dart';
 import 'package:clientone_ess/features/landing/presentation/bloc/landing_bloc.dart';
 import 'package:clientone_ess/shared/app_color.dart';
-import 'package:clientone_ess/shared/constants/png_images.dart';
 
-import '../../domain/entity/dashboard_response_entity.dart';
-import '../../domain/entity/profile_entity.dart';
+class DashboardView extends StatefulWidget {
+  const DashboardView({super.key});
 
-class DashboardView extends StatelessWidget {
-  const DashboardView(
-      {super.key, required this.dashboardData, required this.profileData});
-  final DashboardResponseEntity dashboardData;
-  final ProfileResponseEntity profileData;
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  /// 🔑 TEMP STATE (later move to Bloc)
+  bool isCheckedIn = false;
+  DateTime? checkInTime;
 
   @override
   Widget build(BuildContext context) {
-    final double spacing = 12;
-    final double horizontalPadding = 10;
-    final double width = MediaQuery.of(context).size.width;
     return RefreshIndicator(
       onRefresh: () async {
         context.read<LandingBloc>().add(const RefreshDashboard());
       },
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Profile Section
-            InkWell(
-              onTap: () {
-                context
-                    .read<LandingBloc>()
-                    .add(const LandingPageChangeEvent(1));
-              },
-              child: Card(
-                margin: EdgeInsets.zero,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0)),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            profileData.personalDetails.profileImage.isNotEmpty
-                                ? MemoryImage(
-                                    profileData.personalDetails.bytes,
-                                  )
-                                : null,
-                        child: profileData.personalDetails.profileImage.isEmpty
-                            ? const Icon(
-                                Icons.person,
-                                size: 36,
-                              )
-                            : null,
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(profileData.personalDetails.name,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text(profileData.personalDetails.designation,
-                              style: const TextStyle(color: Colors.grey)),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: spacing),
-
-            /// Top Buttons Row
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                spacing: 8,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  if (dashboardData.isLeaveApplyActive)
-                    _topButton(
-                        text: "Leave Apply",
-                        icon: Icons.add,
-                        color: AppColors.darkBlue,
-                        onPressed: () {
-                          Navigator.pushNamed(context, RoutesName.leaveApply);
-                        }),
-                  if (dashboardData.isAttendanceActive)
-                    _topButton(
-                        text: "Attendance",
-                        icon: Icons.watch_later,
-                        color: AppColors.green,
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, RoutesName.attendancePunches);
-                        }),
-                  if (dashboardData.isPaySlipActive)
-                    _topButton(
-                        text: "Payslip",
-                        icon: Icons.receipt_long,
-                        color: AppColors.lightBlue1,
-                        onPressed: () {
-                          Navigator.pushNamed(context, RoutesName.payslip);
-                        }),
-                ],
-              ),
-            ),
-
-            SizedBox(height: spacing),
-
-            /// Info Boxes
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                children: [
-                  _infoCard(
-                      "Leave Balance",
-                      dashboardData.leaveBalance.leaveBalance,
-                      dashboardData.leaveBalance.leaveBalanceType),
-                  const SizedBox(width: 10),
-                  _infoCard(
-                      "Today's Status",
-                      dashboardData.todayStatus.status,
-                      "${dashboardData.todayStatus.arrivalStatus} - ${dashboardData.todayStatus.time}",
-                      dashboardData.todayStatus.arrivalStatusColor),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                children: [
-                  _infoCard(
-                      "Pending Approvals",
-                      dashboardData.leaveBalance.pending.toString(),
-                      "Leave Request"),
-                  const SizedBox(width: 10),
-                  _infoCard("Latest Payslip", dashboardData.latestPayslip.date,
-                      dashboardData.latestPayslip.status),
-                ],
-              ),
-            ),
-            SizedBox(height: spacing),
-            _label(horizontalPadding, context, "Manage Leave"),
-            const SizedBox(height: 8),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 8,
-                children: [
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      if (dashboardData.isLeaveBalanceActive)
-                        _gridButton("Leave Balance", Icons.calendar_month,
-                            AppColors.leaveBalance, 170, onTap: () {
-                          Navigator.pushNamed(context, RoutesName.leaveBalance);
-                        }),
-                      if (dashboardData.isLeaveHistoryActive)
-                        _gridButton("Leave History", Icons.calendar_month,
-                            AppColors.leaveHistory, 100, onTap: () {
-                          Navigator.pushNamed(context, RoutesName.leaveHistory);
-                        }),
-                      if (dashboardData.isLeaveStatusActive)
-                        _gridButton("Leave Status", Icons.watch_later,
-                            AppColors.leaveStatus, 80, onTap: () {
-                          Navigator.pushNamed(context, RoutesName.leaveStatus);
-                        }),
-                    ],
-                  )),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      if (dashboardData.isLeaveWithdrawActive)
-                        _gridButton(
-                            "Leave Withdraw",
-                            Icons.account_balance_wallet,
-                            AppColors.leaveWithdraw,
-                            100, onTap: () {
-                          Navigator.pushNamed(
-                              context, RoutesName.leaveWithdrawal);
-                        }),
-                      if (dashboardData.isLeaveLedgerActive)
-                        _gridButton("Leave Ledger", Icons.history,
-                            AppColors.leaveLedger, 170, onTap: () {
-                          Navigator.pushNamed(context, RoutesName.leaveLedger);
-                        }),
-                      if (dashboardData.isLeaveApprovalActive)
-                        _gridButton("Leave Approval", Icons.file_copy,
-                            AppColors.leaveApproval, 80, onTap: () {
-                          Navigator.pushNamed(
-                              context, RoutesName.leaveApproval);
-                        }),
-                    ],
-                  )),
-                ],
-              ),
-            ),
-
-            SizedBox(height: spacing),
-
-            if (dashboardData.isQuickAccess)
-              _label(horizontalPadding, context, "Quick Access"),
-            const SizedBox(height: 8),
-
-            /// Quick Access Buttons
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                spacing: 30,
-                children: [
-                  if (dashboardData.isAccountBalanceActive)
-                    _quickAccess(
-                        "Account Balance", Icons.account_balance_wallet, width,
-                        onTap: () {
-                      Navigator.pushNamed(context, RoutesName.accountBalance);
-                    }),
-                  if (dashboardData.isAccountLedgerActive)
-                    _quickAccess("Account Ledger", Icons.receipt, width,
-                        onTap: () {
-                      Navigator.pushNamed(context, RoutesName.accountLedger);
-                    }),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            if (dashboardData.isTeamPunchActive)
-              Align(
-                  alignment: Alignment.center,
-                  child: _quickAccess("Team Attendance", Icons.group, width,
-                      onTap: () {
-                    Navigator.pushNamed(context, RoutesName.teamAttendance);
-                  })),
-            const SizedBox(height: 30),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Padding _label(double horizontalPadding, BuildContext context, String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Text(title,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(fontWeight: FontWeight.w900)),
-    );
-  }
-
-  Widget _topButton({
-    required String text,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onPressed,
-  }) {
-    return Expanded(
-      child: ElevatedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          size: 25,
-        ),
-        label: Text(text),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _infoCard(String title, String subtitle, String trailing,
-      [Color? color]) {
-    return Expanded(
-      child: Card(
-        margin: EdgeInsets.zero,
-        elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF6F7FB),
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15)),
-              Text(subtitle,
-                  style: TextStyle(
-                      color: color ?? AppColors.snackbarBackground,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-              Text(trailing,
-                  style: const TextStyle(
-                      color: AppColors.snackbarBackground, fontSize: 13)),
+              const _ProfileCard(),
+              const SizedBox(height: 12),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(.08),
+                      blurRadius: 18,
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                             Text(isCheckedIn ? "Checked In": "Today",
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 6),
+                            Text(
+                              isCheckedIn
+                                  ? _formatTime(checkInTime!)
+                                  : "Not Checked In",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        ElevatedButton.icon(
+                          onPressed: _handleAttendance,
+                          icon: Icon(isCheckedIn ? Icons.logout : Icons.login),
+                          label: Text(
+                            isCheckedIn ? "Out" : "In",
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            isCheckedIn ? Colors.redAccent : AppColors.green,
+                            shape:
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: LinearProgressIndicator(
+                        value: isCheckedIn ? 0.6 : 0,
+                        minHeight: 6,
+                        backgroundColor: Colors.grey.shade200,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      isCheckedIn ? "Working in progress" : "Tap Check In to start",
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const _InsightsRow(),
+              const SizedBox(height: 24),
+              const _SectionTitle(title: "Manage Leave"),
+              const SizedBox(height: 12),
+              const _LeaveGrid(),
+              const SizedBox(height: 24),
+              const _SectionTitle(title: "Quick Access"),
+              const SizedBox(height: 12),
+              const _QuickAccessGrid(),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -317,89 +116,304 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _gridButton(String title, IconData icon, Color color, double height,
-      {required VoidCallback onTap}) {
+  /* -------------------------------------------------------------------------- */
+  /*                         CHECK-IN / CHECK-OUT LOGIC                          */
+  /* -------------------------------------------------------------------------- */
+  static String _formatTime(DateTime time) {
+    final hour = time.hour % 12 == 0 ? 12 : time.hour % 12;
+    final minute = time.minute.toString().padLeft(2, '0');
+    final period = time.hour >= 12 ? 'PM' : 'AM';
+    return "$hour:$minute $period";
+  }
+  void _handleAttendance() {
+    setState(() {
+      if (!isCheckedIn) {
+        // ✅ CHECK IN
+        isCheckedIn = true;
+        checkInTime = DateTime.now();
+      } else {
+        // ✅ CHECK OUT
+        isCheckedIn = false;
+        checkInTime = null;
+      }
+    });
+
+    // 🔐 Later:
+    // context.read<AttendanceBloc>().add(CheckInEvent());
+    // context.read<AttendanceBloc>().add(CheckOutEvent());
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                PROFILE CARD                                */
+/* -------------------------------------------------------------------------- */
+
+class _ProfileCard extends StatelessWidget {
+  const _ProfileCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        gradient: LinearGradient(
+          colors: [
+            AppColors.darkBlue.withOpacity(.95),
+            AppColors.lightBlue1.withOpacity(.95),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.15),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          )
+        ],
+      ),
+      child: InkWell(
+        onTap: () {
+        },
+        child: const Row(
+          children: [
+            CircleAvatar(
+              radius: 28,
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, size: 30, color: AppColors.darkBlue),
+            ),
+            SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Saurabh Chauhan",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Flutter Developer",
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InsightsRow extends StatelessWidget {
+  const _InsightsRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          _InsightCard("Leave Balance", "4", Icons.calendar_month),
+          SizedBox(width: 12),
+          _InsightCard("Late Days", "1", Icons.watch_later),
+        ],
+      ),
+    );
+  }
+}
+
+class _InsightCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final IconData icon;
+
+  const _InsightCard(this.title, this.value, this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(.06),
+              blurRadius: 14,
+            )
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: AppColors.darkBlue),
+            const SizedBox(height: 8),
+            Text(value,
+                style:
+                const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Text(title,
+                style: const TextStyle(color: Colors.grey, fontSize: 12)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LeaveGrid extends StatelessWidget {
+  const _LeaveGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.6,
+        children: [
+          _GridItem("Leave Balance", Icons.calendar_month,
+                  () => Navigator.pushNamed(context, RoutesName.leaveBalance)),
+          _GridItem("Leave History", Icons.history,
+                  () => Navigator.pushNamed(context, RoutesName.leaveHistory)),
+          _GridItem("Leave Status", Icons.watch_later,
+                  () => Navigator.pushNamed(context, RoutesName.leaveStatus)),
+          _GridItem("Leave Ledger", Icons.receipt,
+                  () => Navigator.pushNamed(context, RoutesName.leaveLedger)),
+        ],
+      ),
+    );
+  }
+}
+
+class _GridItem extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _GridItem(this.title, this.icon, this.onTap);
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: double.infinity,
-        height: height,
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(4),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 10,
+            )
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.white, size: 32),
+            Icon(icon, color: AppColors.darkBlue),
             const SizedBox(height: 10),
             Text(title,
-                style: const TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-                textAlign: TextAlign.center),
+                style:
+                const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _quickAccess(String title, IconData icon, double width,
-      {required VoidCallback onTap}) {
-    return InkWell(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: SizedBox(
+class _QuickAccessGrid extends StatelessWidget {
+  const _QuickAccessGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          _QuickAccessCard(
+            "Account Balance",
+            Icons.account_balance_wallet,
+                () => Navigator.pushNamed(context, RoutesName.accountBalance),
+          ),
+          const SizedBox(width: 12),
+          _QuickAccessCard(
+            "Team Attendance",
+            Icons.group,
+                () => Navigator.pushNamed(context, RoutesName.teamAttendance),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickAccessCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _QuickAccessCard(this.title, this.icon, this.onTap);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
           height: 130,
-          width: width / 2 - 27,
-          child: Stack(
-            alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(.06),
+                blurRadius: 14,
+              )
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 130,
-                width: width / 2 - 27,
-                color: AppColors.white,
+              CircleAvatar(
+                backgroundColor: AppColors.darkBlue.withOpacity(.1),
+                radius: 26,
+                child: Icon(icon, color: AppColors.darkBlue),
               ),
-              if (title == "Account Ledger")
-                Positioned(
-                    top: 0, right: 0, child: Image.asset(PngImages.polygon1)),
-              if (title == "Account Ledger")
-                Positioned(
-                    top: -12, right: 0, child: Image.asset(PngImages.polygon2)),
-              if (title == "Team Attendance")
-                Positioned(
-                    bottom: -10,
-                    left: 0,
-                    child: Image.asset(PngImages.polygon4)),
-              if (title == "Team Attendance")
-                Positioned(
-                    bottom: -10,
-                    left: 0,
-                    child: Image.asset(PngImages.polygon3)),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors.darkBlue,
-                    radius: 26,
-                    child: Icon(icon, color: Colors.white),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.snackbarBackground),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
+              const SizedBox(height: 10),
+              Text(title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14)),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String title;
+
+  const _SectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        title,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium!
+            .copyWith(fontWeight: FontWeight.w800),
       ),
     );
   }

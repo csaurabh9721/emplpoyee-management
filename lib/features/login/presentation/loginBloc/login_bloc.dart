@@ -21,31 +21,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginButtonPressed event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
-      final LoginResponseEntity loginResponseEntity =
-          await _userLoginUseCase.login(event.userLoginEntity);
+      final LoginResponseEntity loginResponseEntity = await _userLoginUseCase.login(event.userLoginEntity);
       Sessions.setEmployeeCode(event.userLoginEntity.code);
-      _saveDataInSharedPreferences(loginResponseEntity);
+      Sessions.setUserId(loginResponseEntity.userId);
+      Sessions.setToken(loginResponseEntity.token);
       emit(LoginSuccess(successMessage: "Login Success"));
     } catch (e) {
       emit(LoginError(errorMessage: e.toString()));
     }
   }
 
-  void _saveDataInSharedPreferences(
-      LoginResponseEntity loginResponseEntity) async {
-    Sessions.setPayrollAreaCode(loginResponseEntity.payrollAreaCode);
-    Sessions.setPayrollAreaId(loginResponseEntity.payrollAreaId);
-    Sessions.setCompanyId(loginResponseEntity.companyId);
-    Sessions.setPayrollUniqueId(loginResponseEntity.payrollUniqueId);
-    Sessions.setUserId(loginResponseEntity.userId);
-    Sessions.setEmployeeId(loginResponseEntity.employeeId);
-    Sessions.setPlaceOfPostingId(loginResponseEntity.placeOfPostingId);
-    Sessions.setEmployeeTypeId(loginResponseEntity.employeeTypeId);
-    Sessions.setProfitCentreId(loginResponseEntity.profitCentreId);
-    Sessions.setProfitCentreCode(loginResponseEntity.profitCentreCode);
-    Sessions.setToken(loginResponseEntity.token);
-
-    ///todo set data from api
-    Sessions.setMemberType("E");
-  }
 }

@@ -14,8 +14,6 @@ class LeaveBalanceSourceImpl implements LeaveBalanceSource {
   Future<LeaveBalanceModel> getData(String date) async {
     try {
       final Map<String, String> body = {
-        "employeeid": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "asOnDate": date
       };
       final Map<String, dynamic> json = await PostApiBase.instance

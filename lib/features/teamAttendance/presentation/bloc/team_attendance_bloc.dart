@@ -23,7 +23,7 @@ class TeamAttendanceBloc extends Bloc<TeamAttendanceEvent, TeamAttendanceState> 
       TeamAttendanceLoadEvent event, Emitter<TeamAttendanceState> emit) async {
     emit(const TeamAttendanceLoading());
     try {
-      if (_biometric.isNotEmpty && _biometric.last.empId == event.request.empId) {
+      if (_biometric.isNotEmpty) {
         _biometric.removeLast();
       }
       final List<TeamAttendanceEntity> data = await _usecase.call(event.request);
@@ -35,7 +35,7 @@ class TeamAttendanceBloc extends Bloc<TeamAttendanceEvent, TeamAttendanceState> 
           endDate: _dateConverter(event.request.endDate),
           stage: _biometric.length + 1,
           reportingTo: event.request.reportingTo,
-          empId: event.request.empId,
+          empId: "",
         ),
       );
       emit(_biometric.last);

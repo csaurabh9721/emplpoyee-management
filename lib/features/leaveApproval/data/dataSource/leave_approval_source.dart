@@ -1,7 +1,5 @@
 import 'package:clientone_ess/core/exceptions/api_exceptions.dart';
 import 'package:clientone_ess/core/network/apiClients/post_api_base.dart';
-import 'package:clientone_ess/core/network/config/network_config.dart';
-import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 
 abstract class LeaveApprovalSource {
   Future<String> approveLeave(String empId, String leaveId, String? remark);
@@ -14,12 +12,9 @@ class LeaveApprovalSourceImpl implements LeaveApprovalSource {
   Future<String> approveLeave(
       String empId, String leaveId, String? remark) async {
     final Map<String, dynamic> payload = {
-      "aaprovalEmployeeId": Sessions.getEmployeeId(),
       "selectedEmployeeId": empId,
-      "payrollareaid": Sessions.getPayrollAreaId(),
       "remarks": remark,
       "status": "A",
-      "companyid": Sessions.getCompanyId(),
       "documentnumber": leaveId
     };
     try {
@@ -40,12 +35,9 @@ class LeaveApprovalSourceImpl implements LeaveApprovalSource {
   Future<String> rejectLeave(
       String empId, String leaveId, String? remark) async {
     final Map<String, dynamic> payload = {
-      "aaprovalEmployeeId": Sessions.getEmployeeId(),
       "selectedEmployeeId": empId,
-      "payrollareaid": Sessions.getPayrollAreaId(),
       "remarks": remark,
       "status": "R",
-      "companyid": Sessions.getCompanyId(),
       "documentnumber": leaveId
     };
 

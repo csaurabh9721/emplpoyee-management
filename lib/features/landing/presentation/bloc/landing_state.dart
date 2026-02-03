@@ -3,32 +3,29 @@ part of 'landing_bloc.dart';
 @immutable
 sealed class LandingState extends Equatable {
 
-  const LandingState(this.currentIndex);
-  final int currentIndex;
+  const LandingState();
 
-  String get appBarTitle => currentIndex == 0 ? "Dashboard" : "Profile";
 
   @override
-  List<Object?> get props => [currentIndex];
+  List<Object?> get props => [];
 }
 
 final class LandingInitial extends LandingState {
-  const LandingInitial(super.currentIndex);
+  const LandingInitial();
 }
 
 final class LandingLoading extends LandingState {
-  const LandingLoading(super.currentIndex);
+  const LandingLoading();
 }
 
 final class LandingSuccess extends LandingState {
 
   const LandingSuccess(
-    super.currentIndex,
     this.dahBoardData,
-    this.profileData,
+   // this.profileData,
   );
   final DashboardResponseEntity dahBoardData;
-  final ProfileResponseEntity profileData;
+  //final ProfileResponseEntity profileData;
 
   LandingSuccess copyWith({
     int? currentIndex,
@@ -36,19 +33,18 @@ final class LandingSuccess extends LandingState {
     ProfileResponseEntity? profileData,
   }) {
     return LandingSuccess(
-      currentIndex ?? this.currentIndex,
       dahBoardData ?? this.dahBoardData,
-      profileData ?? this.profileData,
+    //  profileData ?? this.profileData,
     );
   }
 
   @override
-  List<Object?> get props => [currentIndex, dahBoardData, profileData];
+  List<Object?> get props => [ dahBoardData];
 }
 
 final class LandingError extends LandingState {
 
-  const LandingError(super.currentIndex, this.message);
+  const LandingError( this.message);
   final String message;
 
   LandingError copyWith({
@@ -56,11 +52,10 @@ final class LandingError extends LandingState {
     String? message,
   }) {
     return LandingError(
-      currentIndex ?? this.currentIndex,
       message ?? this.message,
     );
   }
 
   @override
-  List<Object?> get props => [currentIndex, message];
+  List<Object?> get props => [ message];
 }

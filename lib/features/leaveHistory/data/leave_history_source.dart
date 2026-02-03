@@ -14,8 +14,6 @@ class LeaveHistorySourceImpl implements LeaveHistorySource {
   Future<LeaveHistoryModel> getData(String startDate, String endDate) async {
     try {
       final Map<String, String> body = {
-        "employeeid": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "startdate": startDate,
         "enddate": endDate,
       };

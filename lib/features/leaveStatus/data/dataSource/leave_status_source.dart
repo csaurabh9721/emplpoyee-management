@@ -1,8 +1,5 @@
-import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
-
 import '../../../../core/exceptions/api_exceptions.dart';
 import '../../../../core/network/apiClients/post_api_base.dart';
-import '../../../../core/network/config/network_config.dart';
 import '../models/leave_status_model.dart';
 
 abstract class LeaveStatusSource {
@@ -24,8 +21,6 @@ class LeaveStatusSourceImpl implements LeaveStatusSource {
       required String leaveStatus}) async {
     try {
       final Map<String, String> payload = {
-        "employeeid": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "fromdate": fromDate,
         "todate": toDate,
         "leavetypeid": leaveType.toUpperCase(),

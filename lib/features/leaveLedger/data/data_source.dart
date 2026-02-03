@@ -1,11 +1,8 @@
 import 'dart:typed_data';
-
 import 'package:clientone_ess/core/exceptions/api_exceptions.dart';
 import 'package:clientone_ess/core/network/apiClients/post_api_base.dart';
-import 'package:clientone_ess/core/network/config/network_config.dart';
 import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 import 'package:clientone_ess/shared/constants/app_constant.dart';
-
 import '../../../core/network/apiClients/byte_post_api_base.dart';
 import 'model.dart';
 
@@ -22,8 +19,6 @@ class LeaveLedgerSourceImpl implements LeaveLedgerSource {
       String startDate, String endDate) async {
     try {
       final Map<String, String> payload = {
-        "employeeid": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "fromdate": startDate,
         "todate": endDate
       };
@@ -40,8 +35,6 @@ class LeaveLedgerSourceImpl implements LeaveLedgerSource {
     try {
       final Map<String, String> payload = {
         "employeecode": Sessions.getEmployeeCode(),
-        "employeeid": Sessions.getEmployeeId(),
-        "payrollareaid": Sessions.getPayrollAreaId(),
         "employeename": AppConstant.employeeName,
         "fromdate": startDate,
         "todate": endDate,

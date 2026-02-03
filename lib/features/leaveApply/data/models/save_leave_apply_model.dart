@@ -51,9 +51,6 @@ class SaveLeaveApplyModel {
     return {
       "employeecode": Sessions.getEmployeeCode(),
       "fromdate": date,
-      "payrollareaid": Sessions.getPayrollAreaId(),
-      "payrollareacode": Sessions.getPayrollAreaCode(),
-      "payrolluniqueid": Sessions.getPayrollUniqueId(),
       "paidtype": paidType,
       "startfromfhsh": leavePeriod.firstLettersOfWords,
       "leavetypeid": leaveTypeId,
@@ -66,8 +63,6 @@ class SaveLeaveApplyModel {
       "filename": fileName ?? "",
       "fileuploadyn": fileName == null ? "N" : "Y",
       "leaveyear": date.split("/").last,
-      "companyid": Sessions.getCompanyId(),
-      "employeeid": Sessions.getEmployeeId(),
       "userid": Sessions.getUserId(),
       "remark": remark ?? "",
     };
