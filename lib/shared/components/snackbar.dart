@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../core/Enums/enums.dart';
 import '../../main.dart';
 import '../app_color.dart';
-
 
 class AppSnackBar {
   static void successSnackBar({required String message}) {
@@ -17,6 +17,7 @@ class AppSnackBar {
   static void infoSnackBar({required String message}) {
     _GlobalSnackBar.show(message, SnackBarEnum.info);
   }
+
   static void warningSnackBar({required String message}) {
     _GlobalSnackBar.show(message, SnackBarEnum.warning);
   }
@@ -32,7 +33,7 @@ class _GlobalSnackBar {
     },
     SnackBarEnum.error: {
       "icon": Icons.cancel,
-      "color":  AppColors.error,
+      "color": AppColors.error,
     },
     SnackBarEnum.info: {
       "icon": Icons.info,
@@ -46,7 +47,7 @@ class _GlobalSnackBar {
 
   static void show(String message, SnackBarEnum snackBarEnum) {
     if (_isVisible) return;
-    final overlay = navigatorKey.currentState?.overlay;
+    final overlay = Get.overlayContext != null ? Overlay.of(Get.overlayContext!) : null;
     if (overlay == null) return;
     _isVisible = true;
     final ValueNotifier<double> topPosition = ValueNotifier(-100); // Start above the screen
