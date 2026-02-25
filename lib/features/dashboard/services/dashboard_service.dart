@@ -38,7 +38,7 @@ class DashboardService {
             id: "1",
             title: "Apply Management",
             icon: "leave",
-            route: "/leave_apply",
+            route: "/leave_management",
           ),
           QuickActionModel(
             id: "2",

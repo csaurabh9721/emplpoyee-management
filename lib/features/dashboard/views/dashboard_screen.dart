@@ -5,11 +5,11 @@ import '../controllers/dashboard_controller.dart';
 import '../models/dashboard_models.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+   DashboardScreen({super.key});
+  final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DashboardController());
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
