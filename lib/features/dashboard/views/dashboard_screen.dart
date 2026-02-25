@@ -13,7 +13,6 @@ class DashboardScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
-      bottomNavigationBar: const _BottomNavBar(),
       body: SafeArea(
         child: GetBuilder<DashboardController>(
                 builder: (_) {
@@ -436,25 +435,3 @@ class _AnnouncementCard extends StatelessWidget {
   }
 }
 
-class _BottomNavBar extends StatelessWidget {
-  const _BottomNavBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.indigo,
-      unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard), label: "Dashboard"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month), label: "Schedule"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.payments), label: "Payroll"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz), label: "More"),
-      ],
-    );
-  }
-}
