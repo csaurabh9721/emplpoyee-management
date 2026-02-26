@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
 import '../../features/leaveManagementPage/view/leave_management_page.dart';
+import '../../features/payslip/paySlipHistory/view/pay_slip_history.dart';
 import 'routes_name.dart';
 
 class AppRoutes {
@@ -15,6 +16,11 @@ class AppRoutes {
     GetPage(
       name: RoutesName.leaveManagementPage,
       page: () =>  LeaveManagementPage(),
+    ),
+
+    GetPage(
+      name: RoutesName.payslipHistory,
+      page: () =>  PayslipHistoryPage(),
     ),
   ];
 }

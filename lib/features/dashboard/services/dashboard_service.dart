@@ -44,7 +44,7 @@ class DashboardService {
             id: "2",
             title: "View Payslip",
             icon: "payslip",
-            route: "/payslip",
+            route: "/payslip_history",
           ),
           QuickActionModel(
             id: "3",
