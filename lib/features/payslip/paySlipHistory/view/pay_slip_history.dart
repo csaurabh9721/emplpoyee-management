@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../core/routes/routes_name.dart';
 
 class PayslipHistoryPage extends StatelessWidget {
   const PayslipHistoryPage({super.key});
@@ -306,65 +309,70 @@ class _PayslipTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 4),
-          )
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.indigo.shade50,
-              borderRadius: BorderRadius.circular(12),
+    return InkWell(
+      onTap: (){
+        Get.toNamed(RoutesName.payslipDetail,arguments: "1");
+      },
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 4),
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.indigo.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.calendar_today,
+                  color: Colors.indigo),
             ),
-            child: const Icon(Icons.calendar_today,
-                color: Colors.indigo),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                  Text(month,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight:
+                          FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Text(date,
+                      style: const TextStyle(
+                          color: Colors.grey)),
+                ],
+              ),
+            ),
+            Column(
               crossAxisAlignment:
-              CrossAxisAlignment.start,
+              CrossAxisAlignment.end,
               children: [
-                Text(month,
+                Text(amount,
                     style: const TextStyle(
-                        fontSize: 16,
                         fontWeight:
                         FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text(date,
-                    style: const TextStyle(
-                        color: Colors.grey)),
+                const SizedBox(height: 6),
+                const Text(
+                  "View  >",
+                  style: TextStyle(
+                      color: Colors.indigo),
+                )
               ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.end,
-            children: [
-              Text(amount,
-                  style: const TextStyle(
-                      fontWeight:
-                      FontWeight.bold)),
-              const SizedBox(height: 6),
-              const Text(
-                "View  >",
-                style: TextStyle(
-                    color: Colors.indigo),
-              )
-            ],
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
