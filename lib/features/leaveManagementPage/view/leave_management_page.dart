@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -199,7 +200,9 @@ class _RequestButton  extends GetView<LeaveController> {
       width: double.infinity,
       height: 55,
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(RoutesName.applyLeavePage);
+        },
         icon: const Icon(Icons.add),
         label: const Text("Request Leave"),
         style: ElevatedButton.styleFrom(
