@@ -5,6 +5,7 @@ import '../../features/leaveHistory/view/leave_history_screen.dart';
 import '../../features/leaveManagementPage/view/leave_management_page.dart';
 import '../../features/payslip/paySlipHistory/view/pay_slip_history.dart';
 import '../../features/payslip/payslipDetail/view/payslip_detail_screen.dart';
+import '../../features/profile/views/profile_screen.dart';
 import 'routes_name.dart';
 
 class AppRoutes {
@@ -32,6 +33,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.leaveHistoryScreen,
       page: () => const LeaveHistoryScreen(),
+    ),
+    GetPage(
+      name: RoutesName.profile,
+      page: () => ProfileScreen(),
     ),
   ];
 }

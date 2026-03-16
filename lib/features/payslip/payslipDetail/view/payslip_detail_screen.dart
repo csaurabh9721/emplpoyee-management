@@ -61,26 +61,28 @@ class PayslipDetailScreen extends StatelessWidget {
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: controller.refreshPayslipDetail,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _HeaderSection(controller: controller),
-                  const SizedBox(height: 24),
-                  _EmployeeInfoSection(controller: controller),
-                  const SizedBox(height: 24),
-                  _WorkDaysSection(controller: controller),
-                  const SizedBox(height: 24),
-                  _EarningsSection(controller: controller),
-                  const SizedBox(height: 24),
-                  _DeductionsSection(controller: controller),
-                  const SizedBox(height: 24),
-                  _SummarySection(controller: controller),
-                  const SizedBox(height: 30),
-                ],
+          return SafeArea(
+            child: RefreshIndicator(
+              onRefresh: controller.refreshPayslipDetail,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _HeaderSection(controller: controller),
+                    const SizedBox(height: 24),
+                    _EmployeeInfoSection(controller: controller),
+                    const SizedBox(height: 24),
+                    _WorkDaysSection(controller: controller),
+                    const SizedBox(height: 24),
+                    _EarningsSection(controller: controller),
+                    const SizedBox(height: 24),
+                    _DeductionsSection(controller: controller),
+                    const SizedBox(height: 24),
+                    _SummarySection(controller: controller),
+                    const SizedBox(height: 30),
+                  ],
+                ),
               ),
             ),
           );
