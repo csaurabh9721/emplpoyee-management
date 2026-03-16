@@ -8,6 +8,7 @@ import '../../features/payslip/paySlipHistory/view/pay_slip_history.dart';
 import '../../features/payslip/payslipDetail/view/payslip_detail_screen.dart';
 import '../../features/profile/views/profile_screen.dart';
 import '../../features/profile/views/edit_profile_screen.dart';
+import '../../features/forgetPassword/views/forget_password_screen.dart';
 import 'routes_name.dart';
 
 class AppRoutes {
@@ -47,6 +48,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.editProfile,
       page: () => EditProfileScreen(),
+    ),
+    GetPage(
+      name: RoutesName.forgotPassword,
+      page: () => ForgetPasswordScreen(),
     ),
   ];
 }

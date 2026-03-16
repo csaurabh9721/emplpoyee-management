@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/Enums/enums.dart';
-import '../../../core/routes/routes_name.dart';
-import '../controllers/login_controller.dart';
+import '../controllers/forget_password_controller.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-  final LoginController controller = Get.put(LoginController());
+class ForgetPasswordScreen extends StatelessWidget {
+  ForgetPasswordScreen({super.key});
+  final ForgetPasswordController controller = Get.put(ForgetPasswordController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF2C3E50)),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -19,11 +26,9 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _LogoSection(),
+                _HeaderSection(),
                 const SizedBox(height: 40),
-                _LoginCard(),
-                const SizedBox(height: 24),
-                _ForgotPasswordLink(),
+                _ForgetPasswordCard(),
               ],
             ),
           ),
@@ -33,7 +38,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LogoSection extends StatelessWidget {
+class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,14 +51,14 @@ class _LogoSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(
-            Icons.business,
+            Icons.lock_reset,
             size: 40,
             color: Colors.white,
           ),
         ),
         const SizedBox(height: 16),
         const Text(
-          'Employee Portal',
+          'Forgot Password',
           style: TextStyle(
             color: Color(0xFF2C3E50),
             fontSize: 28,
@@ -62,18 +67,19 @@ class _LogoSection extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         const Text(
-          'Sign in to your account',
+          'Enter your details to reset password',
           style: TextStyle(
             color: Color(0xFF7F8C8D),
             fontSize: 16,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );
   }
 }
 
-class _LoginCard extends StatelessWidget {
+class _ForgetPasswordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,21 +99,11 @@ class _LoginCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Welcome Back',
-              style: TextStyle(
-                color: Color(0xFF2C3E50),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            _EmployeeIdField(),
+            _EmailField(),
             const SizedBox(height: 20),
-            _PasswordField(),
+            _EmployeeCodeField(),
             const SizedBox(height: 32),
-            _LoginButton(),
+            _SubmitButton(),
           ],
         ),
       ),
@@ -115,8 +111,8 @@ class _LoginCard extends StatelessWidget {
   }
 }
 
-class _EmployeeIdField extends StatelessWidget {
-  final LoginController controller = Get.find<LoginController>();
+class _EmailField extends StatelessWidget {
+  final ForgetPasswordController controller = Get.find<ForgetPasswordController>();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +120,7 @@ class _EmployeeIdField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Employee ID',
+          'Email Address',
           style: TextStyle(
             color: Color(0xFF2C3E50),
             fontSize: 14,
@@ -133,13 +129,69 @@ class _EmployeeIdField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
-          controller: controller.employeeIdController,
+          controller: controller.emailController,
+          keyboardType: TextInputType.emailAddress,
           style: const TextStyle(
             color: Color(0xFF2C3E50),
             fontSize: 14,
           ),
           decoration: InputDecoration(
-            hintText: 'Enter your employee ID',
+            hintText: 'Enter your registered email',
+            hintStyle: const TextStyle(
+              color: Color(0xFF95A5A6),
+              fontSize: 14,
+            ),
+            prefixIcon: const Icon(
+              Icons.email,
+              color: Color(0xFF3498DB),
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF8F9FA),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _EmployeeCodeField extends StatelessWidget {
+  final ForgetPasswordController controller = Get.find<ForgetPasswordController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Employee Code',
+          style: TextStyle(
+            color: Color(0xFF2C3E50),
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller.employeeCodeController,
+          style: const TextStyle(
+            color: Color(0xFF2C3E50),
+            fontSize: 14,
+          ),
+          decoration: InputDecoration(
+            hintText: 'Enter your employee code',
             hintStyle: const TextStyle(
               color: Color(0xFF95A5A6),
               fontSize: 14,
@@ -170,83 +222,14 @@ class _EmployeeIdField extends StatelessWidget {
   }
 }
 
-class _PasswordField extends StatelessWidget {
-  final LoginController controller = Get.find<LoginController>();
-
+class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Password',
-          style: TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        GetBuilder<LoginController>(
-          builder: (_) => TextFormField(
-            controller: controller.passwordController,
-            obscureText: controller.obscurePassword,
-            style: const TextStyle(
-              color: Color(0xFF2C3E50),
-              fontSize: 14,
-            ),
-            decoration: InputDecoration(
-              hintText: 'Enter your password',
-              hintStyle: const TextStyle(
-                color: Color(0xFF95A5A6),
-                fontSize: 14,
-              ),
-              prefixIcon: const Icon(
-                Icons.lock,
-                color: Color(0xFF3498DB),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  controller.obscurePassword ? Icons.visibility_off : Icons.visibility,
-                  color: const Color(0xFF7F8C8D),
-                ),
-                onPressed: controller.togglePasswordVisibility,
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF8F9FA),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
+    return GetBuilder<ForgetPasswordController>(
       builder: (controller) => ElevatedButton(
-        onPressed: controller.loginResponse.status == ApiStatus.loading
+        onPressed: controller.forgetPasswordResponse.status == ApiStatus.loading
             ? null
-            : () {
-                if (controller.validateForm()) {
-                  controller.login();
-                }
-              },
+            : () => controller.submitForgetPassword(),
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF3498DB),
           foregroundColor: Colors.white,
@@ -256,7 +239,7 @@ class _LoginButton extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        child: controller.loginResponse.status == ApiStatus.loading
+        child: controller.forgetPasswordResponse.status == ApiStatus.loading
             ? const SizedBox(
                 width: 20,
                 height: 20,
@@ -266,32 +249,12 @@ class _LoginButton extends StatelessWidget {
                 ),
               )
             : const Text(
-                'Sign In',
+                'Submit',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-      ),
-    );
-  }
-}
-
-class _ForgotPasswordLink extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        // Navigate to forgot password screen
-        Get.toNamed(RoutesName.forgotPassword);
-      },
-      child: const Text(
-        'Forgot your password?',
-        style: TextStyle(
-          color: Color(0xFF3498DB),
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
       ),
     );
   }
