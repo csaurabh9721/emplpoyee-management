@@ -86,6 +86,9 @@ class ProfileScreen extends StatelessWidget {
                     _BankingInfoSection(profile: controller.profileData.data!),
                     const SizedBox(height: 24),
                     _GovernmentInfoSection(profile: controller.profileData.data!),
+                    const SizedBox(height: 24),
+                    _SettingsSection(),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -386,6 +389,34 @@ class _GovernmentInfoSection extends StatelessWidget {
       children: [
         _InfoRow(label: 'PAN Number', value: profile.panNumber),
         _InfoRow(label: 'Aadhar Number', value: profile.aadharNumber),
+      ],
+    );
+  }
+}
+
+class _SettingsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _SectionCard(
+      title: 'Account Settings',
+      icon: Icons.settings,
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.lock_outline, color: Color(0xFF3498DB)),
+          title: const Text(
+            'Change Password',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF2C3E50),
+            ),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: Color(0xFF7F8C8D)),
+          onPressed: () {
+            Get.toNamed(RoutesName.changePassword);
+          },
+        ),
       ],
     );
   }
