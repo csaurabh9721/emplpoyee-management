@@ -7,5 +7,6 @@ class RoutesName {
   static const String applyLeavePage = '/apply_leave_Page';
   static const String leaveHistoryScreen = '/leave_history_screen';
   static const String profile = '/profile';
+  static const String editProfile = '/edit_profile';
 
 }

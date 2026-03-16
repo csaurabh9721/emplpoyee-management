@@ -1,6 +1,7 @@
 import 'package:clientone_ess/core/Enums/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/routes/routes_name.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -30,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit, color: Color(0xFF3498DB)),
             onPressed: () {
-              // TODO: Implement edit functionality
+              Get.toNamed(RoutesName.editProfile);
             },
           ),
         ],
