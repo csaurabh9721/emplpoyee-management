@@ -1,5 +1,6 @@
 class RoutesName {
   static const String splash = '/';
+  static const String login = '/login';
   static const String dashboard = '/dashboard';
   static const String leaveManagementPage = '/leave_management';
   static const String payslipHistory = '/payslip_history';
@@ -8,5 +9,6 @@ class RoutesName {
   static const String leaveHistoryScreen = '/leave_history_screen';
   static const String profile = '/profile';
   static const String editProfile = '/edit_profile';
+  static const String forgotPassword = '/forgot_password';
 
 }

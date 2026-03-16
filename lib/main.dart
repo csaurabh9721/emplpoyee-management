@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       title: "JILIT ESS",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: RoutesName.dashboard,
+      initialRoute: RoutesName.login,
       getPages: AppRoutes.routes,
     );
   }
