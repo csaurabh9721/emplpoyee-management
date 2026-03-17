@@ -8,8 +8,8 @@ class LoginController extends GetxController {
   final LoginService _loginService = LoginService();
 
   // Form controllers
-  final TextEditingController employeeIdController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController employeeIdController = TextEditingController(text: "EMP001");
+  final TextEditingController passwordController = TextEditingController(text: "password");
 
   // State management
   BaseApiResponse<LoginResponse> loginResponse = BaseApiResponse.initial();

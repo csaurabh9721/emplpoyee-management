@@ -221,53 +221,58 @@ class _RecentRequestsSection  extends GetView<LeaveController> {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "Recent Requests",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Text(
-              "View All",
-              style: TextStyle(
-                color: Colors.indigo,
-                fontWeight: FontWeight.w500,
+            InkWell(
+              onTap: (){
+               Get.toNamed( RoutesName.leaveHistoryScreen);
+              },
+              child: const Text(
+                "View All",
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             )
           ],
         ),
-        SizedBox(height: 6),
-        Text(
+        const SizedBox(height: 6),
+        const Text(
           "Status of your latest applications",
           style: TextStyle(color: Colors.grey),
         ),
-        SizedBox(height: 20),
-        _LeaveRequestTile(
+        const SizedBox(height: 20),
+        const _LeaveRequestTile(
           title: "Annual Leave",
           date: "Oct 12 - Oct 15, 2023 (4 days)",
           status: "PENDING",
           statusColor: Colors.orange,
         ),
-        SizedBox(height: 14),
-        _LeaveRequestTile(
+        const SizedBox(height: 14),
+        const _LeaveRequestTile(
           title: "Sick Leave",
           date: "Sep 20, 2023 (1 day)",
           status: "APPROVED",
           statusColor: Colors.green,
         ),
-        SizedBox(height: 14),
-        _LeaveRequestTile(
+        const SizedBox(height: 14),
+        const _LeaveRequestTile(
           title: "Personal Leave",
           date: "Aug 05 - Aug 06, 2023 (2 days)",
           status: "REJECTED",
           statusColor: Colors.red,
         ),
-        SizedBox(height: 14),
-        _LeaveRequestTile(
+        const SizedBox(height: 14),
+        const _LeaveRequestTile(
           title: "Annual Leave",
           date: "Jul 10 - Jul 14, 2023 (5 days)",
           status: "APPROVED",

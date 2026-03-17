@@ -36,18 +36,24 @@ class DashboardService {
         quickActions: [
           QuickActionModel(
             id: "1",
-            title: "Apply Management",
+            title: "Leave Management",
             icon: "leave",
             route: "/leave_management",
           ),
           QuickActionModel(
             id: "2",
+            title: "Leave Approval",
+            icon: "approval",
+            route: "/leave_approval",
+          ),
+          QuickActionModel(
+            id: "3",
             title: "View Payslip",
             icon: "payslip",
             route: "/payslip_history",
           ),
           QuickActionModel(
-            id: "3",
+            id: "4",
             title: "Profile",
             icon: "profile",
             route: "/profile",

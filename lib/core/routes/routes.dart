@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
 import '../../features/login/views/login_screen.dart';
+import '../../features/splash/views/splash_screen.dart';
 import '../../features/leaveApply/view/apply_leave_page.dart';
 import '../../features/leaveHistory/view/leave_history_screen.dart';
 import '../../features/leaveManagementPage/view/leave_management_page.dart';
@@ -10,10 +11,15 @@ import '../../features/profile/views/profile_screen.dart';
 import '../../features/profile/views/edit_profile_screen.dart';
 import '../../features/forgetPassword/views/forget_password_screen.dart';
 import '../../features/changePassword/views/change_password_screen.dart';
+import '../../features/leaveApproval/views/leave_approval_screen.dart';
 import 'routes_name.dart';
 
 class AppRoutes {
   static final routes = [
+    GetPage(
+      name: RoutesName.splash,
+      page: () => const SplashScreen(),
+    ),
     GetPage(
       name: RoutesName.login,
       page: () => LoginScreen(),
@@ -57,6 +63,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.changePassword,
       page: () => ChangePasswordScreen(),
+    ),
+    GetPage(
+      name: RoutesName.leaveApproval,
+      page: () => LeaveApprovalScreen(),
     ),
   ];
 }

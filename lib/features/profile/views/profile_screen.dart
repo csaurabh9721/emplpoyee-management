@@ -413,7 +413,7 @@ class _SettingsSection extends StatelessWidget {
             ),
           ),
           trailing: const Icon(Icons.chevron_right, color: Color(0xFF7F8C8D)),
-          onPressed: () {
+          onTap: () {
             Get.toNamed(RoutesName.changePassword);
           },
         ),

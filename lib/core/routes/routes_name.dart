@@ -11,4 +11,5 @@ class RoutesName {
   static const String editProfile = '/edit_profile';
   static const String forgotPassword = '/forgot_password';
   static const String changePassword = '/change_password';
+  static const String leaveApproval = '/leave_approval';
 }

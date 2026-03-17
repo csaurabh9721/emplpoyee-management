@@ -5,24 +5,23 @@ import '../controllers/dashboard_controller.dart';
 import '../models/dashboard_models.dart';
 
 class DashboardScreen extends StatelessWidget {
-   DashboardScreen({super.key});
+  DashboardScreen({super.key});
+
   final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
       body: SafeArea(
-        child: GetBuilder<DashboardController>(
-                builder: (_) {
+        child: GetBuilder<DashboardController>(builder: (_) {
           if (controller.dashboardData.status == ApiStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (controller.dashboardData.status == ApiStatus.error) {
-            return  Center(
+            return Center(
               child: Text(controller.dashboardData.message),
             );
           }
@@ -51,9 +50,7 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _HeaderSection extends GetView<DashboardController> {
-
   const _HeaderSection();
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +69,7 @@ class _HeaderSection extends GetView<DashboardController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                 "Employee",
+                "Employee",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -102,8 +99,7 @@ class _HeaderSection extends GetView<DashboardController> {
   }
 }
 
-class _NextShiftCard extends GetView<DashboardController>  {
-
+class _NextShiftCard extends GetView<DashboardController> {
   const _NextShiftCard();
 
   @override
@@ -186,8 +182,7 @@ class _NextShiftCard extends GetView<DashboardController>  {
   }
 }
 
-class _QuickActions extends GetView<DashboardController>  {
-
+class _QuickActions extends GetView<DashboardController> {
   const _QuickActions();
 
   @override
@@ -202,16 +197,26 @@ class _QuickActions extends GetView<DashboardController>  {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: data.quickActions.map((action) {
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: data.quickActions.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 0.9,
+          ),
+          itemBuilder: (context, index) {
+            final item = data.quickActions[index];
+
             return _QuickActionItem(
-              icon: _getIconForAction(action.icon),
-              label: action.title,
-              color: _getColorForAction(action.icon),
-              onTap: () => Get.toNamed(action.route),
+              icon: _getIconForAction(item.icon),
+              label: item.title,
+              color: _getColorForAction(item.icon),
+              onTap: () => Get.toNamed(item.route),
             );
-          }).toList(),
+          },
         )
       ],
     );
@@ -274,14 +279,15 @@ class _QuickActionItem extends StatelessWidget {
             child: Icon(icon, color: color),
           ),
           const SizedBox(height: 8),
-          Text(label),
+          Text(label,
+          textAlign: TextAlign.center,),
         ],
       ),
     );
   }
 }
 
-class _AnnouncementsSection extends GetView<DashboardController>  {
+class _AnnouncementsSection extends GetView<DashboardController> {
   const _AnnouncementsSection();
 
   @override
@@ -315,7 +321,8 @@ class _AnnouncementsSection extends GetView<DashboardController>  {
               tag: announcement.type,
               title: announcement.title,
               description: announcement.description,
-              image: "https://images.unsplash.com/photo-${announcement.id == '1' ? '1521737604893-d14cc237f11d' : '1588776814546-ec7eae3b2b3d'}",
+              image:
+                  "https://images.unsplash.com/photo-${announcement.id == '1' ? '1521737604893-d14cc237f11d' : '1588776814546-ec7eae3b2b3d'}",
             ),
           );
         }).toList(),
@@ -359,25 +366,20 @@ class _AnnouncementCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.orange.shade100,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     tag,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepOrange),
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepOrange),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -434,4 +436,3 @@ class _AnnouncementCard extends StatelessWidget {
     );
   }
 }
-
