@@ -88,7 +88,7 @@ class _ForgetPasswordCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -153,7 +153,7 @@ class _EmailField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -208,7 +208,7 @@ class _EmployeeCodeField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),

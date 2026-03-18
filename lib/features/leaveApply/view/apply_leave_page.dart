@@ -112,7 +112,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 8,
                   )
                 ],
@@ -164,7 +164,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
             const Text("Leave Type"),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: _selectedLeaveType,
+              initialValue: _selectedLeaveType,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,

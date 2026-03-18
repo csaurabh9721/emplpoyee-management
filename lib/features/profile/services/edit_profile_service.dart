@@ -1,8 +1,8 @@
-import '../../../core/network/apiClients/get_api_base.dart';
+//import '../../../core/network/apiClients/get_api_base.dart';
 import '../models/edit_profile_model.dart';
 
 class EditProfileService {
-  final GetApiBase _apiClient = GetApiBase.instance;
+ // final GetApiBase _apiClient = GetApiBase.instance;
 
   Future<EditProfileResponse> updateProfile(EditProfileRequest request) async {
     await Future.delayed(const Duration(seconds: 2));

@@ -1,8 +1,8 @@
-import '../../../core/network/apiClients/get_api_base.dart';
+//import '../../../core/network/apiClients/get_api_base.dart';
 import '../models/profile_model.dart';
 
 class ProfileService {
-  final GetApiBase _apiClient = GetApiBase.instance;
+ // final GetApiBase _apiClient = GetApiBase.instance;
 
   Future<ProfileModel> getProfileData() async {
     await Future.delayed(const Duration(seconds: 2));

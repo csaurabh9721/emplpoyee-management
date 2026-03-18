@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/base_api_response.dart';
@@ -25,7 +26,7 @@ class LoginController extends GetxController {
         password: passwordController.text.trim(),
       );
 
-      final response = await _loginService.login(request);
+      final LoginResponse response = await _loginService.login(request);
       loginResponse = BaseApiResponse.success(data: response);
       update();
 
@@ -37,7 +38,11 @@ class LoginController extends GetxController {
           colorText: Colors.white,
           duration: const Duration(seconds: 2),
         );
-        
+        Sessions.setUserId(response.userData?["employeeId"] ?? "");
+        Sessions.setEmpIdId(response.userData?["employeeId"] ?? "");
+        Sessions.setEmployeeCode(response.userData?["employeeId"] ?? "");
+        Sessions.setToken(response.token ?? "");
+
         // Navigate to dashboard after successful login
         Future.delayed(const Duration(seconds: 2), () {
           Get.offAllNamed('/dashboard');

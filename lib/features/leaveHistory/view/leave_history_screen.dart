@@ -84,10 +84,11 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
     }
   }
 
-  String formatDateRange(LeaveModel leave) { const List<String> months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
+  String formatDateRange(LeaveModel leave) {
+  //   const List<String> months = [
+  //   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  //   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  // ];
     return "ddddd";
      // return '${leave.endDate!.day} ${months[leave.endDate!.month - 1]} ${leave.endDate!.year}';
   }
@@ -174,7 +175,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
         boxShadow: [
           BoxShadow(
             blurRadius: 8,
-            color: Colors.black.withOpacity(.05),
+            color: Colors.black.withValues(alpha: 0.05),
           )
         ],
       ),
@@ -184,7 +185,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              color: statusColor(leave.status).withOpacity(.1),
+              color: statusColor(leave.status).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -221,7 +222,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
             padding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: statusColor(leave.status).withOpacity(.15),
+              color: statusColor(leave.status).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

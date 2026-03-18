@@ -1,9 +1,9 @@
-import '../../../core/network/apiClients/get_api_base.dart';
+//import '../../../core/network/apiClients/get_api_base.dart';
 import '../models/dashboard_models.dart';
 
 class DashboardService {
 
-  final GetApiBase _apiClient = GetApiBase.instance;
+  //final GetApiBase _apiClient = GetApiBase.instance;
 
   Future<DashboardDataModel> getDashboardData() async {
     await Future.delayed(const Duration(seconds: 3));

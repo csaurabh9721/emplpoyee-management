@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/routes/routes_name.dart';
@@ -18,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToLogin() {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offNamed(RoutesName.login);
+      Get.offNamed(Sessions.isLoggedIn() ? RoutesName.dashboard : RoutesName.login);
     });
   }
 

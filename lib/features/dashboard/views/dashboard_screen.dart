@@ -54,7 +54,7 @@ class _HeaderSection extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardDataModel data = controller.dashboardData.data!;
+    //final DashboardDataModel data = controller.dashboardData.data!;
     return Row(
       children: [
         const CircleAvatar(
@@ -325,7 +325,7 @@ class _AnnouncementsSection extends GetView<DashboardController> {
                   "https://images.unsplash.com/photo-${announcement.id == '1' ? '1521737604893-d14cc237f11d' : '1588776814546-ec7eae3b2b3d'}",
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }

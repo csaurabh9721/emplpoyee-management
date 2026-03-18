@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../core/Enums/enums.dart';
-import '../../main.dart';
 import '../app_color.dart';
 
 class AppSnackBar {

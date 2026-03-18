@@ -1,15 +1,21 @@
+import 'package:clientone_ess/features/payslip/payslipDetail/models/payslip_detail_models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/payslip_detail_controller.dart';
 
-class PayslipDetailScreen extends StatelessWidget {
+class PayslipDetailScreen extends StatefulWidget {
   const PayslipDetailScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(PayslipDetailController());
+  State<PayslipDetailScreen> createState() => _PayslipDetailScreenState();
+}
 
-    return Scaffold(
+class _PayslipDetailScreenState extends State<PayslipDetailScreen> {
+  final PayslipDetailController controller = Get.put(PayslipDetailController());
+
+  @override
+  Widget build(BuildContext context) {
+        return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
       body: GetBuilder<PayslipDetailController>(
         builder: (controller) {
@@ -139,7 +145,7 @@ class _HeaderSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: controller.statusColor.withOpacity(0.1),
+                  color: controller.statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -290,7 +296,7 @@ class _WorkDayCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -365,7 +371,7 @@ class _EarningsSection extends StatelessWidget {
 }
 
 class _EarningItem extends StatelessWidget {
-  final earning;
+  final EarningItem earning;
 
   const _EarningItem({required this.earning});
 
@@ -458,7 +464,7 @@ class _DeductionsSection extends StatelessWidget {
 }
 
 class _DeductionItem extends StatelessWidget {
-  final deduction;
+  final DeductionItem deduction;
 
   const _DeductionItem({required this.deduction});
 

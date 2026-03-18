@@ -5,6 +5,7 @@ import '../controllers/edit_profile_controller.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
+
   final EditProfileController controller = Get.put(EditProfileController());
 
   @override
@@ -128,7 +129,7 @@ class _SectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -174,7 +175,7 @@ class _SectionCard extends StatelessWidget {
 class _PersonalInfoSection extends StatelessWidget {
   final EditProfileController controller = Get.find<EditProfileController>();
 
-  _PersonalInfoSection({super.key});
+  _PersonalInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -184,15 +185,31 @@ class _PersonalInfoSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(child: _TextField(controller: controller.firstNameController, label: 'First Name*', hint: 'Enter first name')),
+            Expanded(
+                child: _TextField(
+              controller: controller.firstNameController,
+              label: 'First Name*',
+              hint: 'Enter first name',
+              maxLines: 1,
+            )),
             const SizedBox(width: 12),
-            Expanded(child: _TextField(controller: controller.lastNameController, label: 'Last Name*', hint: 'Enter last name')),
+            Expanded(
+                child: _TextField(
+                    controller: controller.lastNameController, label: 'Last Name*', hint: 'Enter last name')),
           ],
         ),
         const SizedBox(height: 16),
-        _TextField(controller: controller.emailController, label: 'Email*', hint: 'Enter email address', keyboardType: TextInputType.emailAddress),
+        _TextField(
+            controller: controller.emailController,
+            label: 'Email*',
+            hint: 'Enter email address',
+            keyboardType: TextInputType.emailAddress),
         const SizedBox(height: 16),
-        _TextField(controller: controller.phoneController, label: 'Phone*', hint: 'Enter phone number', keyboardType: TextInputType.phone),
+        _TextField(
+            controller: controller.phoneController,
+            label: 'Phone*',
+            hint: 'Enter phone number',
+            keyboardType: TextInputType.phone),
       ],
     );
   }
@@ -201,7 +218,7 @@ class _PersonalInfoSection extends StatelessWidget {
 class _AddressSection extends StatelessWidget {
   final EditProfileController controller = Get.find<EditProfileController>();
 
-  _AddressSection({super.key});
+  _AddressSection();
 
   @override
   Widget build(BuildContext context) {
@@ -221,9 +238,12 @@ class _AddressSection extends StatelessWidget {
         const SizedBox(height: 16),
         Row(
           children: [
-            Expanded(child: _TextField(controller: controller.postalCodeController, label: 'Postal Code', hint: 'Enter postal code')),
+            Expanded(
+                child: _TextField(
+                    controller: controller.postalCodeController, label: 'Postal Code', hint: 'Enter postal code')),
             const SizedBox(width: 12),
-            Expanded(child: _TextField(controller: controller.countryController, label: 'Country', hint: 'Enter country')),
+            Expanded(
+                child: _TextField(controller: controller.countryController, label: 'Country', hint: 'Enter country')),
           ],
         ),
       ],
@@ -234,7 +254,7 @@ class _AddressSection extends StatelessWidget {
 class _EmergencyContactSection extends StatelessWidget {
   final EditProfileController controller = Get.find<EditProfileController>();
 
-  _EmergencyContactSection({super.key});
+  _EmergencyContactSection();
 
   @override
   Widget build(BuildContext context) {
@@ -242,11 +262,21 @@ class _EmergencyContactSection extends StatelessWidget {
       title: 'Emergency Contact',
       icon: Icons.contact_phone,
       children: [
-        _TextField(controller: controller.emergencyContactNameController, label: 'Contact Name', hint: 'Enter emergency contact name'),
+        _TextField(
+            controller: controller.emergencyContactNameController,
+            label: 'Contact Name',
+            hint: 'Enter emergency contact name'),
         const SizedBox(height: 16),
-        _TextField(controller: controller.emergencyContactPhoneController, label: 'Contact Phone', hint: 'Enter emergency contact phone', keyboardType: TextInputType.phone),
+        _TextField(
+            controller: controller.emergencyContactPhoneController,
+            label: 'Contact Phone',
+            hint: 'Enter emergency contact phone',
+            keyboardType: TextInputType.phone),
         const SizedBox(height: 16),
-        _TextField(controller: controller.emergencyContactRelationController, label: 'Relationship', hint: 'Enter relationship (e.g., Spouse, Parent)'),
+        _TextField(
+            controller: controller.emergencyContactRelationController,
+            label: 'Relationship',
+            hint: 'Enter relationship (e.g., Spouse, Parent)'),
       ],
     );
   }
@@ -303,7 +333,7 @@ class _TextField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
