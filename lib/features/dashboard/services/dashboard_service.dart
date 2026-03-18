@@ -1,4 +1,5 @@
 //import '../../../core/network/apiClients/get_api_base.dart';
+import '../../../core/routes/routes_name.dart';
 import '../models/dashboard_models.dart';
 
 class DashboardService {
@@ -36,27 +37,33 @@ class DashboardService {
         quickActions: [
           QuickActionModel(
             id: "1",
-            title: "Leave Management",
-            icon: "leave",
-            route: "/leave_management",
+            title: "Attendance",
+            icon: "attendance",
+            route: RoutesName.attendance,
           ),
           QuickActionModel(
             id: "2",
-            title: "Leave Approval",
-            icon: "approval",
-            route: "/leave_approval",
+            title: "Leave Management",
+            icon: "leave",
+            route: RoutesName.leaveManagementPage,
           ),
           QuickActionModel(
             id: "3",
-            title: "View Payslip",
-            icon: "payslip",
-            route: "/payslip_history",
+            title: "Leave Approval",
+            icon: "approval",
+            route: RoutesName.leaveApproval,
           ),
           QuickActionModel(
             id: "4",
+            title: "View Payslip",
+            icon: "payslip",
+            route: RoutesName.payslipHistory,
+          ),
+          QuickActionModel(
+            id: "5",
             title: "Profile",
             icon: "profile",
-            route: "/profile",
+            route: RoutesName.profile,
           ),
         ],
       );

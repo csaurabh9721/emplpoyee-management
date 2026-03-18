@@ -230,6 +230,10 @@ class _QuickActions extends GetView<DashboardController> {
         return Icons.receipt_long;
       case 'profile':
         return Icons.person;
+      case 'attendance':
+        return Icons.calendar_month;
+      case 'approval':
+        return Icons.verified;
       default:
         return Icons.dashboard;
     }
@@ -243,6 +247,10 @@ class _QuickActions extends GetView<DashboardController> {
         return Colors.green;
       case 'profile':
         return Colors.purple;
+      case 'attendance':
+        return Colors.orange;
+      case 'approval':
+        return Colors.teal;
       default:
         return Colors.grey;
     }
@@ -273,7 +281,7 @@ class _QuickActionItem extends StatelessWidget {
             height: 70,
             width: 70,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
+              color: color.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: color),
