@@ -205,11 +205,10 @@ class _QuickActions extends GetView<DashboardController> {
             crossAxisCount: 3,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.85,
           ),
           itemBuilder: (context, index) {
             final item = data.quickActions[index];
-
             return _QuickActionItem(
               icon: _getIconForAction(item.icon),
               label: item.title,
@@ -288,7 +287,12 @@ class _QuickActionItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(label,
-          textAlign: TextAlign.center,),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 13
+          ),
+          ),
         ],
       ),
     );

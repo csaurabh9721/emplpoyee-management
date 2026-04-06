@@ -43,24 +43,30 @@ class DashboardService {
           ),
           QuickActionModel(
             id: "2",
+            title: "Balance",
+            icon: "balance",
+            route: RoutesName.accountBalance,
+          ),
+          QuickActionModel(
+            id: "3",
             title: "Leave Management",
             icon: "leave",
             route: RoutesName.leaveManagementPage,
           ),
           QuickActionModel(
-            id: "3",
+            id: "4",
             title: "Leave Approval",
             icon: "approval",
             route: RoutesName.leaveApproval,
           ),
           QuickActionModel(
-            id: "4",
+            id: "5",
             title: "View Payslip",
             icon: "payslip",
             route: RoutesName.payslipHistory,
           ),
           QuickActionModel(
-            id: "5",
+            id: "6",
             title: "Profile",
             icon: "profile",
             route: RoutesName.profile,

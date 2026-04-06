@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../features/attendance/views/attendance_screen.dart';
+import '../../features/accountBalance/views/account_balance_screen.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
 import '../../features/login/views/login_screen.dart';
 import '../../features/splash/views/splash_screen.dart';
@@ -32,6 +33,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.attendance,
       page: () => const AttendanceScreen(),
+    ),
+    GetPage(
+      name: RoutesName.accountBalance,
+      page: () => const AccountBalanceScreen(),
     ),
     GetPage(
       name: RoutesName.leaveManagementPage,
