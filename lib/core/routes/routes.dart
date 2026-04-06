@@ -15,6 +15,7 @@ import '../../features/profile/views/edit_profile_screen.dart';
 import '../../features/forgetPassword/views/forget_password_screen.dart';
 import '../../features/changePassword/views/change_password_screen.dart';
 import '../../features/leaveApproval/views/leave_approval_screen.dart';
+import '../../features/teamAttendance/views/team_attendance_screen.dart';
 import 'routes_name.dart';
 
 class AppRoutes {
@@ -34,6 +35,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.attendance,
       page: () => const AttendanceScreen(),
+    ),
+    GetPage(
+      name: RoutesName.teamAttendance,
+      page: () => const TeamAttendanceScreen(),
     ),
     GetPage(
       name: RoutesName.accountBalance,
