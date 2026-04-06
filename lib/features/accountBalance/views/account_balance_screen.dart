@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/Enums/enums.dart';
+import '../../../core/routes/routes_name.dart';
 import '../controllers/account_balance_controller.dart';
 import '../models/account_balance_model.dart';
 
@@ -191,7 +192,7 @@ class _SummarySection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'USD ${totalAmount.toStringAsFixed(2)}',
+            '₹ ${totalAmount.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
@@ -347,102 +348,106 @@ class _AccountDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isNotCompleted = balance.status != LedgerStatus.completed;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: _getTypeColor(balance.typeMember).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      balance.typeMember,
-                      style: TextStyle(
-                        color: _getTypeColor(balance.typeMember),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ),
-                  if (isNotCompleted) ...[
-                    const SizedBox(width: 8),
+    return InkWell(
+      onTap: () => Get.toNamed('${RoutesName.accountDetail}/${balance.id}'),
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(balance.status).withOpacity(0.1),
+                        color: _getTypeColor(balance.typeMember).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        balance.status.name.toUpperCase(),
+                        balance.typeMember,
                         style: TextStyle(
-                          color: _getStatusColor(balance.status),
+                          color: _getTypeColor(balance.typeMember),
                           fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                          fontSize: 11,
                         ),
                       ),
                     ),
+                    if (isNotCompleted) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(balance.status).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          balance.status.name.toUpperCase(),
+                          style: TextStyle(
+                            color: _getStatusColor(balance.status),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
-                ],
-              ),
-              Text(
-                balance.date,
-                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Text(
-            balance.description,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2D3142)),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.tag, size: 14, color: Colors.grey),
-              const SizedBox(width: 4),
-              Text(
-                balance.reference,
-                style: TextStyle(fontSize: 13, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(height: 1),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                isNotCompleted ? 'Estimated Amount' : 'Amount Received',
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
-              ),
-              Text(
-                '${balance.currency} ${balance.amount.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFF1B1D28)),
-              ),
-            ],
-          ),
-        ],
+                ),
+                Text(
+                  balance.date,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Text(
+              balance.description,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2D3142)),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.tag, size: 14, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  balance.reference,
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Divider(height: 1),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isNotCompleted ? 'Estimated Amount' : 'Amount Received',
+                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                ),
+                Text(
+                  '${balance.currency} ${balance.amount.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFF1B1D28)),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

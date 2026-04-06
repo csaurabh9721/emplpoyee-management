@@ -4,6 +4,7 @@ class RoutesName {
   static const String dashboard = '/dashboard';
   static const String attendance = '/attendance';
   static const String accountBalance = '/account_balance';
+  static const String accountDetail = '/account_detail';
   static const String leaveManagementPage = '/leave_management';
   static const String payslipHistory = '/payslip_history';
   static const String payslipDetail = '/payslip_detail';
