@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/Enums/enums.dart';
 import '../../../core/routes/routes_name.dart';
 import '../controllers/login_controller.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
   final LoginController controller = Get.put(LoginController());
 
   @override
@@ -235,12 +235,12 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
+class _LoginButton extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-      builder: (controller) => ElevatedButton(
-        onPressed: controller.loginResponse.status == ApiStatus.loading
+    return Obx(
+      () => ElevatedButton(
+        onPressed: controller.isLoading.value
             ? null
             : () {
                 if (controller.validateForm()) {
@@ -256,7 +256,7 @@ class _LoginButton extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        child: controller.loginResponse.status == ApiStatus.loading
+        child: controller.isLoading.value
             ? const SizedBox(
                 width: 20,
                 height: 20,

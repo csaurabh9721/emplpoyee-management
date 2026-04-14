@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/routes/routes_name.dart';
 import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,28 +10,26 @@ class LoginController extends GetxController {
   final LoginService _loginService = LoginService();
 
   // Form controllers
-  final TextEditingController employeeIdController = TextEditingController(text: "EMP001");
-  final TextEditingController passwordController = TextEditingController(text: "password");
+  final TextEditingController employeeIdController = TextEditingController(text: "user1@gmail.com");
+  final TextEditingController passwordController = TextEditingController(text: "user1");
 
   // State management
-  BaseApiResponse<LoginResponse> loginResponse = BaseApiResponse.initial();
+  RxBool isLoading = false.obs;
   bool obscurePassword = true;
 
   Future<void> login() async {
+    isLoading.value = true;
     try {
-      loginResponse = BaseApiResponse.loading();
-      update();
-
-      final request = LoginRequest(
-        employeeId: employeeIdController.text.trim(),
+      final LoginRequest request = LoginRequest(
+        emailId: employeeIdController.text.trim(),
         password: passwordController.text.trim(),
       );
 
       final LoginResponse response = await _loginService.login(request);
-      loginResponse = BaseApiResponse.success(data: response);
-      update();
+      isLoading.value = false;
 
-      if (response.success) {
+      if (response.statusCode == 200) {
+        update();
         Get.snackbar(
           'Success',
           response.message,
@@ -38,33 +37,22 @@ class LoginController extends GetxController {
           colorText: Colors.white,
           duration: const Duration(seconds: 2),
         );
-        Sessions.setUserId(response.userData?["employeeId"] ?? "");
-        Sessions.setEmpIdId(response.userData?["employeeId"] ?? "");
-        Sessions.setEmployeeCode(response.userData?["employeeId"] ?? "");
-        Sessions.setToken(response.token ?? "");
-
-        // Navigate to dashboard after successful login
-        Future.delayed(const Duration(seconds: 2), () {
-          Get.offAllNamed('/dashboard');
-        });
+        Sessions.setUserId(response.body!.userId);
+        Sessions.setEmpName(response.body!.employeeName);
+        Sessions.setEmployeeCode(response.body!.employeeCode);
+        Sessions.setAccessToken(response.body!.accessToken);
+        Sessions.setRefreshToken(response.body!.accessToken);
+        Get.offAllNamed(RoutesName.dashboard);
       } else {
-        Get.snackbar(
-          'Login Failed',
-          response.message,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-        );
+        throw Exception(response.message);
       }
     } catch (e) {
-      loginResponse = BaseApiResponse.error(e.toString());
-      update();
       Get.snackbar(
-        'Error',
-        'Login failed. Please try again.',
+        'Login Failed',
+        e.toString(),
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
       );
     }
   }
@@ -92,7 +80,7 @@ class LoginController extends GetxController {
       return false;
     }
 
-    if (passwordController.text.trim().length < 6) {
+    if (passwordController.text.trim().length < 4) {
       Get.snackbar(
         'Validation Error',
         'Password must be at least 6 characters',

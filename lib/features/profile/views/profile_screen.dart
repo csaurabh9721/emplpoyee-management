@@ -6,6 +6,7 @@ import '../controllers/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
+
   final ProfileController controller = Get.put(ProfileController());
 
   @override
@@ -89,6 +90,19 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     _SettingsSection(),
                     const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.logout();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3498DB),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Text(
+                        'Logout',
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -135,42 +149,42 @@ class _ProfileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              profile.fullName,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2C3E50),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              profile.designation,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Color(0xFF7F8C8D),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: const Color(0xFF3498DB).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                profile.employeeId,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                profile.fullName,
                 style: const TextStyle(
-                  color: Color(0xFF3498DB),
-                  fontWeight: FontWeight.w500,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF2C3E50),
                 ),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(height: 4),
+              Text(
+                profile.designation,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF7F8C8D),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3498DB).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  profile.employeeId,
+                  style: const TextStyle(
+                    color: Color(0xFF3498DB),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -260,7 +274,7 @@ class _InfoRow extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              icon != null ?  "$icon $label" :   label,
+              icon != null ? "$icon $label" : label,
               style: const TextStyle(
                 color: Color(0xFF7F8C8D),
                 fontSize: 14,
@@ -298,8 +312,8 @@ class _PersonalInfoSection extends StatelessWidget {
       icon: Icons.person,
       children: [
         _InfoRow(label: 'Full Name', value: profile.fullName),
-        _InfoRow(label: 'Email', value: profile.email, icon: "✉︎" ),
-        _InfoRow(label: 'Phone', value: profile.phone, icon:"✆"),
+        _InfoRow(label: 'Email', value: profile.email, icon: "✉︎"),
+        _InfoRow(label: 'Phone', value: profile.phone, icon: "✆"),
         _InfoRow(label: 'Date of Birth', value: profile.dateOfBirth),
         _InfoRow(label: 'Gender', value: profile.gender),
         _InfoRow(label: 'Blood Group', value: profile.bloodGroup),

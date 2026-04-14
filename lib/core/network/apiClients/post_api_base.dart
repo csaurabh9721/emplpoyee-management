@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../shared/constants/app_constant.dart';
 import '../../exceptions/api_exceptions.dart';
 import '../../service/sessionManagement/sessions.dart';
 import '../config/network_config.dart';
@@ -22,7 +23,7 @@ class PostApiBase {
 
   /// ✅ **Fetch Bearer Token dynamically**
   String _getAuthToken() {
-    return Sessions.getToken();
+    return Sessions.getAccessToken();
   }
 
   /// ✅ **Generate dynamic headers**
@@ -33,6 +34,7 @@ class PostApiBase {
             'Content-Type': 'application/json',
           }
         : {
+            'Authorization': "Basic ${AppConstant.basicAuth}",
             'Content-Type': 'application/json',
           };
   }
@@ -54,7 +56,7 @@ class PostApiBase {
       return _handleResponse(response);
     } catch (e) {
       log(e.toString());
-      throw AppException("Unexpected error: Error in Post API: ${e.toString()}");
+      throw AppException(e.toString());
     }
   }
 
@@ -72,15 +74,17 @@ class PostApiBase {
     final int statusCode = response.statusCode;
     debugPrint("Response Code: $statusCode");
     log("Response Body: ${response.body}");
+    final decodedData = jsonDecode(response.body);
     if (statusCode == 200) {
-      return jsonDecode(response.body);
+      return decodedData;
     }
+
     final errorMessages = {
-      400: "Bad Request",
-      //401: "Unauthorized - Token expired or missing",
-      403: "Forbidden Access",
-      404: "URL Not Found",
-      405: "Method Not Allowed",
+      400: decodedData["message"] ?? "Bad Request",
+      401: decodedData["message"] ?? "Unauthorized - Token expired or missing",
+      403: decodedData["message"] ?? "Forbidden Access",
+      404: decodedData["message"] ?? "URL Not Found",
+      405: decodedData["message"] ?? "Method Not Allowed",
     };
     throw AppException(errorMessages[statusCode] ?? "Unexpected Error: ${response.body}");
   }

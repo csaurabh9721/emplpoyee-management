@@ -1,3 +1,5 @@
+import 'package:clientone_ess/core/routes/routes_name.dart';
+import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/base_api_response.dart';
 import '../models/profile_model.dart';
@@ -29,5 +31,10 @@ class ProfileController extends GetxController {
 
   Future<void> refreshProfile() async {
     _loadProfileData();
+  }
+
+  void logout() {
+    Sessions.erase();
+    Get.offAllNamed(RoutesName.login);
   }
 }

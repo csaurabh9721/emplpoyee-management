@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 
 class NetworkConfig {
-  static const String baseUrl = "";
+  static const String _baseUrl = "http://172.16.173.247:8080";
+  static const String login = "/api/auth/login";
 
   static Uri getUrl(String url) {
-    final String fullUrl = baseUrl + url;
+    final String fullUrl = _baseUrl + url;
     final Uri uri = Uri.parse(fullUrl);
     debugPrint(uri.toString());
     return uri;

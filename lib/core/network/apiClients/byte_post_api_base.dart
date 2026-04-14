@@ -22,7 +22,7 @@ class BytePostApiBase {
 
   /// ✅ **Fetch Bearer Token dynamically**
   String _getAuthToken() {
-    return Sessions.getToken();
+    return Sessions.getAccessToken();
   }
 
   /// ✅ **Generate dynamic headers**

@@ -1,39 +1,72 @@
 class LoginRequest {
-  final String employeeId;
+  final String emailId;
   final String password;
 
   LoginRequest({
-    required this.employeeId,
+    required this.emailId,
     required this.password,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'employeeId': employeeId,
+      'emailId': emailId,
       'password': password,
     };
   }
 }
 
 class LoginResponse {
-  final bool success;
+  final int statusCode;
   final String message;
-  final String? token;
-  final Map<String, dynamic>? userData;
+  final LoginResponseBody? body;
 
   LoginResponse({
-    required this.success,
+    required this.statusCode,
     required this.message,
-    this.token,
-    this.userData,
+    required this.body,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      success: json['success'] ?? false,
-      message: json['message'] ?? '',
-      token: json['token'],
-      userData: json['userData'],
+      statusCode: json['statusCode'] ?? 400,
+      message: json['message'] ?? 'Something went wrong',
+      body: json['body'] == null ? null : LoginResponseBody.fromJson(json['body']),
     );
+  }
+
+  @override
+  String toString() {
+    return 'LoginResponse{statusCode: $statusCode, message: $message, body: $body}';
+  }
+}
+
+class LoginResponseBody {
+  final int userId;
+  final String employeeName;
+  final String employeeCode;
+  final String accessToken;
+  final String refreshToken;
+
+  const LoginResponseBody({
+    required this.userId,
+    required this.employeeName,
+    required this.employeeCode,
+    required this.accessToken,
+    required this.refreshToken,
+  });
+
+  factory LoginResponseBody.fromJson(Map<String, dynamic> json) {
+    return LoginResponseBody(
+      userId: json['userId'] ?? 0,
+      employeeName: json['employeeName'] ?? '',
+      employeeCode: json['employeeCode'] ?? '',
+      accessToken: json['accessToken'] ?? '',
+      refreshToken: json['refreshToken'] ?? '',
+    );
+  }
+
+  @override
+  String toString() {
+    return 'LoginResponseBody{userId: $userId, employeeName: $employeeName, employeeCode: $employeeCode, accessToken: $accessToken, refreshToken: $refreshToken}';
   }
 }
