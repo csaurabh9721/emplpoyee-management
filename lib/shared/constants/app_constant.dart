@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppConstant {
   static const String basicUser = 'appdevix';
   static const String basicPassword = '123appdevix456';
-  static  String basicAuth = '${base64Encode(utf8.encode('$basicUser:$basicPassword'))}';
+  static  String basicAuth = base64Encode(utf8.encode('$basicUser:$basicPassword'));
 
   static String dateOfJoining = '';
   static String employeeName = '';
@@ -21,3 +21,5 @@ class AppConstant {
     Colors.red,
   ];
 }
+
+

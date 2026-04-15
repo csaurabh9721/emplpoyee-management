@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import '../../exceptions/api_exceptions.dart';
+import '../../service/sessionManagement/sessions.dart';
 import '../config/network_config.dart';
 
 class GetApiBase {
@@ -15,31 +19,26 @@ class GetApiBase {
   /// 🔹 Persistent HTTP Client
 
   /// ✅ **Fetch Bearer Token dynamically**
-  Future<String> _getAuthToken() async {
-    return "";
-  }
 
   /// ✅ **Generate dynamic headers**
-  Future<Map<String, String>> _getHeaders({bool basicAuth = false}) async {
+  Map<String, String> _getHeaders() {
     return {
-      'Authorization':"Bearer ${await _getAuthToken()}",
+      'Authorization': "Bearer ${Sessions.getAccessToken()}",
       'Content-Type': 'application/json',
     };
   }
 
   /// 🔹 **Reusable GET Request Handler**
-  Future<Map<String, dynamic>> _makeGetRequest(
-    String url, {
-    bool basicAuth = false,
-  }) async {
-    final Map<String, String> headers = await _getHeaders(basicAuth: basicAuth);
+  Future<Map<String, dynamic>> _makeGetRequest(String url) async {
+    final Uri uri = NetworkConfig.getUrl(url);
+    final Map<String, String> headers = _getHeaders();
+    debugPrint("Header: $headers");
     try {
-      final response = await _client
-          .get(NetworkConfig.getUrl(url), headers: headers)
-          .timeout(const Duration(seconds: 20));
+      final response = await _client.get(uri, headers: headers).timeout(const Duration(seconds: 20));
       return _handleResponse(response);
     } catch (e) {
-      throw Exception("");
+      log(e.toString());
+      throw AppException(e.toString());
     }
   }
 
@@ -48,9 +47,23 @@ class GetApiBase {
     return _makeGetRequest(url);
   }
 
-
   /// 🔹 **Reusable Response Handler**
   Map<String, dynamic> _handleResponse(http.Response response) {
-    return jsonDecode(response.body);
+    final int statusCode = response.statusCode;
+    debugPrint("Response Code: $statusCode");
+    log("Response Body: ${response.body}");
+    final decodedData = jsonDecode(response.body);
+    if (statusCode == 200) {
+      return decodedData;
+    }
+
+    final errorMessages = {
+      400: decodedData["message"] ?? "Bad Request",
+      401: decodedData["message"] ?? "Unauthorized - Token expired or missing",
+      403: decodedData["message"] ?? "Forbidden Access",
+      404: decodedData["message"] ?? "URL Not Found",
+      405: decodedData["message"] ?? "Method Not Allowed",
+    };
+    throw AppException(errorMessages[statusCode] ?? "Unexpected Error: ${response.body}");
   }
 }

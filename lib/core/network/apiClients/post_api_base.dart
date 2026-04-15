@@ -21,16 +21,12 @@ class PostApiBase {
 
   /// 🔹 Persistent HTTP Client
 
-  /// ✅ **Fetch Bearer Token dynamically**
-  String _getAuthToken() {
-    return Sessions.getAccessToken();
-  }
 
   /// ✅ **Generate dynamic headers**
   Map<String, String> _getHeaders({bool basicAuth = false}) {
     return !basicAuth
         ? {
-            'Authorization': "Bearer ${_getAuthToken()}",
+            'Authorization': "Bearer ${Sessions.getAccessToken()}",
             'Content-Type': 'application/json',
           }
         : {

@@ -8,7 +8,7 @@ import '../services/profile_service.dart';
 class ProfileController extends GetxController {
   final ProfileService _profileService = ProfileService();
 
-  BaseApiResponse<ProfileModel> profileData = BaseApiResponse.loading();
+  BaseApiResponse<ProfileModelBody> profileData = BaseApiResponse.loading();
 
   @override
   void onInit() {
@@ -20,7 +20,7 @@ class ProfileController extends GetxController {
     try {
       profileData = BaseApiResponse.loading();
       update();
-      final ProfileModel data = await _profileService.getProfileData();
+      final ProfileModelBody data = await _profileService.getProfileData();
       profileData = BaseApiResponse.success(data: data);
       update();
     } catch (e) {

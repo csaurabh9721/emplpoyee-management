@@ -26,7 +26,7 @@ class EditProfileController extends GetxController {
 
   // State management
   BaseApiResponse<EditProfileResponse> updateResponse = BaseApiResponse.initial();
-  BaseApiResponse<ProfileModel> profileData = BaseApiResponse.loading();
+  BaseApiResponse<ProfileModelBody> profileData = BaseApiResponse.loading();
 
   @override
   void onInit() {
@@ -38,7 +38,7 @@ class EditProfileController extends GetxController {
     try {
       profileData = BaseApiResponse.loading();
       update();
-      final ProfileModel data = await _profileService.getProfileData();
+      final ProfileModelBody data = await _profileService.getProfileData();
       profileData = BaseApiResponse.success(data: data);
       _populateFormFields(data);
       update();
@@ -48,19 +48,19 @@ class EditProfileController extends GetxController {
     }
   }
 
-  void _populateFormFields(ProfileModel profile) {
-    firstNameController.text = profile.firstName;
-    lastNameController.text = profile.lastName;
-    emailController.text = profile.email;
-    phoneController.text = profile.phone;
-    addressController.text = profile.address;
-    cityController.text = profile.city;
-    stateController.text = profile.state;
-    postalCodeController.text = profile.postalCode;
-    countryController.text = profile.country;
-    emergencyContactNameController.text = profile.emergencyContactName;
-    emergencyContactPhoneController.text = profile.emergencyContactPhone;
-    emergencyContactRelationController.text = profile.emergencyContactRelation;
+  void _populateFormFields(ProfileModelBody profile) {
+    // firstNameController.text = profile.fullName;
+    // lastNameController.text = profile.fullName;
+    // emailController.text = profile.personalDetails.aadharNumber;
+    // phoneController.text = profile.personalDetails.p;
+    // addressController.text = profile.address;
+    // cityController.text = profile.city;
+    // stateController.text = profile.state;
+    // postalCodeController.text = profile.postalCode;
+    // countryController.text = profile.country;
+    // emergencyContactNameController.text = profile.emergencyContactName;
+    // emergencyContactPhoneController.text = profile.emergencyContactPhone;
+    // emergencyContactRelationController.text = profile.emergencyContactRelation;
   }
 
   Future<void> updateProfile() async {
