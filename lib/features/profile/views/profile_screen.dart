@@ -304,8 +304,13 @@ class _PersonalInfoSection extends GetView<ProfileController> {
         _InfoRow(label: 'Blood Group', value: controller.personalInfo.bloodGroup),
         _InfoRow(label: 'Marital Status', value: controller.personalInfo.maritalStatus),
         _InfoRow(
-          label: 'Address',
+          label: 'Current Address',
           value: controller.fullAddress,
+          icon: "🌍",
+        ),
+        _InfoRow(
+          label: 'Permanent Address',
+          value: controller.fullPermanentAddress,
           icon: "🌍",
         ),
       ],

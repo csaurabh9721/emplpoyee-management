@@ -17,7 +17,10 @@ class ProfileController extends GetxController {
   EmployeeBankDetails get bankDetails => profileData.data!.employeeBankDetails;
 
   String get fullAddress =>
-      "${profileData.data!.employeeAddress.address}, ${profileData.data!.employeeAddress.city}, ${profileData.data!.employeeAddress.state}, ${profileData.data!.employeeAddress.country}";
+      "${profileData.data!.employeeAddress.address}, ${profileData.data!.employeeAddress.city}, ${profileData.data!.employeeAddress.state}, ${profileData.data!.employeeAddress.country}, ${profileData.data!.employeeAddress.postalCode}";
+
+  String get fullPermanentAddress =>
+      "${profileData.data!.employeeAddress.permanentAddress}, ${profileData.data!.employeeAddress.permanentCity}, ${profileData.data!.employeeAddress.permanentState}, ${profileData.data!.employeeAddress.permanentCountry}, ${profileData.data!.employeeAddress.permanentPostalCode}";
 
   @override
   void onInit() {

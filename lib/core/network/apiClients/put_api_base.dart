@@ -1,53 +1,78 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../shared/constants/app_constant.dart';
 import '../../exceptions/api_exceptions.dart';
+import '../../routes/routes_name.dart';
+import '../../service/sessionManagement/sessions.dart';
 import '../config/network_config.dart';
 
 class PutApiBase {
-
-  factory PutApiBase() => _instance;
   PutApiBase._();
 
   static final PutApiBase _instance = PutApiBase._();
 
-  Map<String, String> _header() {
-    return {
-      'Authorization': 'Bearer yourToken',
-      'Content-Type': 'application/json',
-    };
+  static PutApiBase get instance => _instance;
+
+  final http.Client _client = http.Client();
+
+  /// ✅ **Generate dynamic headers**
+  Map<String, String> _getHeaders({bool basicAuth = false}) {
+    return !basicAuth
+        ? {
+            'Authorization': "Bearer ${Sessions.getAccessToken()}",
+            'Content-Type': 'application/json',
+          }
+        : {
+            'Authorization': "Basic ${AppConstant.basicAuth}",
+            'Content-Type': 'application/json',
+          };
   }
 
-  Future<Map<String, dynamic>?> putApi({required String url, Map<String, dynamic>? body}) async {
+  Future<Map<String, dynamic>> putApi({required String url, Map<String, dynamic>? body}) async {
     try {
+      final Uri uri = NetworkConfig.getUrl(url);
+      final Map<String, String> headers = _getHeaders();
+      debugPrint("Header: $headers");
+      debugPrint("Post Request: ${jsonEncode(body)}");
       final http.Response response = await http
           .put(
-            NetworkConfig.getUrl(url),
-            headers: _header(),
+            uri,
+            headers: headers,
             body: body != null ? jsonEncode(body) : null,
           )
           .timeout(const Duration(seconds: 10));
-      debugPrint(response.body);
-      return _getResponse(response);
+      return _handleResponse(response);
     } catch (e) {
       throw AppException("Request Time out");
     }
   }
 
-  Map<String, dynamic>? _getResponse(http.Response response) {
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body);
-      case 400:
-        throw AppException("Bad request found");
-      case 401:
-        throw AppException("Token expired or Token not found");
-      case 404:
-        throw AppException("Url Not Found");
-      default:
-        throw AppException(response.body.toString());
+  /// 🔹 **Reusable Response Handler**
+  Map<String, dynamic> _handleResponse(http.Response response) {
+    final int statusCode = response.statusCode;
+    debugPrint("Response Code: $statusCode");
+    log("Response Body: ${response.body}");
+    final decodedData = jsonDecode(response.body);
+    if (statusCode == 200) {
+      return decodedData;
     }
+    if (statusCode == 401) {
+      Sessions.erase();
+      Get.offAllNamed(RoutesName.login);
+      throw AppException(decodedData["message"] ?? "Unauthorized - Token expired or missing");
+    }
+    final errorMessages = {
+      400: decodedData["message"] ?? "Bad Request",
+      401: decodedData["message"] ?? "Unauthorized - Token expired or missing",
+      403: decodedData["message"] ?? "Forbidden Access",
+      404: decodedData["message"] ?? "URL Not Found",
+      405: decodedData["message"] ?? "Method Not Allowed",
+    };
+    throw AppException(errorMessages[statusCode] ?? "Unexpected Error: ${response.body}");
   }
 }

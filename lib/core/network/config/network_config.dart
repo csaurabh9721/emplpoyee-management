@@ -4,6 +4,7 @@ class NetworkConfig {
   static const String _baseUrl = "http://172.16.173.247:8080";
   static const String login = "/api/auth/login";
   static const String getEmployeeProfile = "/api/employees/getEmployeeProfile";
+  static const String updateProfile = "/api/employees/update-profile";
 
   static Uri getUrl(String url) {
     final String fullUrl = _baseUrl + url;

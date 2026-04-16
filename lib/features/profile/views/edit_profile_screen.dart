@@ -1,4 +1,4 @@
-import 'package:clientone_ess/core/Enums/enums.dart';
+import 'package:clientone_ess/shared/components/label.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/edit_profile_controller.dart';
@@ -28,16 +28,13 @@ class EditProfileScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         actions: [
-          GetBuilder<EditProfileController>(
-            builder: (_) => TextButton(
-              onPressed: controller.updateResponse.status == ApiStatus.loading
-                  ? null
-                  : () {
-                      if (controller.validateForm()) {
-                        controller.updateProfile();
-                      }
-                    },
-              child: controller.updateResponse.status == ApiStatus.loading
+          Obx(
+            () => TextButton(
+              onPressed: () {
+                if (controller.isLoading.value) return;
+                controller.updateProfile();
+              },
+              child: controller.isLoading.value
                   ? const SizedBox(
                       width: 20,
                       height: 20,
@@ -58,52 +55,18 @@ class EditProfileScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: GetBuilder<EditProfileController>(
-          builder: (_) {
-            if (controller.profileData.status == ApiStatus.loading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Color(0xFF3498DB)),
-              );
-            }
-            if (controller.profileData.status == ApiStatus.error) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(
-                      controller.profileData.message,
-                      style: const TextStyle(color: Colors.red, fontSize: 16),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => controller.loadProfileData(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3498DB),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            }
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  _PersonalInfoSection(),
-                  const SizedBox(height: 24),
-                  _AddressSection(),
-                  const SizedBox(height: 24),
-                  _EmergencyContactSection(),
-                  const SizedBox(height: 32),
-                ],
-              ),
-            );
-          },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _PersonalInfoSection(),
+              const SizedBox(height: 24),
+              const _AddressSection(),
+              const SizedBox(height: 24),
+              _EmergencyContactSection(),
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );
@@ -164,7 +127,9 @@ class _SectionCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(children: children),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: children),
           ),
         ],
       ),
@@ -183,20 +148,11 @@ class _PersonalInfoSection extends StatelessWidget {
       title: 'Personal Information',
       icon: Icons.person,
       children: [
-        Row(
-          children: [
-            Expanded(
-                child: _TextField(
-              controller: controller.firstNameController,
-              label: 'First Name*',
-              hint: 'Enter first name',
-              maxLines: 1,
-            )),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _TextField(
-                    controller: controller.lastNameController, label: 'Last Name*', hint: 'Enter last name')),
-          ],
+        _TextField(
+          controller: controller.nameController,
+          label: 'Name*',
+          hint: 'Enter first name',
+          maxLines: 1,
         ),
         const SizedBox(height: 16),
         _TextField(
@@ -207,18 +163,37 @@ class _PersonalInfoSection extends StatelessWidget {
         const SizedBox(height: 16),
         _TextField(
             controller: controller.phoneController,
-            label: 'Phone*',
-            hint: 'Enter phone number',
+            label: 'Alternate Phone*',
+            hint: 'Enter number',
             keyboardType: TextInputType.phone),
+        const SizedBox(height: 16),
+        Obx(() => _DropdownField(
+              label: 'Gender*',
+              value: controller.genders.contains(controller.selectedGender.value) ? controller.selectedGender.value : null,
+              items: controller.genders,
+              onChanged: (val) => controller.selectedGender.value = val ?? '',
+            )),
+        const SizedBox(height: 16),
+        Obx(() => _DropdownField(
+              label: 'Marital Status*',
+              value: controller.maritalStatuses.contains(controller.selectedMaritalStatus.value) ? controller.selectedMaritalStatus.value : null,
+              items: controller.maritalStatuses,
+              onChanged: (val) => controller.selectedMaritalStatus.value = val ?? '',
+            )),
+        const SizedBox(height: 16),
+        Obx(() => _DropdownField(
+              label: 'Blood Group*',
+              value: controller.bloodGroups.contains(controller.selectedBloodGroup.value) ? controller.selectedBloodGroup.value : null,
+              items: controller.bloodGroups,
+              onChanged: (val) => controller.selectedBloodGroup.value = val ?? '',
+            )),
       ],
     );
   }
 }
 
-class _AddressSection extends StatelessWidget {
-  final EditProfileController controller = Get.find<EditProfileController>();
-
-  _AddressSection();
+class _AddressSection extends GetView<EditProfileController> {
+  const _AddressSection();
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +201,8 @@ class _AddressSection extends StatelessWidget {
       title: 'Address Information',
       icon: Icons.location_on,
       children: [
+        const Label(str: "Current Address"),
+        const SizedBox(height: 16),
         _TextField(controller: controller.addressController, label: 'Street Address', hint: 'Enter street address'),
         const SizedBox(height: 16),
         Row(
@@ -244,6 +221,29 @@ class _AddressSection extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
                 child: _TextField(controller: controller.countryController, label: 'Country', hint: 'Enter country')),
+          ],
+        ),
+        const SizedBox(height: 24),
+        const Label(str: "Permanent Address"),
+        const SizedBox(height: 16),
+        _TextField(controller: controller.pAddressController, label: 'Street Address', hint: 'Enter street address'),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(child: _TextField(controller: controller.pCityController, label: 'City', hint: 'Enter city')),
+            const SizedBox(width: 12),
+            Expanded(child: _TextField(controller: controller.pStateController, label: 'State', hint: 'Enter state')),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+                child: _TextField(
+                    controller: controller.pPostalCodeController, label: 'Postal Code', hint: 'Enter postal code')),
+            const SizedBox(width: 12),
+            Expanded(
+                child: _TextField(controller: controller.pCountryController, label: 'Country', hint: 'Enter country')),
           ],
         ),
       ],
@@ -337,7 +337,7 @@ class _TextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
+              borderSide: const Color(0xFF3498DB).value != 0 ? const BorderSide(color: Color(0xFF3498DB), width: 2) : const BorderSide(color: Colors.blue, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -349,6 +349,72 @@ class _TextField extends StatelessWidget {
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DropdownField extends StatelessWidget {
+  final String label;
+  final String? value;
+  final List<String> items;
+  final Function(String?) onChanged;
+
+  const _DropdownField({
+    required this.label,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            color: Color(0xFF2C3E50),
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: value,
+          isExpanded: true,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFF8F9FA),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
+            ),
+          ),
+          items: items.map((String item) {
+            return DropdownMenuItem<String>(
+              value: item,
+              child: Text(
+                item,
+                style: const TextStyle(
+                  color: Color(0xFF2C3E50),
+                  fontSize: 14,
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
         ),
       ],
     );
