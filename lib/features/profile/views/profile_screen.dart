@@ -296,8 +296,9 @@ class _PersonalInfoSection extends GetView<ProfileController> {
       icon: Icons.person,
       children: [
         _InfoRow(label: 'Full Name', value: controller.data.fullName),
-        _InfoRow(label: 'Email', value: controller.personalInfo.bloodGroup, icon: "✉︎"),
-        _InfoRow(label: 'Phone', value: controller.personalInfo.bloodGroup, icon: "✆"),
+        _InfoRow(label: 'Email', value: controller.personalInfo.personalEmail, icon: "✉︎"),
+        _InfoRow(label: 'Phone', value: controller.data.phone, icon: "✆"),
+        _InfoRow(label: 'Alternate Phone', value: controller.personalInfo.alternateMobileNumber, icon: "✆"),
         _InfoRow(label: 'Date of Birth', value: controller.personalInfo.formattedDob),
         _InfoRow(label: 'Gender', value: controller.personalInfo.gender),
         _InfoRow(label: 'Blood Group', value: controller.personalInfo.bloodGroup),
