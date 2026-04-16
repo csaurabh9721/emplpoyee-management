@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class ProfileModel {
   final int statusCode;
   final String message;
@@ -10,10 +12,10 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-    statusCode: json["statusCode"],
-    message: json["message"],
-    body: ProfileModelBody.fromJson(json["body"]),
-  );
+        statusCode: json["statusCode"],
+        message: json["message"],
+        body: ProfileModelBody.fromJson(json["body"]),
+      );
 }
 
 class ProfileModelBody {
@@ -28,12 +30,16 @@ class ProfileModelBody {
   final int userId;
   final int organizationId;
   final int primaryOfficeId;
+  final String organizationName;
+  final String primaryOfficeName;
   final PersonalDetails personalDetails;
   final EmployeeAddress employeeAddress;
   final EmergencyContact emergencyContact;
   final EmployeeBankDetails employeeBankDetails;
   final EmployeeEmploymentDetails employeeEmploymentDetails;
-
+  final String employmentType;
+  final int managerId;
+  final String managerName;
   ProfileModelBody({
     required this.id,
     required this.employeeCode,
@@ -46,31 +52,47 @@ class ProfileModelBody {
     required this.userId,
     required this.organizationId,
     required this.primaryOfficeId,
+    required this.organizationName,
+    required this.primaryOfficeName,
     required this.personalDetails,
     required this.employeeAddress,
     required this.emergencyContact,
     required this.employeeBankDetails,
     required this.employeeEmploymentDetails,
+    required this.employmentType,
+    required this.managerId,
+    required this.managerName,
   });
 
   factory ProfileModelBody.fromJson(Map<String, dynamic> json) => ProfileModelBody(
-    id: json["id"],
-    employeeCode: json["employeeCode"],
-    fullName: json["fullName"],
-    designation: Designation.fromJson(json["designation"]),
-    department: json["department"],
-    profileImageUrl: json["profileImageUrl"],
-    joiningDate: DateTime.parse(json["joiningDate"]),
-    status: json["status"],
-    userId: json["userId"],
-    organizationId: json["organizationId"],
-    primaryOfficeId: json["primaryOfficeId"],
-    personalDetails: PersonalDetails.fromJson(json["personalDetails"]),
-    employeeAddress: EmployeeAddress.fromJson(json["employeeAddress"]),
-    emergencyContact: EmergencyContact.fromJson(json["emergencyContact"]),
-    employeeBankDetails: EmployeeBankDetails.fromJson(json["employeeBankDetails"]),
-    employeeEmploymentDetails: EmployeeEmploymentDetails.fromJson(json["employeeEmploymentDetails"]),
-  );
+        id: json["id"],
+        employeeCode: json["employeeCode"],
+        fullName: json["fullName"],
+        designation: Designation.fromJson(json["designation"]),
+        department: json["department"],
+        profileImageUrl: json["profileImageUrl"],
+        joiningDate: DateTime.parse(json["joiningDate"]),
+        status: json["status"],
+        userId: json["userId"],
+        organizationId: json["organizationId"],
+        primaryOfficeId: json["primaryOfficeId"],
+        organizationName: json["organizationName"],
+        primaryOfficeName: json["primaryOfficeName"],
+        personalDetails: PersonalDetails.fromJson(json["personalDetails"]),
+        employeeAddress: EmployeeAddress.fromJson(json["employeeAddress"]),
+        emergencyContact: EmergencyContact.fromJson(json["emergencyContact"]),
+        employeeBankDetails: EmployeeBankDetails.fromJson(json["employeeBankDetails"]),
+        employeeEmploymentDetails: EmployeeEmploymentDetails.fromJson(json["employeeEmploymentDetails"]),
+        employmentType: json["employmentType"],
+        managerId: json["managerId"],
+        managerName: json["managerName"],
+      );
+
+
+
+  String get formattedJoiningDate {
+    return DateFormat('dd/MM/yyyy').format(joiningDate);
+  }
 }
 
 class Designation {
@@ -85,10 +107,10 @@ class Designation {
   });
 
   factory Designation.fromJson(Map<String, dynamic> json) => Designation(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"],
-  );
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+      );
 }
 
 class EmergencyContact {
@@ -105,11 +127,11 @@ class EmergencyContact {
   });
 
   factory EmergencyContact.fromJson(Map<String, dynamic> json) => EmergencyContact(
-    id: json["id"],
-    name: json["name"],
-    phone: json["phone"],
-    relation: json["relation"],
-  );
+        id: json["id"],
+        name: json["name"],
+        phone: json["phone"],
+        relation: json["relation"],
+      );
 }
 
 class EmployeeAddress {
@@ -130,13 +152,13 @@ class EmployeeAddress {
   });
 
   factory EmployeeAddress.fromJson(Map<String, dynamic> json) => EmployeeAddress(
-    id: json["id"],
-    address: json["address"],
-    city: json["city"],
-    state: json["state"],
-    postalCode: json["postalCode"],
-    country: json["country"],
-  );
+        id: json["id"],
+        address: json["address"],
+        city: json["city"],
+        state: json["state"],
+        postalCode: json["postalCode"],
+        country: json["country"],
+      );
 }
 
 class EmployeeBankDetails {
@@ -153,11 +175,11 @@ class EmployeeBankDetails {
   });
 
   factory EmployeeBankDetails.fromJson(Map<String, dynamic> json) => EmployeeBankDetails(
-    id: json["id"],
-    bankName: json["bankName"],
-    accountNumber: json["accountNumber"],
-    ifscCode: json["ifscCode"],
-  );
+        id: json["id"],
+        bankName: json["bankName"],
+        accountNumber: json["accountNumber"],
+        ifscCode: json["ifscCode"],
+      );
 }
 
 class EmployeeEmploymentDetails {
@@ -172,10 +194,10 @@ class EmployeeEmploymentDetails {
   });
 
   factory EmployeeEmploymentDetails.fromJson(Map<String, dynamic> json) => EmployeeEmploymentDetails(
-    id: json["id"],
-    pfNumber: json["pfNumber"],
-    esiNumber: json["esiNumber"],
-  );
+        id: json["id"],
+        pfNumber: json["pfNumber"],
+        esiNumber: json["esiNumber"],
+      );
 }
 
 class PersonalDetails {
@@ -198,12 +220,15 @@ class PersonalDetails {
   });
 
   factory PersonalDetails.fromJson(Map<String, dynamic> json) => PersonalDetails(
-    id: json["id"],
-    dateOfBirth: DateTime.parse(json["dateOfBirth"]),
-    gender: json["gender"],
-    maritalStatus: json["maritalStatus"],
-    bloodGroup: json["bloodGroup"],
-    panNumber: json["panNumber"],
-    aadharNumber: json["aadharNumber"],
-  );
+        id: json["id"],
+        dateOfBirth: DateTime.parse(json["dateOfBirth"]),
+        gender: json["gender"],
+        maritalStatus: json["maritalStatus"],
+        bloodGroup: json["bloodGroup"],
+        panNumber: json["panNumber"],
+        aadharNumber: json["aadharNumber"],
+      );
+  String get formattedDob {
+    return DateFormat('dd/MM/yyyy').format(dateOfBirth);
+  }
 }

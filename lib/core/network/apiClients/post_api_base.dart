@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../shared/constants/app_constant.dart';
 import '../../exceptions/api_exceptions.dart';
+import '../../routes/routes_name.dart';
 import '../../service/sessionManagement/sessions.dart';
 import '../config/network_config.dart';
 
@@ -74,7 +76,11 @@ class PostApiBase {
     if (statusCode == 200) {
       return decodedData;
     }
-
+    if (statusCode == 401) {
+      Sessions.erase();
+      Get.offAllNamed(RoutesName.login);
+      throw AppException(decodedData["message"] ?? "Unauthorized - Token expired or missing");
+    }
     final errorMessages = {
       400: decodedData["message"] ?? "Bad Request",
       401: decodedData["message"] ?? "Unauthorized - Token expired or missing",

@@ -10,6 +10,15 @@ class ProfileController extends GetxController {
 
   BaseApiResponse<ProfileModelBody> profileData = BaseApiResponse.loading();
 
+  ProfileModelBody get data => profileData.data!;
+
+  PersonalDetails get personalInfo => profileData.data!.personalDetails;
+  EmergencyContact get emergencyContact => profileData.data!.emergencyContact;
+  EmployeeBankDetails get bankDetails => profileData.data!.employeeBankDetails;
+
+  String get fullAddress =>
+      "${profileData.data!.employeeAddress.address}, ${profileData.data!.employeeAddress.city}, ${profileData.data!.employeeAddress.state}, ${profileData.data!.employeeAddress.country}";
+
   @override
   void onInit() {
     super.onInit();

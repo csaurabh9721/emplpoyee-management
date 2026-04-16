@@ -72,37 +72,23 @@ class ProfileScreen extends StatelessWidget {
             }
             return RefreshIndicator(
               onRefresh: controller.refreshProfile,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+              child: const SingleChildScrollView(
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    _ProfileHeader(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
-                    _PersonalInfoSection(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
-                    _WorkInfoSection(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
-                    _EmergencyContactSection(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
-                    _BankingInfoSection(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
-                    _GovernmentInfoSection(profile: controller.profileData.data!),
-                    const SizedBox(height: 24),
+                    _ProfileHeader(),
+                    SizedBox(height: 24),
+                    _PersonalInfoSection(),
+                    SizedBox(height: 24),
+                    _WorkInfoSection(),
+                    SizedBox(height: 24),
+                    _EmergencyContactSection(),
+                    SizedBox(height: 24),
+                    _BankingInfoSection(),
+                    SizedBox(height: 24),
+                    _GovernmentInfoSection(),
+                    SizedBox(height: 24),
                     _SettingsSection(),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.logout();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3498DB),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: Text(
-                        'Logout',
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -114,10 +100,8 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class _ProfileHeader extends StatelessWidget {
-  final dynamic profile;
-
-  const _ProfileHeader({required this.profile});
+class _ProfileHeader extends GetView<ProfileController> {
+  const _ProfileHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +128,7 @@ class _ProfileHeader extends StatelessWidget {
               border: Border.all(color: const Color(0xFF3498DB), width: 3),
             ),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(profile.profileImage),
+              backgroundImage: NetworkImage(controller.data.profileImageUrl),
               radius: 50,
             ),
           ),
@@ -154,7 +138,7 @@ class _ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  profile.fullName,
+                  controller.data.fullName,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -163,7 +147,7 @@ class _ProfileHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  profile.designation,
+                  controller.data.designation.description,
                   style: const TextStyle(
                     fontSize: 16,
                     color: Color(0xFF7F8C8D),
@@ -177,7 +161,7 @@ class _ProfileHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    profile.employeeId,
+                    controller.data.employeeCode,
                     style: const TextStyle(
                       color: Color(0xFF3498DB),
                       fontWeight: FontWeight.w500,
@@ -302,10 +286,8 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-class _PersonalInfoSection extends StatelessWidget {
-  final dynamic profile;
-
-  const _PersonalInfoSection({required this.profile});
+class _PersonalInfoSection extends GetView<ProfileController> {
+  const _PersonalInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -313,16 +295,16 @@ class _PersonalInfoSection extends StatelessWidget {
       title: 'Personal Information',
       icon: Icons.person,
       children: [
-        _InfoRow(label: 'Full Name', value: profile.fullName),
-        _InfoRow(label: 'Email', value: profile.email, icon: "✉︎"),
-        _InfoRow(label: 'Phone', value: profile.phone, icon: "✆"),
-        _InfoRow(label: 'Date of Birth', value: profile.dateOfBirth),
-        _InfoRow(label: 'Gender', value: profile.gender),
-        _InfoRow(label: 'Blood Group', value: profile.bloodGroup),
-        _InfoRow(label: 'Marital Status', value: profile.maritalStatus),
+        _InfoRow(label: 'Full Name', value: controller.data.fullName),
+        _InfoRow(label: 'Email', value: controller.personalInfo.bloodGroup, icon: "✉︎"),
+        _InfoRow(label: 'Phone', value: controller.personalInfo.bloodGroup, icon: "✆"),
+        _InfoRow(label: 'Date of Birth', value: controller.personalInfo.formattedDob),
+        _InfoRow(label: 'Gender', value: controller.personalInfo.gender),
+        _InfoRow(label: 'Blood Group', value: controller.personalInfo.bloodGroup),
+        _InfoRow(label: 'Marital Status', value: controller.personalInfo.maritalStatus),
         _InfoRow(
           label: 'Address',
-          value: '${profile.address}, ${profile.city}, ${profile.state} - ${profile.postalCode}',
+          value: controller.fullAddress,
           icon: "🌍",
         ),
       ],
@@ -330,10 +312,8 @@ class _PersonalInfoSection extends StatelessWidget {
   }
 }
 
-class _WorkInfoSection extends StatelessWidget {
-  final dynamic profile;
-
-  const _WorkInfoSection({required this.profile});
+class _WorkInfoSection extends GetView<ProfileController> {
+  const _WorkInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -341,21 +321,19 @@ class _WorkInfoSection extends StatelessWidget {
       title: 'Work Information',
       icon: Icons.work,
       children: [
-        _InfoRow(label: 'Department', value: profile.department),
-        _InfoRow(label: 'Designation', value: profile.designation),
-        _InfoRow(label: 'Date of Joining', value: profile.dateOfJoining),
-        _InfoRow(label: 'Employment Type', value: profile.employmentType),
-        _InfoRow(label: 'Work Location', value: profile.workLocation),
-        _InfoRow(label: 'Reporting Manager', value: profile.manager),
+        _InfoRow(label: 'Department', value: controller.data.department),
+        _InfoRow(label: 'Designation', value: controller.data.designation.description),
+        _InfoRow(label: 'Date of Joining', value: controller.data.formattedJoiningDate),
+        _InfoRow(label: 'Employment Type', value: controller.data.employmentType),
+        _InfoRow(label: 'Work Location', value: controller.data.primaryOfficeName),
+         _InfoRow(label: 'Reporting Manager', value: controller.data.managerName),
       ],
     );
   }
 }
 
-class _EmergencyContactSection extends StatelessWidget {
-  final dynamic profile;
-
-  const _EmergencyContactSection({required this.profile});
+class _EmergencyContactSection extends GetView<ProfileController> {
+  const _EmergencyContactSection();
 
   @override
   Widget build(BuildContext context) {
@@ -363,18 +341,16 @@ class _EmergencyContactSection extends StatelessWidget {
       title: 'Emergency Contact',
       icon: Icons.contact_phone,
       children: [
-        _InfoRow(label: 'Name', value: profile.emergencyContactName),
-        _InfoRow(label: 'Relation', value: profile.emergencyContactRelation),
-        _InfoRow(label: 'Phone', value: profile.emergencyContactPhone),
+        _InfoRow(label: 'Name', value: controller.emergencyContact.name),
+        _InfoRow(label: 'Relation', value: controller.emergencyContact.relation),
+        _InfoRow(label: 'Phone', value: controller.emergencyContact.phone),
       ],
     );
   }
 }
 
-class _BankingInfoSection extends StatelessWidget {
-  final dynamic profile;
-
-  const _BankingInfoSection({required this.profile});
+class _BankingInfoSection extends GetView<ProfileController> {
+  const _BankingInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -382,20 +358,18 @@ class _BankingInfoSection extends StatelessWidget {
       title: 'Banking Information',
       icon: Icons.account_balance,
       children: [
-        _InfoRow(label: 'Bank Name', value: profile.bankName),
-        _InfoRow(label: 'Account Number', value: profile.bankAccountNumber),
-        _InfoRow(label: 'IFSC Code', value: profile.bankIfscCode),
-        _InfoRow(label: 'PF Number', value: profile.pfNumber),
-        _InfoRow(label: 'ESI Number', value: profile.esiNumber),
+        _InfoRow(label: 'Bank Name', value: controller.bankDetails.bankName),
+        _InfoRow(label: 'Account Number', value: controller.bankDetails.accountNumber),
+        _InfoRow(label: 'IFSC Code', value: controller.bankDetails.ifscCode),
+        _InfoRow(label: 'PF Number', value: controller.data.employeeEmploymentDetails.pfNumber),
+        _InfoRow(label: 'ESI Number', value: controller.data.employeeEmploymentDetails.pfNumber),
       ],
     );
   }
 }
 
-class _GovernmentInfoSection extends StatelessWidget {
-  final dynamic profile;
-
-  const _GovernmentInfoSection({required this.profile});
+class _GovernmentInfoSection extends GetView<ProfileController> {
+  const _GovernmentInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -403,14 +377,16 @@ class _GovernmentInfoSection extends StatelessWidget {
       title: 'Government IDs',
       icon: Icons.badge,
       children: [
-        _InfoRow(label: 'PAN Number', value: profile.panNumber),
-        _InfoRow(label: 'Aadhar Number', value: profile.aadharNumber),
+        _InfoRow(label: 'PAN Number', value: controller.personalInfo.panNumber),
+        _InfoRow(label: 'Aadhar Number', value: controller.personalInfo.aadharNumber),
       ],
     );
   }
 }
 
-class _SettingsSection extends StatelessWidget {
+class _SettingsSection extends GetView<ProfileController> {
+  const _SettingsSection();
+
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
@@ -431,6 +407,22 @@ class _SettingsSection extends StatelessWidget {
           trailing: const Icon(Icons.chevron_right, color: Color(0xFF7F8C8D)),
           onTap: () {
             Get.toNamed(RoutesName.changePassword);
+          },
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.lock_outline, color: Color(0xFF3498DB)),
+          title: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF2C3E50),
+            ),
+          ),
+          trailing: const Icon(Icons.logout_outlined, color: Color(0xFFB71C1C)),
+          onTap: () {
+            controller.logout();
           },
         ),
       ],
