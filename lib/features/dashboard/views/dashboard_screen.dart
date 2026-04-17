@@ -54,31 +54,31 @@ class _HeaderSection extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    //final DashboardDataModel data = controller.dashboardData.data!;
+    final DashboardDataModelBody data = controller.dashboardData.data!;
     return Row(
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 28,
           backgroundImage: NetworkImage(
-            "https://i.pravatar.cc/150?img=3",
+            data.image,
           ),
         ),
         const SizedBox(width: 14),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Employee",
-                style: TextStyle(
+                data.employeeName,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 4),
-              Text(
-                "Senior Software Engineer",
-                style: TextStyle(
+              const SizedBox(height: 4),
+               Text(
+                data.designationName,
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.indigo,
                 ),
@@ -104,7 +104,7 @@ class _NextShiftCard extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardDataModel data = controller.dashboardData.data!;
+    final DashboardDataModelBody data = controller.dashboardData.data!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,8 +130,9 @@ class _NextShiftCard extends GetView<DashboardController> {
                   const Icon(Icons.calendar_today, color: Colors.indigo),
                   const SizedBox(width: 8),
                   Text(
-                    data.todayAttendance.date,
+                    data.todayAttendance.getFormattedDate,
                     style: const TextStyle(
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.indigo,
                     ),
@@ -140,7 +141,7 @@ class _NextShiftCard extends GetView<DashboardController> {
               ),
               const SizedBox(height: 10),
               Text(
-                data.todayAttendance.time,
+                "${data.todayAttendance.getFormattedPunchInTime} - ${data.todayAttendance.getFormattedPunchOutTime}",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -149,29 +150,38 @@ class _NextShiftCard extends GetView<DashboardController> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.login),
-                      label: const Text("Check In"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.indigo,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: data.todayAttendance.getContainerColor,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Text(
+                        data.todayAttendance.workHour,
+                        style: const TextStyle(
+                          fontSize: 15,
                         ),
                       ),
                     ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Obx(() => controller.punchInOutLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ElevatedButton.icon(
+                            onPressed: controller.punchInOut,
+                            icon: const Icon(Icons.login),
+                            label: Text(data.todayAttendance.getButtonText),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.indigo,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          )),
                   ),
-                  const SizedBox(width: 12),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.indigo.shade50,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Icon(Icons.map, color: Colors.indigo),
-                  )
                 ],
               )
             ],
@@ -187,7 +197,7 @@ class _QuickActions extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardDataModel data = controller.dashboardData.data!;
+    final DashboardDataModelBody data = controller.dashboardData.data!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,18 +290,16 @@ class _QuickActionItem extends StatelessWidget {
             height: 70,
             width: 70,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: color),
           ),
           const SizedBox(height: 8),
-          Text(label,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 13
-          ),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
           ),
         ],
       ),
@@ -304,7 +312,7 @@ class _AnnouncementsSection extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardDataModel data = controller.dashboardData.data!;
+    final DashboardDataModelBody data = controller.dashboardData.data!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

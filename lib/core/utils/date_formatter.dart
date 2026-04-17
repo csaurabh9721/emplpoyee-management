@@ -1,33 +1,60 @@
 extension DateExtension on DateTime {
   String ddMmYyyy() {
-    final day = this.day.toString().padLeft(2, '0');
-    final month = this.month.toString().padLeft(2, '0');
-    final year = this.year.toString();
-    return '$day/$month/$year';
+    try {
+      final day = this.day.toString().padLeft(2, '0');
+      final month = this.month.toString().padLeft(2, '0');
+      final year = this.year.toString();
+      return '$day/$month/$year';
+    } catch (e) {
+      return toString();
+    }
   }
+
   String mmDDYyyy() {
     final day = this.day.toString().padLeft(2, '0');
     final month = this.month.toString().padLeft(2, '0');
     final year = this.year.toString();
     return '$month/$day/$year';
   }
-  String ddMonthYYYY(){
+
+  String ddMonthYYYY() {
     final day = this.day.toString().padLeft(2, '0');
     final month = _monthMap[this.month]!;
     final year = this.year.toString();
     return '$day-$month-$year';
   }
-  String monthYYYY(){
+
+  String monthYYYY() {
     final month = _monthMap[this.month]!;
     final year = this.year.toString();
     return '$month-$year';
   }
+
   String ddMm() {
     final day = this.day.toString().padLeft(2, '0');
     final month = this.month.toString().padLeft(2, '0');
     return '$day/$month';
   }
+  String to12HourTime() {
+    try{
+      int hour = this.hour;
+      final int minute = this.minute;
+
+      final String period = hour >= 12 ? 'PM' : 'AM';
+
+      hour = hour % 12;
+      if (hour == 0) hour = 12;
+
+      final String formattedHour = hour.toString().padLeft(2, '0');
+      final String formattedMinute = minute.toString().padLeft(2, '0');
+
+      return '$formattedHour:$formattedMinute $period';
+    }catch(e){
+      return toString();
+    }
+  }
 }
+
 Map<int, String> _monthMap = {
   1: "Jan",
   2: "Feb",

@@ -73,7 +73,7 @@ class PostApiBase {
     debugPrint("Response Code: $statusCode");
     log("Response Body: ${response.body}");
     final decodedData = jsonDecode(response.body);
-    if (statusCode == 200) {
+    if (statusCode == 200 || statusCode == 201) {
       return decodedData;
     }
     if (statusCode == 401) {
