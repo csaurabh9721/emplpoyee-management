@@ -57,10 +57,20 @@ class _HeaderSection extends GetView<DashboardController> {
     final DashboardDataModelBody data = controller.dashboardData.data!;
     return Row(
       children: [
-        CircleAvatar(
-          radius: 28,
-          backgroundImage: NetworkImage(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(56),
+          child: Image.network(
             data.image,
+            width: 56,
+            height: 56,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(Icons.person, size: 36);
+            },
           ),
         ),
         const SizedBox(width: 14),

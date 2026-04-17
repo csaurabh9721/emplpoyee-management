@@ -1,4 +1,5 @@
 //import '../../../core/network/apiClients/get_api_base.dart';
+import 'package:clientone_ess/core/exceptions/api_exceptions.dart';
 import 'package:clientone_ess/core/network/apiClients/get_api_base.dart';
 import 'package:clientone_ess/core/network/apiClients/post_api_base.dart';
 import 'package:clientone_ess/core/network/config/network_config.dart';
@@ -19,7 +20,7 @@ class DashboardService {
       // Return dummy data for now
       return PunchInOutResponse.fromJson(json);
     } catch (e) {
-      throw Exception('Failed to load dashboard data: $e');
+      throw AppException('Failed to load dashboard data.');
     }
   }
 
@@ -28,7 +29,7 @@ class DashboardService {
     try {
       return DashboardDataModel.fromJson(json).body;
     } catch (e) {
-      throw Exception('Failed to load dashboard data: $e');
+      throw Exception('Failed to load dashboard data.');
     }
   }
 }
