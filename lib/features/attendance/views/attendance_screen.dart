@@ -97,7 +97,7 @@ class _TodayCard extends StatelessWidget {
                 children: [
                   const Text('Check In', style: TextStyle(color: Colors.white70)),
                   const SizedBox(height: 4),
-                  Text(attendance.checkIn, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(attendance.getFormattedPunchInTime, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 ],
               ),
               const Icon(Icons.arrow_forward, color: Colors.white70),
@@ -106,7 +106,7 @@ class _TodayCard extends StatelessWidget {
                 children: [
                   const Text('Check Out', style: TextStyle(color: Colors.white70)),
                   const SizedBox(height: 4),
-                  Text(attendance.checkOut ?? '--:--', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(attendance.getFormattedPunchOutTime, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 ],
               ),
             ],
@@ -115,8 +115,8 @@ class _TodayCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _TodayStat(label: 'Date', value: attendance.date),
-              _TodayStat(label: 'Working Hours', value: attendance.workingHours),
+              _TodayStat(label: 'Date', value: attendance.getFormattedDate),
+              _TodayStat(label: 'Working Hours', value: attendance.workHour),
             ],
           )
         ],
@@ -175,16 +175,16 @@ class _HistoryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(attendance.date, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(attendance.getFormattedDate, style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text('${attendance.checkIn} - ${attendance.checkOut}', style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+                Text('${attendance.getFormattedPunchInTime} - ${attendance.getFormattedPunchOutTime}', style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(attendance.workingHours, style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text(attendance.workHour, style: const TextStyle(fontWeight: FontWeight.w500)),
               Text(attendance.status, style: TextStyle(color: attendance.status == 'Present' ? Colors.green : Colors.red, fontSize: 12)),
             ],
           )
