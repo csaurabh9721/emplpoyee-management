@@ -17,10 +17,9 @@ class DashboardService {
         "employeeId": employeeId,
         "organizationId": organizationId,
       });
-      // Return dummy data for now
       return PunchInOutResponse.fromJson(json);
     } catch (e) {
-      throw AppException('Failed to load dashboard data.');
+      throw AppException('Failed to punch in/out.');
     }
   }
 

@@ -40,9 +40,9 @@ class PunchInOutResponseBody {
     id: json["id"] ?? 0,
     employeeId: json["employeeId"] ?? 0,
     organizationId: json["organizationId"] ?? 0,
-    attendanceDate: DateTime.tryParse(json["attendanceDate"]),
-    punchInTime: DateTime.parse(json["punchInTime"]),
-    punchOutTime: DateTime.parse(json["punchOutTime"]),
+    attendanceDate: DateTime.tryParse(json["attendanceDate"] ?? "") ?? DateTime.now(),
+    punchInTime: DateTime.tryParse(json["punchInTime"] ?? ""),
+    punchOutTime: DateTime.tryParse(json["punchOutTime"] ?? ""),
     workHour: json["workHour"] ?? "",
   );
 }

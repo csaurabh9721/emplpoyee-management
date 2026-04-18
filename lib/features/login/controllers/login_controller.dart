@@ -24,9 +24,7 @@ class LoginController extends GetxController {
         emailId: employeeIdController.text.trim(),
         password: passwordController.text.trim(),
       );
-
       final LoginResponse response = await _loginService.login(request);
-      isLoading.value = false;
 
       if (response.statusCode == 200) {
         update();
@@ -54,6 +52,8 @@ class LoginController extends GetxController {
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
       );
+    }finally {
+      isLoading.value = false;
     }
   }
 

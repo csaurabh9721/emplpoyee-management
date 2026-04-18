@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/base_api_response.dart';
 import '../models/dashboard_models.dart';
@@ -31,12 +32,23 @@ class DashboardController extends GetxController {
   }
 
   Future<void> punchInOut() async {
-    punchInOutLoading.value = true;
-    final PunchInOutResponse response =
-        await _dashboardService.punchInOut(dashboardData.data!.employeeId, dashboardData.data!.organizationId);
-    punchInOutLoading.value = false;
-    if (response.statusCode == 201) {
-      _loadBasicDashboardInfo();
+    try {
+      punchInOutLoading.value = true;
+      final PunchInOutResponse response =
+          await _dashboardService.punchInOut(dashboardData.data!.employeeId, dashboardData.data!.organizationId);
+      if (response.statusCode == 201) {
+        _loadBasicDashboardInfo();
+      }
+    } catch (e) {
+      Get.snackbar(
+        e.toString(),
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+    } finally {
+      punchInOutLoading.value = false;
     }
   }
 
