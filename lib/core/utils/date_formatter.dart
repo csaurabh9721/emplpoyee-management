@@ -1,4 +1,14 @@
 extension DateExtension on DateTime {
+  String yyyyMMDDDash() {
+    try {
+      final day = this.day.toString().padLeft(2, '0');
+      final month = this.month.toString().padLeft(2, '0');
+      final year = this.year;
+      return '$year-$month-$day';
+    } catch (e) {
+      return toString();
+    }
+  }
   String ddMmYyyy() {
     try {
       final day = this.day.toString().padLeft(2, '0');

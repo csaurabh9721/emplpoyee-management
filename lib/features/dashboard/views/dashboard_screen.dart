@@ -66,7 +66,8 @@ class _HeaderSection extends GetView<DashboardController> {
             fit: BoxFit.cover,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
-              return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+              return const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2));
             },
             errorBuilder: (context, error, stackTrace) {
               return const Icon(Icons.person, size: 36);
@@ -86,7 +87,7 @@ class _HeaderSection extends GetView<DashboardController> {
                 ),
               ),
               const SizedBox(height: 4),
-               Text(
+              Text(
                 data.designationName,
                 style: const TextStyle(
                   fontSize: 14,
@@ -160,19 +161,19 @@ class _NextShiftCard extends GetView<DashboardController> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: data.todayAttendance.getContainerColor,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Text(
-                        data.todayAttendance.workHour,
-                        style: const TextStyle(
-                          fontSize: 15,
-                        ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: data.todayAttendance.getContainerColor,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Text(
+                      data.todayAttendance.workHour,
+                      style: const TextStyle(
+                        fontSize: 15,
                       ),
                     ),
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Obx(() => controller.punchInOutLoading.value
@@ -233,7 +234,15 @@ class _QuickActions extends GetView<DashboardController> {
               icon: _getIconForAction(item.icon),
               label: item.title,
               color: _getColorForAction(item.icon),
-              onTap: () => Get.toNamed(item.route),
+              onTap: () {
+                if ("Attendance" == item.title) {
+                  Get.toNamed(item.route,
+                      arguments:
+                          controller.dashboardData.data!.todayAttendance);
+                } else {
+                  Get.toNamed(item.route);
+                }
+              },
             );
           },
         )
@@ -396,20 +405,25 @@ class _AnnouncementCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.orange.shade100,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     tag,
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepOrange),
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrange),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -454,7 +468,8 @@ class _AnnouncementCard extends StatelessWidget {
                   child: Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade400),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.grey.shade400),
                     ),
                   ),
                 );
