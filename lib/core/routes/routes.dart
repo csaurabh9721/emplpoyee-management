@@ -3,6 +3,7 @@ import '../../features/attendance/views/attendance_screen.dart';
 import '../../features/accountBalance/views/account_balance_screen.dart';
 import '../../features/accountBalance/views/account_detail_screen.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
+import '../../features/holiday/views/holiday_screen.dart';
 import '../../features/login/views/login_screen.dart';
 import '../../features/splash/views/splash_screen.dart';
 import '../../features/leaveApply/view/apply_leave_page.dart';
@@ -87,6 +88,10 @@ class AppRoutes {
     GetPage(
       name: RoutesName.leaveApproval,
       page: () => LeaveApprovalScreen(),
+    ),
+    GetPage(
+      name: RoutesName.holidayScreen,
+      page: () => const HolidayScreen(),
     ),
   ];
 }

@@ -9,6 +9,7 @@ class NetworkConfig {
   static const String dashboardData = "/api/dashboard/dashboardData";
   static const String punchInOut = "/api/attendance/punchInOut";
   static const String getAttendanceByDateRange = "/api/attendance/getAttendanceByDateRange";
+  static const String getAllHolidays = "/api/holidays/getAll/";
 
   static Uri getUrl(String url) {
     final String fullUrl = _baseUrl + url;

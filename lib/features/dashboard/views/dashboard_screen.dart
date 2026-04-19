@@ -262,6 +262,21 @@ class _QuickActions extends GetView<DashboardController> {
         return Icons.calendar_month;
       case 'approval':
         return Icons.verified;
+      case 'holiday':
+        return Icons.holiday_village;
+      case 'balance':
+        return Icons.account_balance_wallet;
+      case 'team_attendance':
+        return Icons.group;
+      case 'account_balance':
+        return Icons.account_balance;
+      case 'account_detail':
+        return Icons.account_balance_wallet;
+      case 'leave_management':
+        return Icons.event_available;
+      case 'leave_approval':
+        return Icons.verified;
+
       default:
         return Icons.dashboard;
     }
@@ -279,6 +294,23 @@ class _QuickActions extends GetView<DashboardController> {
         return Colors.orange;
       case 'approval':
         return Colors.teal;
+      case 'holiday':
+        return Colors.red;
+      case 'balance':
+        return Colors.indigo;
+      case 'team_attendance':
+        return Colors.pink;
+      case 'account_balance':
+        return Colors.indigo;
+      case 'account_detail':
+        return Colors.indigo;
+      case 'leave_management':
+        return Colors.blue;
+      case 'leave_approval':
+        return Colors.teal;
+      case 'leave_history':
+        return Colors.blue;
+
       default:
         return Colors.grey;
     }

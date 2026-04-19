@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/base_api_response.dart';
+import '../../../shared/constants/local_stored_data.dart';
 import '../models/dashboard_models.dart';
 import '../models/punch_in_out_response.dart';
 import '../services/dashboard_service.dart';
@@ -24,6 +25,12 @@ class DashboardController extends GetxController {
       update();
       final DashboardDataModelBody data = await _dashboardService.getDashboardData();
       dashboardData = BaseApiResponse.success(data: data);
+      LocalStoredData.employeeName = data.employeeName;
+      LocalStoredData.designationName = data.designationName;
+      LocalStoredData.image = data.image;
+      LocalStoredData.officeId = data.officeId;
+      LocalStoredData.organizationId = data.organizationId;
+      LocalStoredData.employeeId = data.employeeId;
       update();
     } catch (e) {
       dashboardData = BaseApiResponse.error(e.toString());

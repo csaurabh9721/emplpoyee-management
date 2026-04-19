@@ -16,4 +16,5 @@ class RoutesName {
   static const String forgotPassword = '/forgot_password';
   static const String changePassword = '/change_password';
   static const String leaveApproval = '/leave_approval';
+  static const String holidayScreen = '/holiday_screen';
 }

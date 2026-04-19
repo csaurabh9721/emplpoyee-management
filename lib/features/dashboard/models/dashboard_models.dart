@@ -14,7 +14,8 @@ class DashboardDataModel {
     required this.body,
   });
 
-  factory DashboardDataModel.fromJson(Map<String, dynamic> json) => DashboardDataModel(
+  factory DashboardDataModel.fromJson(Map<String, dynamic> json) =>
+      DashboardDataModel(
         statusCode: json["statusCode"] ?? 0,
         message: json["message"] ?? "Something went wrong",
         body: DashboardDataModelBody.fromJson(json["body"]),
@@ -24,6 +25,7 @@ class DashboardDataModel {
 class DashboardDataModelBody {
   final int employeeId;
   final int organizationId;
+  final int officeId;
   final String employeeName;
   final String designationName;
   final String image;
@@ -34,6 +36,7 @@ class DashboardDataModelBody {
   DashboardDataModelBody({
     required this.employeeId,
     required this.organizationId,
+    required this.officeId,
     required this.employeeName,
     required this.designationName,
     required this.image,
@@ -42,9 +45,11 @@ class DashboardDataModelBody {
     required this.quickActions,
   });
 
-  factory DashboardDataModelBody.fromJson(Map<String, dynamic> json) => DashboardDataModelBody(
+  factory DashboardDataModelBody.fromJson(Map<String, dynamic> json) =>
+      DashboardDataModelBody(
         employeeId: json["employeeId"] ?? 0,
         organizationId: json["organizationId"] ?? 0,
+        officeId: json["officeId"] ?? 0,
         employeeName: json["employeeName"] ?? "",
         designationName: json["designationName"] ?? "",
         image: json["image"] ?? "",
@@ -53,14 +58,16 @@ class DashboardDataModelBody {
           AnnouncementModel(
             id: "1",
             title: "Annual Town Hall Meeting",
-            description: "Join us this Friday for the annual town hall meeting...",
+            description:
+                "Join us this Friday for the annual town hall meeting...",
             date: "Oct 20, 2024",
             type: "COMPANY UPDATE",
           ),
           AnnouncementModel(
             id: "2",
             title: "New Health Insurance Options",
-            description: "We have updated our health insurance provider list...",
+            description:
+                "We have updated our health insurance provider list...",
             date: "Oct 18, 2024",
             type: "BENEFITS",
           ),
@@ -108,8 +115,19 @@ class DashboardDataModelBody {
             icon: "profile",
             route: RoutesName.profile,
           ),
+          QuickActionModel(
+            id: "8",
+            title: "Holiday",
+            icon: "holiday",
+            route: RoutesName.holidayScreen,
+          ),
         ],
       );
+
+  @override
+  String toString() {
+    return 'DashboardDataModelBody{employeeId: $employeeId, organizationId: $organizationId, officeId: $officeId, employeeName: $employeeName, designationName: $designationName, image: $image, todayAttendance: $todayAttendance, announcements: $announcements, quickActions: $quickActions}';
+  }
 }
 
 class TodayAttendance {
@@ -125,11 +143,16 @@ class TodayAttendance {
     required this.workHour,
   });
 
-  factory TodayAttendance.fromJson(Map<String, dynamic> json) => TodayAttendance(
-        attendanceDate: DateTime.tryParse(json["attendanceDate"] ?? "") ?? DateTime.now(),
+  factory TodayAttendance.fromJson(Map<String, dynamic> json) =>
+      TodayAttendance(
+        attendanceDate:
+            DateTime.tryParse(json["attendanceDate"] ?? "") ?? DateTime.now(),
         punchInTime: DateTime.tryParse(json["punchInTime"] ?? ""),
         punchOutTime: DateTime.tryParse(json["punchOutTime"] ?? ""),
-        workHour: json["workHour"] != null && json["workHour"].toString().isNotEmpty ? json["workHour"] : "--:--",
+        workHour:
+            json["workHour"] != null && json["workHour"].toString().isNotEmpty
+                ? json["workHour"]
+                : "--:--",
       );
 
   String get getFormattedDate => attendanceDate.ddMmYyyy();
