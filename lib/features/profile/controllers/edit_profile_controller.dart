@@ -47,6 +47,7 @@ class EditProfileController extends GetxController {
 
   // State management
   RxBool isLoading = false.obs;
+  RxBool isSameAsCurrent = false.obs;
 
   @override
   void onInit() {
@@ -76,6 +77,27 @@ class EditProfileController extends GetxController {
     selectedGender.value = _profileController.data.personalDetails.gender;
     selectedMaritalStatus.value = _profileController.data.personalDetails.maritalStatus;
     selectedBloodGroup.value = _profileController.data.personalDetails.bloodGroup;
+
+    // Check if current and permanent addresses are the same to initialize the checkbox
+    if (addressController.text == pAddressController.text &&
+        cityController.text == pCityController.text &&
+        stateController.text == pStateController.text &&
+        postalCodeController.text == pPostalCodeController.text &&
+        countryController.text == pCountryController.text &&
+        addressController.text.isNotEmpty) {
+      isSameAsCurrent.value = true;
+    }
+  }
+
+  void toggleSameAsCurrent(bool? value) {
+    isSameAsCurrent.value = value ?? false;
+    if (isSameAsCurrent.value) {
+      pAddressController.text = addressController.text;
+      pCityController.text = cityController.text;
+      pStateController.text = stateController.text;
+      pPostalCodeController.text = postalCodeController.text;
+      pCountryController.text = countryController.text;
+    }
   }
 
   Future<void> updateProfile() async {

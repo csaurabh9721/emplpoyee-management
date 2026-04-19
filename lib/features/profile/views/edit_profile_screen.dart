@@ -225,6 +225,28 @@ class _AddressSection extends GetView<EditProfileController> {
         ),
         const SizedBox(height: 24),
         const Label(str: "Permanent Address"),
+        const SizedBox(height: 8),
+        Obx(() => Row(
+              children: [
+                SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Checkbox(
+                    value: controller.isSameAsCurrent.value,
+                    onChanged: (val) => controller.toggleSameAsCurrent(val),
+                    activeColor: const Color(0xFF3498DB),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  "Same as current address",
+                  style: TextStyle(
+                    color: Color(0xFF2C3E50),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            )),
         const SizedBox(height: 16),
         _TextField(controller: controller.pAddressController, label: 'Street Address', hint: 'Enter street address'),
         const SizedBox(height: 16),
