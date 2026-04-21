@@ -7,19 +7,27 @@ import '../services/leave_service.dart';
 class LeaveController extends GetxController {
   final LeaveService _leaveService = LeaveService();
 
-  BaseApiResponse<LeaveManagementDataModel> leaveData = BaseApiResponse.loading();
+  BaseApiResponse<List<LeaveBalanceModel>> leaveData = BaseApiResponse.loading();
+  BaseApiResponse<List<LeaveRequestModel>> leaveRequests = BaseApiResponse.loading();
 
   @override
   void onInit() {
     super.onInit();
-    _loadLeaveData();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    await Future.wait([
+      _loadLeaveData(),
+      _loadLeaveRequests(),
+    ]);
   }
 
   Future<void> _loadLeaveData() async {
     try {
       leaveData = BaseApiResponse.loading();
       update();
-      final LeaveManagementDataModel data = await _leaveService.getLeaveManagementData();
+      final List<LeaveBalanceModel> data = await _leaveService.getLeaveManagementData();
       leaveData = BaseApiResponse.success(data: data);
       update();
     } catch (e) {
@@ -28,22 +36,35 @@ class LeaveController extends GetxController {
     }
   }
 
+  Future<void> _loadLeaveRequests() async {
+    try {
+      leaveRequests = BaseApiResponse.loading();
+      update();
+      final List<LeaveRequestModel> data = await _leaveService.getAllLeaveRequests();
+      leaveRequests = BaseApiResponse.success(data: data);
+      update();
+    } catch (e) {
+      leaveRequests = BaseApiResponse.error(e.toString());
+      update();
+    }
+  }
+
   Future<void> refreshLeaveData() async {
-    await _loadLeaveData();
+    await _loadAllData();
   }
 
   // Getters for computed properties
-  bool get isLoading => leaveData.status == ApiStatus.loading;
-  bool get hasError => leaveData.status == ApiStatus.error;
-  bool get hasData => leaveData.status == ApiStatus.completed;
-  
-  String get errorMessage => leaveData.message;
-  
-  List<LeaveBalanceModel> get leaveBalances => 
-      leaveData.data?.leaveBalances ?? [];
-      
-  List<LeaveRequestModel> get recentRequests => 
-      leaveData.data?.recentRequests ?? [];
+  bool get isLoading => leaveData.status == ApiStatus.loading || leaveRequests.status == ApiStatus.loading;
+
+  bool get hasError => leaveData.status == ApiStatus.error || leaveRequests.status == ApiStatus.error;
+
+  bool get hasData => leaveData.status == ApiStatus.completed && leaveRequests.status == ApiStatus.completed;
+
+  String get errorMessage => leaveData.message.isNotEmpty ? leaveData.message : leaveRequests.message;
+
+  List<LeaveBalanceModel> get leaveBalances => leaveData.data ?? [];
+
+  List<LeaveRequestModel> get recentRequests => (leaveRequests.data ?? []).take(4).toList();
 
   // Helper methods
   LeaveBalanceModel? getAnnualBalance() {

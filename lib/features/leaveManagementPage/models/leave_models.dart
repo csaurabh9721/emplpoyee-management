@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/leave_utils.dart';
+
 class LeaveBalanceModel {
+  final int id;
   final String type;
   final int totalDays;
   final int usedDays;
   final int availableDays;
-  final String icon;
+  final int year;
+  final IconData icon;
   final Color color;
+  final String leaveTypeFullName;
 
   LeaveBalanceModel({
+    required this.id,
     required this.type,
     required this.totalDays,
     required this.usedDays,
     required this.availableDays,
+    required this.year,
     required this.icon,
     required this.color,
+    required this.leaveTypeFullName,
   });
 
   factory LeaveBalanceModel.fromJson(Map<String, dynamic> json) {
     return LeaveBalanceModel(
-      type: json['type'] ?? '',
-      totalDays: json['totalDays'] ?? 0,
-      usedDays: json['usedDays'] ?? 0,
-      availableDays: json['availableDays'] ?? 0,
-      icon: json['icon'] ?? '',
-      color: _getColorFromString(json['color'] ?? 'grey'),
+      id: json['id'] ?? 0,
+      type: json['leaveType'] ?? '',
+      totalDays: json['totalAllowed'] ?? 0,
+      usedDays: json['used'] ?? 0,
+      availableDays: json['remaining'] ?? 0,
+      year: json['year'] ?? 0,
+      icon: LeaveUtils.getIconFromString(json['leaveType'] ?? ""),
+      color: LeaveUtils.getColorFromString(json['leaveType'] ?? ""),
+      leaveTypeFullName: json['leaveTypeFullName'] ?? '',
     );
   }
 
-  static Color _getColorFromString(String colorString) {
-    switch (colorString.toLowerCase()) {
-      case 'indigo':
-        return Colors.indigo;
-      case 'green':
-        return Colors.green;
-      case 'orange':
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
-  }
+
 }
 
 class LeaveRequestModel {
@@ -89,37 +89,7 @@ class LeaveRequestModel {
     return '$dateRange ($days day${days > 1 ? 's' : ''})';
   }
 
-  Color get statusColor {
-    switch (status.toUpperCase()) {
-      case 'PENDING':
-        return Colors.orange;
-      case 'APPROVED':
-        return Colors.green;
-      case 'REJECTED':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-}
-
-class LeaveManagementDataModel {
-  final List<LeaveBalanceModel> leaveBalances;
-  final List<LeaveRequestModel> recentRequests;
-
-  LeaveManagementDataModel({
-    required this.leaveBalances,
-    required this.recentRequests,
-  });
-
-  factory LeaveManagementDataModel.fromJson(Map<String, dynamic> json) {
-    return LeaveManagementDataModel(
-      leaveBalances: (json['leaveBalances'] as List?)
-          ?.map((item) => LeaveBalanceModel.fromJson(item))
-          .toList() ?? [],
-      recentRequests: (json['recentRequests'] as List?)
-          ?.map((item) => LeaveRequestModel.fromJson(item))
-          .toList() ?? [],
-    );
-  }
+ Color get statusColor {
+    return LeaveUtils.statusColor(status);
+ }
 }
