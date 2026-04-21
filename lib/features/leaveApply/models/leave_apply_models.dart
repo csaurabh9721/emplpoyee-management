@@ -1,167 +1,69 @@
-class LeaveBalanceModel {
-  final String leaveType;
-  final double availableDays;
-  final double totalDays;
-  final String description;
-
-  LeaveBalanceModel({
-    required this.leaveType,
-    required this.availableDays,
-    required this.totalDays,
-    required this.description,
-  });
-
-  factory LeaveBalanceModel.fromJson(Map<String, dynamic> json) {
-    return LeaveBalanceModel(
-      leaveType: json['leaveType'] ?? '',
-      availableDays: (json['availableDays'] ?? 0).toDouble(),
-      totalDays: (json['totalDays'] ?? 0).toDouble(),
-      description: json['description'] ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'leaveType': leaveType,
-      'availableDays': availableDays,
-      'totalDays': totalDays,
-      'description': description,
-    };
-  }
-
-  String get formattedAvailableDays => availableDays.toStringAsFixed(1);
-}
+import 'package:clientone_ess/core/utils/date_formatter.dart';
 
 class LeaveRequestModel {
-  final String id;
+  final int employeeId;
   final String leaveType;
   final DateTime startDate;
   final DateTime endDate;
   final String reason;
-  final String status;
-  final DateTime appliedDate;
-  final double totalDays;
-  final String? approverComments;
 
   LeaveRequestModel({
-    required this.id,
+    required this.employeeId,
     required this.leaveType,
     required this.startDate,
     required this.endDate,
     required this.reason,
-    required this.status,
-    required this.appliedDate,
-    required this.totalDays,
-    this.approverComments,
   });
-
-  factory LeaveRequestModel.fromJson(Map<String, dynamic> json) {
-    return LeaveRequestModel(
-      id: json['id'] ?? '',
-      leaveType: json['leaveType'] ?? '',
-      startDate: DateTime.parse(json['startDate'] ?? ''),
-      endDate: DateTime.parse(json['endDate'] ?? ''),
-      reason: json['reason'] ?? '',
-      status: json['status'] ?? '',
-      appliedDate: DateTime.parse(json['appliedDate'] ?? ''),
-      totalDays: (json['totalDays'] ?? 0).toDouble(),
-      approverComments: json['approverComments'],
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'employeeId': employeeId,
       'leaveType': leaveType,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate.toIso8601String(),
+      'startDate': startDate.yyyyMMDDDash(),
+      'endDate': endDate.yyyyMMDDDash(),
       'reason': reason,
-      'status': status,
-      'appliedDate': appliedDate.toIso8601String(),
-      'totalDays': totalDays,
-      'approverComments': approverComments,
     };
-  }
-
-  String get formattedDateRange {
-    final startFormat = _formatDate(startDate);
-    final endFormat = _formatDate(endDate);
-    return '$startFormat - $endFormat';
-  }
-
-  String get formattedAppliedDate => _formatDate(appliedDate);
-  String get formattedTotalDays => totalDays == 1.0 ? '1 day' : '${totalDays.toStringAsFixed(1)} days';
-
-  static String _formatDate(DateTime date) {
-    const List<String> months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }
 
 class LeaveApplyResponse {
-  final bool success;
-  final String message;
-  final LeaveRequestModel? leaveRequest;
+  final int id;
+  final int employeeId;
+  final String employeeName;
+  final String leaveType;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final int totalDays;
+  final String status;
+  final String reason;
+  final DateTime? appliedAt;
+  final DateTime? actionedAt;
 
   LeaveApplyResponse({
-    required this.success,
-    required this.message,
-    this.leaveRequest,
+    required this.id,
+    required this.employeeId,
+    required this.employeeName,
+    required this.leaveType,
+    required this.startDate,
+    required this.endDate,
+    required this.totalDays,
+    required this.status,
+    required this.reason,
+    required this.appliedAt,
+    required this.actionedAt,
   });
 
-  factory LeaveApplyResponse.fromJson(Map<String, dynamic> json) {
-    return LeaveApplyResponse(
-      success: json['success'] ?? false,
-      message: json['message'] ?? '',
-      leaveRequest: json['leaveRequest'] != null
-          ? LeaveRequestModel.fromJson(json['leaveRequest'])
-          : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'message': message,
-      'leaveRequest': leaveRequest?.toJson(),
-    };
-  }
-}
-
-class LeaveBalanceResponse {
-  final bool success;
-  final String message;
-  final List<LeaveBalanceModel> leaveBalances;
-
-  LeaveBalanceResponse({
-    required this.success,
-    required this.message,
-    required this.leaveBalances,
-  });
-
-  factory LeaveBalanceResponse.fromJson(Map<String, dynamic> json) {
-    return LeaveBalanceResponse(
-      success: json['success'] ?? false,
-      message: json['message'] ?? '',
-      leaveBalances: (json['leaveBalances'] as List?)
-              ?.map((item) => LeaveBalanceModel.fromJson(item))
-              .toList() ??
-          [],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'message': message,
-      'leaveBalances': leaveBalances.map((balance) => balance.toJson()).toList(),
-    };
-  }
-
-  double get totalAvailableBalance {
-    return leaveBalances.fold(0.0, (sum, balance) => sum + balance.availableDays);
-  }
+  factory LeaveApplyResponse.fromJson(Map<String, dynamic> json) => LeaveApplyResponse(
+        id: json["id"] ?? 0,
+        employeeId: json["employeeId"] ?? 0,
+        employeeName: json["employeeName"] ?? '',
+        leaveType: json["leaveType"] ?? '',
+        startDate: DateTime.tryParse(json["startDate"] ?? ''),
+        endDate: DateTime.tryParse(json["endDate"] ?? ''),
+        totalDays: json["totalDays"] ?? 0,
+        status: json["status"] ?? '',
+        reason: json["reason"] ?? '',
+        appliedAt: DateTime.tryParse(json["appliedAt"] ?? ''),
+        actionedAt: DateTime.tryParse(json["actionedAt"] ?? ''),
+      );
 }

@@ -296,7 +296,11 @@ class _RequestButton extends GetView<LeaveController> {
       height: 55,
       child: ElevatedButton.icon(
         onPressed: () {
-          Get.toNamed(RoutesName.applyLeavePage);
+          Get.toNamed(RoutesName.applyLeavePage, arguments: controller.leaveBalances)!.then((value){
+            if (value != null && value == true) {
+              controller.refreshLeaveData();
+            }
+          });
         },
         icon: const Icon(Icons.add),
         label: const Text("Request Leave"),
