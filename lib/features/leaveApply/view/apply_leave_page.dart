@@ -129,28 +129,79 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Date Range Picker
-              const Text("Date Range"),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _controller.dateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: "Select date range",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              // Start and End Date Pickers
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Start Date"),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: _controller.startDateController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hintText: "Pick Date",
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            contentPadding: const EdgeInsets.only(left: 8),
+                            suffixIcon: const Icon(Icons.calendar_today, size: 20),
+                            suffixIconConstraints: const BoxConstraints(
+                              minHeight: 40,
+                              minWidth: 40,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return "Required";
+                            }
+                            return null;
+                          },
+                          onTap: _pickStartDate,
+                        ),
+                      ],
+                    ),
                   ),
-                  suffixIcon: const Icon(Icons.calendar_today),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "Please select date range";
-                  }
-                  return null;
-                },
-                onTap: _pickDateRange,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("End Date"),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: _controller.endDateController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hintText: "Pick Date",
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            contentPadding: const EdgeInsets.only(left: 8),
+                            suffixIcon: const Icon(Icons.calendar_today, size: 20),
+                            suffixIconConstraints: const BoxConstraints(
+                              minHeight: 40,
+                              minWidth: 40,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return "Required";
+                            }
+                            return null;
+                          },
+                          onTap: _pickEndDate,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               const Text("Reason for Leave"),
@@ -168,7 +219,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Please enter reason";
+                      return "Required";
                     }
                     return null;
                   }),
@@ -200,12 +251,12 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     );
   }
 
-  Future<void> _pickDateRange() async {
-    final DateTimeRange? picked = await showDateRangePicker(
+  Future<void> _pickStartDate() async {
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDateRange: _controller.selectedDateRange,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
+      initialDate: _controller.startDate.value ?? DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+      lastDate: DateTime(2100),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -218,9 +269,41 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       },
     );
     if (picked != null) {
-      _controller.selectedDateRange = picked;
-      _controller.dateController.text =
-          "${_controller.selectedDateRange?.start.ddMonthYYYY() ?? ""} - ${_controller.selectedDateRange?.end.ddMonthYYYY() ?? ""}";
+      _controller.startDate.value = picked;
+      _controller.startDateController.text = picked.ddMmYyyy();
+      // If end date is before start date, reset end date
+      if (_controller.endDate.value != null && _controller.endDate.value!.isBefore(picked)) {
+        _controller.endDate.value = null;
+        _controller.endDateController.clear();
+      }
+    }
+  }
+
+  Future<void> _pickEndDate() async {
+    if (_controller.startDate.value == null) {
+      Get.snackbar("Notice", "Please select start date first",
+          backgroundColor: Colors.orange, colorText: Colors.white);
+      return;
+    }
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _controller.endDate.value ?? _controller.startDate.value!,
+      firstDate: _controller.startDate.value!,
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF1F2A7C),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      _controller.endDate.value = picked;
+      _controller.endDateController.text = picked.ddMmYyyy();
     }
   }
 }

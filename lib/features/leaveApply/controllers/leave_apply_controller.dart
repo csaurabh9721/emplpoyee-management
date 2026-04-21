@@ -7,9 +7,13 @@ import '../services/get_leave_type.dart';
 
 class LeaveApplyController extends GetxController {
   // Form data
-  DateTimeRange? selectedDateRange;
   final TextEditingController reasonController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
+
+  Rx<DateTime?> startDate = Rx<DateTime?>(null);
+  Rx<DateTime?> endDate = Rx<DateTime?>(null);
+
   RxList<String> leaveTypes = <String>[].obs;
   final List<LeaveBalanceModel> leaveBalances = Get.arguments;
   late Rx<LeaveBalanceModel> selectedLeaveBalance;
@@ -58,8 +62,8 @@ class LeaveApplyController extends GetxController {
       isLoading.value = true;
       final LeaveApplyResponse response = await LeaveApplyService().applyLeave(
         leaveType: selectedLeaveType.value,
-        startDate: selectedDateRange!.start,
-        endDate: selectedDateRange!.end,
+        startDate: startDate.value!,
+        endDate: endDate.value!,
         reason: reasonController.text,
       );
       Get.back();
@@ -73,21 +77,21 @@ class LeaveApplyController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Failed to submit leave request',
+        e.toString(),
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
       );
     } finally {
       isLoading.value = false;
     }
   }
   String? validateForm() {
-    if (selectedDateRange == null) {
+    if (startDate.value == null || endDate.value == null) {
       return "Please select leave dates";
     }
-    final start = selectedDateRange!.start;
-    final end = selectedDateRange!.end;
+    final start = startDate.value!;
+    final end = endDate.value!;
     if (start.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
       return "You cannot apply leave for past dates";
     }

@@ -23,12 +23,12 @@ class LeaveApplyService {
       final Map<String, dynamic> json =
           await PostApiBase.instance.post(url: NetworkConfig.leaveApply, body: leaveRequest.toJson());
       if (json['statusCode'] != 201 ) {
-        throw AppException('Failed to submit leave request');
+        throw AppException(json['message'] ?? "Failed to apply leave");
       }
       return LeaveApplyResponse.fromJson(json);
     } catch (e) {
       print(e.toString());
-      throw AppException('Failed to submit leave request');
+      throw AppException(e.toString());
     }
   }
 }
