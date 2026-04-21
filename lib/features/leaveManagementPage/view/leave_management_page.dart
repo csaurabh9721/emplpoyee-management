@@ -335,7 +335,7 @@ class _RecentRequestsSection extends GetView<LeaveController> {
             ),
             InkWell(
               onTap: () {
-                Get.toNamed(RoutesName.leaveHistoryScreen);
+                Get.toNamed(RoutesName.leaveHistoryScreen,arguments: controller.leaveRequests.data ?? []);
               },
               child: const Text(
                 "View All",

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../core/utils/leave_utils.dart';
+import '../../leaveManagementPage/models/leave_models.dart';
 
 class LeaveHistoryScreen extends StatefulWidget {
   const LeaveHistoryScreen({super.key});
@@ -7,107 +11,24 @@ class LeaveHistoryScreen extends StatefulWidget {
   State<LeaveHistoryScreen> createState() => _LeaveHistoryScreenState();
 }
 
-enum LeaveStatus { approved, pending, completed, rejected }
-
-class LeaveModel {
-  final String title;
-  final DateTime startDate;
-  final DateTime? endDate;
-  final LeaveStatus status;
-
-  LeaveModel({
-    required this.title,
-    required this.startDate,
-    this.endDate,
-    required this.status,
-  });
-
-  int get totalDays {
-    if (endDate == null) return 1;
-    return endDate!.difference(startDate).inDays + 1;
-  }
-}
-
 class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<LeaveModel> _leaves = [
-    LeaveModel(
-      title: "Annual Leave",
-      startDate: DateTime(2023, 10, 24),
-      endDate: DateTime(2023, 10, 26),
-      status: LeaveStatus.approved,
-    ),
-    LeaveModel(
-      title: "Sick Leave",
-      startDate: DateTime(2023, 11, 12),
-      status: LeaveStatus.pending,
-    ),
-    LeaveModel(
-      title: "Casual Leave",
-      startDate: DateTime(2023, 8, 15),
-      endDate: DateTime(2023, 8, 16),
-      status: LeaveStatus.completed,
-    ),
-    LeaveModel(
-      title: "Personal Leave",
-      startDate: DateTime(2023, 7, 4),
-      status: LeaveStatus.rejected,
-    ),
-    LeaveModel(
-      title: "Bereavement Leave",
-      startDate: DateTime(2023, 5, 10),
-      endDate: DateTime(2023, 5, 13),
-      status: LeaveStatus.completed,
-    ),
-  ];
+  final List<LeaveResponseModel> leaves = Get.arguments ?? [];
+
+  List<LeaveResponseModel> getFilteredLeaves() {
+    if (_tabController.index == 0) return leaves;
+    final String status = _tabController.index == 1 ? "PENDING" : "APPROVED";
+    return leaves
+        .where((leave) => leave.status.toUpperCase() == status)
+        .toList();
+  }
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-  }
-
-  List<LeaveModel> getFilteredLeaves() {
-    switch (_tabController.index) {
-      case 1:
-        return _leaves
-            .where((e) => e.status == LeaveStatus.pending)
-            .toList();
-      case 2:
-        return _leaves
-            .where((e) => e.status == LeaveStatus.approved)
-            .toList();
-      default:
-        return _leaves;
-    }
-  }
-
-  String formatDateRange(LeaveModel leave) {
-  //   const List<String> months = [
-  //   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  //   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  // ];
-    return "ddddd";
-     // return '${leave.endDate!.day} ${months[leave.endDate!.month - 1]} ${leave.endDate!.year}';
-  }
-
-  Color statusColor(LeaveStatus status) {
-    switch (status) {
-      case LeaveStatus.approved:
-        return Colors.green;
-      case LeaveStatus.pending:
-        return Colors.orange;
-      case LeaveStatus.completed:
-        return Colors.grey;
-      case LeaveStatus.rejected:
-        return Colors.red;
-    }
-  }
-
-  String statusText(LeaveStatus status) {
-    return status.name.toUpperCase();
   }
 
   @override
@@ -156,16 +77,14 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
             ),
           ),
           const SizedBox(height: 16),
-
           ...getFilteredLeaves().map((leave) => _leaveCard(leave)),
-
           const SizedBox(height: 30),
         ],
       ),
     );
   }
 
-  Widget _leaveCard(LeaveModel leave) {
+  Widget _leaveCard(LeaveResponseModel leave) {
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
       padding: const EdgeInsets.all(16),
@@ -175,7 +94,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
         boxShadow: [
           BoxShadow(
             blurRadius: 8,
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
           )
         ],
       ),
@@ -185,12 +104,12 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              color: statusColor(leave.status).withValues(alpha: 0.1),
+              color: LeaveUtils.statusColor(leave.status).withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
-              Icons.calendar_month,
-              color: statusColor(leave.status),
+              LeaveUtils.getIconForStatus(leave.status),
+              color: LeaveUtils.statusColor(leave.status),
             ),
           ),
           const SizedBox(width: 16),
@@ -199,7 +118,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  leave.title,
+                  leave.type,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -207,28 +126,27 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  formatDateRange(leave),
+                  leave.formattedDateRange,
                   style: const TextStyle(color: Colors.black54),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "${leave.totalDays} day${leave.totalDays > 1 ? 's' : ''} total",
+                  "${leave.days} day${leave.days > 1 ? 's' : ''} total",
                   style: const TextStyle(color: Colors.black38),
                 ),
               ],
             ),
           ),
           Container(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: statusColor(leave.status).withValues(alpha: 0.15),
+              color: LeaveUtils.statusColor(leave.status).withOpacity(0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              statusText(leave.status),
+              leave.status,
               style: TextStyle(
-                color: statusColor(leave.status),
+                color: LeaveUtils.statusColor(leave.status),
                 fontWeight: FontWeight.bold,
               ),
             ),

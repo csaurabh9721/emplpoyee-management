@@ -13,6 +13,7 @@ class NetworkConfig {
   static const String getLeaveBalance = "/api/leaveBalance/getLeave";
   static const String getLeaveType = "/api/leaveBalance/getLeaveType";
   static const String leaveApply = "/api/leaves/apply";
+  static const String getLeaveForEmployee = "/api/leaves/getLeaveForEmployee";
 
   static Uri getUrl(String url) {
     final String fullUrl = _baseUrl + url;

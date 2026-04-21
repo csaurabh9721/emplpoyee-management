@@ -42,17 +42,16 @@ class LeaveBalanceModel {
 
 }
 
-class LeaveRequestModel {
-  final String id;
+class LeaveResponseModel {
+  final int id;
   final String type;
   final String startDate;
   final String endDate;
   final int days;
   final String status;
   final String reason;
-  final DateTime appliedDate;
 
-  LeaveRequestModel({
+  LeaveResponseModel({
     required this.id,
     required this.type,
     required this.startDate,
@@ -60,19 +59,17 @@ class LeaveRequestModel {
     required this.days,
     required this.status,
     required this.reason,
-    required this.appliedDate,
   });
 
-  factory LeaveRequestModel.fromJson(Map<String, dynamic> json) {
-    return LeaveRequestModel(
-      id: json['id'] ?? '',
-      type: json['type'] ?? '',
+  factory LeaveResponseModel.fromJson(Map<String, dynamic> json) {
+    return LeaveResponseModel(
+      id: json['id'] ?? 0,
+      type: json['leaveType'] ?? '',
       startDate: json['startDate'] ?? '',
       endDate: json['endDate'] ?? '',
-      days: json['days'] ?? 0,
+      days: json['totalDays'] ?? 0,
       status: json['status'] ?? '',
       reason: json['reason'] ?? '',
-      appliedDate: DateTime.parse(json['appliedDate'] ?? DateTime.now().toIso8601String()),
     );
   }
 

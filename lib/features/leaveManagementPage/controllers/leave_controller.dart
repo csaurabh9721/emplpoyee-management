@@ -8,7 +8,7 @@ class LeaveController extends GetxController {
   final LeaveService _leaveService = LeaveService();
 
   BaseApiResponse<List<LeaveBalanceModel>> leaveData = BaseApiResponse.loading();
-  BaseApiResponse<List<LeaveRequestModel>> leaveRequests = BaseApiResponse.loading();
+  BaseApiResponse<List<LeaveResponseModel>> leaveRequests = BaseApiResponse.loading();
 
   @override
   void onInit() {
@@ -40,7 +40,7 @@ class LeaveController extends GetxController {
     try {
       leaveRequests = BaseApiResponse.loading();
       update();
-      final List<LeaveRequestModel> data = await _leaveService.getAllLeaveRequests();
+      final List<LeaveResponseModel> data = await _leaveService.getAllLeaveRequests();
       leaveRequests = BaseApiResponse.success(data: data);
       update();
     } catch (e) {
@@ -64,7 +64,7 @@ class LeaveController extends GetxController {
 
   List<LeaveBalanceModel> get leaveBalances => leaveData.data ?? [];
 
-  List<LeaveRequestModel> get recentRequests => (leaveRequests.data ?? []).take(4).toList();
+  List<LeaveResponseModel> get recentRequests => (leaveRequests.data ?? []).take(3).toList();
 
   // Helper methods
   LeaveBalanceModel? getAnnualBalance() {
@@ -77,12 +77,5 @@ class LeaveController extends GetxController {
 
   LeaveBalanceModel? getPersonalBalance() {
     return leaveBalances.firstWhereOrNull((balance) => balance.type == 'Personal');
-  }
-
-  void clearError() {
-    if (hasError) {
-      leaveData = BaseApiResponse.loading();
-      update();
-    }
   }
 }
