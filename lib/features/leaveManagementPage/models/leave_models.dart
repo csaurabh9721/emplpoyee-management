@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/leave_utils.dart';
@@ -38,18 +39,19 @@ class LeaveBalanceModel {
       leaveTypeFullName: json['leaveTypeFullName'] ?? '',
     );
   }
-
-
 }
 
 class LeaveResponseModel {
   final int id;
   final String type;
-  final String startDate;
-  final String endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
   final int days;
   final String status;
   final String reason;
+  final String employeeName;
+  final String employeeCode;
+  final DateTime? appliedAt;
 
   LeaveResponseModel({
     required this.id,
@@ -59,25 +61,31 @@ class LeaveResponseModel {
     required this.days,
     required this.status,
     required this.reason,
+    required this.employeeName,
+    required this.employeeCode,
+    required this.appliedAt,
   });
 
   factory LeaveResponseModel.fromJson(Map<String, dynamic> json) {
     return LeaveResponseModel(
       id: json['id'] ?? 0,
       type: json['leaveType'] ?? '',
-      startDate: json['startDate'] ?? '',
-      endDate: json['endDate'] ?? '',
+      startDate: DateTime.tryParse(json['startDate'] ?? ''),
+      endDate: DateTime.tryParse(json['endDate'] ?? ''),
       days: json['totalDays'] ?? 0,
       status: json['status'] ?? '',
       reason: json['reason'] ?? '',
+      employeeName: json['employeeName'] ?? '',
+      employeeCode: json['employeeCode'] ?? '',
+      appliedAt: DateTime.tryParse(json['appliedAt'] ?? ''),
     );
   }
 
   String get formattedDateRange {
     if (days == 1) {
-      return startDate;
+      return startDate?.ddMonthYYYY() ?? "";
     } else {
-      return '$startDate - $endDate';
+      return '${startDate?.ddMonthYYYY() ?? ""} - ${endDate?.ddMonthYYYY() ?? ""}';
     }
   }
 
@@ -86,7 +94,7 @@ class LeaveResponseModel {
     return '$dateRange ($days day${days > 1 ? 's' : ''})';
   }
 
- Color get statusColor {
+  Color get statusColor {
     return LeaveUtils.statusColor(status);
- }
+  }
 }

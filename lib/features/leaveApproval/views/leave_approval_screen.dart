@@ -1,8 +1,9 @@
+import 'package:clientone_ess/core/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/Enums/enums.dart';
+import '../../leaveManagementPage/models/leave_models.dart';
 import '../controllers/leave_approval_controller.dart';
-import '../models/leave_approval_model.dart';
 
 class LeaveApprovalScreen extends StatelessWidget {
   LeaveApprovalScreen({super.key});
@@ -27,7 +28,6 @@ class LeaveApprovalScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-
           Expanded(child: GetBuilder<LeaveApprovalController>(
             builder: (controller) {
               if (controller.pendingLeavesResponse.status == ApiStatus.loading) {
@@ -67,11 +67,10 @@ class LeaveApprovalScreen extends StatelessWidget {
   }
 }
 
-class _LeaveApprovalCard extends StatelessWidget {
-  final LeaveApprovalModel leave;
-  final LeaveApprovalController controller = Get.find<LeaveApprovalController>();
+class _LeaveApprovalCard extends GetView<LeaveApprovalController> {
+  final LeaveResponseModel leave;
 
-  _LeaveApprovalCard({required this.leave});
+  const _LeaveApprovalCard({required this.leave});
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +106,7 @@ class _LeaveApprovalCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      leave.employeeId,
+                      leave.employeeCode,
                       style: const TextStyle(
                         color: Color(0xFF3498DB),
                         fontWeight: FontWeight.w500,
@@ -116,16 +115,16 @@ class _LeaveApprovalCard extends StatelessWidget {
                   ],
                 ),
                 const Divider(height: 24),
-                _InfoRow(label: 'Leave Type', value: leave.leaveType),
+                _InfoRow(label: 'Leave Type', value: leave.type),
                 _InfoRow(
                   label: 'Duration',
-                  value: '${leave.startDate} - ${leave.endDate}',
+                  value: '${leave.startDate?.ddMonthYYYY() ?? ''} - ${leave.endDate?.ddMonthYYYY() ?? ''}',
                 ),
-                _InfoRow(label: 'Total Days', value: '${leave.totalDays} Day(s)'),
+                _InfoRow(label: 'Total Days', value: '${leave.days} Day(s)'),
                 _InfoRow(label: 'Reason', value: leave.reason),
                 _InfoRow(
                   label: 'Applied On',
-                  value: leave.appliedDate.toString(),
+                  value: leave.appliedAt?.ddMonthYYYY() ?? "",
                 ),
               ],
             ),
@@ -143,7 +142,7 @@ class _LeaveApprovalCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () => controller.processLeave(leave.id, false),
+                    onPressed: () => controller.rejectLeave(leave.id),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.red,
                       side: const BorderSide(color: Colors.red),
@@ -154,7 +153,7 @@ class _LeaveApprovalCard extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => controller.processLeave(leave.id, true),
+                    onPressed: () => controller.approveLeave(leave.id),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,

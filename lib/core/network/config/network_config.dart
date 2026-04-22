@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class NetworkConfig {
- // static const String _baseUrl = "http://172.16.173.247:8080";
-  static const String _baseUrl = "http://10.176.25.64:8080";
+  static const String _baseUrl = "http://172.16.173.247:8080";
+ // static const String _baseUrl = "http://10.176.25.64:8080";
   static const String login = "/api/auth/login";
   static const String getEmployeeProfile = "/api/employees/getEmployeeProfile";
   static const String updateProfile = "/api/employees/update-profile";
@@ -14,6 +14,10 @@ class NetworkConfig {
   static const String getLeaveType = "/api/leaveBalance/getLeaveType";
   static const String leaveApply = "/api/leaves/apply";
   static const String getLeaveForEmployee = "/api/leaves/getLeaveForEmployee";
+  static const String getLeaveForApproval = "/api/leaves/getLeaveForApproval";
+  static const String leaveApprove = "/api/leaves/approve";
+  static const String leaveReject = "/api/leaves/reject";
+
 
   static Uri getUrl(String url) {
     final String fullUrl = _baseUrl + url;

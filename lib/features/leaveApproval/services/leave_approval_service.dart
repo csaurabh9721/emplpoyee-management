@@ -1,44 +1,47 @@
-import '../models/leave_approval_model.dart';
+import 'package:clientone_ess/core/network/apiClients/put_api_base.dart';
+import 'package:flutter/cupertino.dart';
+import '../../../core/exceptions/api_exceptions.dart';
+import '../../../core/network/apiClients/get_api_base.dart';
+import '../../../core/network/config/network_config.dart';
+import '../../leaveManagementPage/models/leave_models.dart';
 
 class LeaveApprovalService {
-  Future<List<LeaveApprovalModel>> getPendingLeaves() async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    return [
-      LeaveApprovalModel(
-        id: '1',
-        employeeName: 'John Doe',
-        employeeId: 'EMP001',
-        leaveType: 'Annual Leave',
-        startDate: DateTime.now().add(const Duration(days: 5)),
-        endDate: DateTime.now().add(const Duration(days: 7)),
-        reason: 'Family vacation',
-        status: 'Pending',
-        appliedDate: DateTime.now().subtract(const Duration(days: 2)),
-      ),
-      LeaveApprovalModel(
-        id: '2',
-        employeeName: 'Jane Smith',
-        employeeId: 'EMP002',
-        leaveType: 'Sick Leave',
-        startDate: DateTime.now().add(const Duration(days: 1)),
-        endDate: DateTime.now().add(const Duration(days: 1)),
-        reason: 'Not feeling well',
-        status: 'Pending',
-        appliedDate: DateTime.now().subtract(const Duration(days: 1)),
-      ),
-    ];
+  Future<List<LeaveResponseModel>> getAllAppliedLeaveRequests() async {
+    try {
+      final Map<String, dynamic> json = await GetApiBase.instance.getApi(url: NetworkConfig.getLeaveForApproval);
+      if (json["statusCode"] != 200 && json["body"] == null) {
+        throw AppException(json["message"] ?? "Something went wrong");
+      }
+      return List.from(json["body"].map((e) => LeaveResponseModel.fromJson(e)));
+    } catch (e) {
+      debugPrint(e.toString());
+      throw AppException('$e');
+    }
   }
 
-  Future<bool> approveLeave(LeaveApprovalRequest request) async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    return true;
+  Future<String> approveLeave(int id) async {
+    try {
+      final Map<String, dynamic> json = await PutApiBase.instance.putApi(url: "${NetworkConfig.leaveApprove}/$id");
+      if (json["statusCode"] != 200 && json["body"] == null) {
+        throw AppException(json["message"] ?? "Something went wrong");
+      }
+      return "Leave request approved successfully";
+    } catch (e) {
+      debugPrint(e.toString());
+      throw AppException('$e');
+    }
   }
 
-  Future<bool> rejectLeave(LeaveApprovalRequest request) async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    return true;
+  Future<String> rejectLeave(int id) async {
+    try {
+      final Map<String, dynamic> json = await PutApiBase.instance.putApi(url: "${NetworkConfig.leaveReject}/$id");
+      if (json["statusCode"] != 200 && json["body"] == null) {
+        throw AppException(json["message"] ?? "Something went wrong");
+      }
+      return "Leave request rejected successfully";
+    } catch (e) {
+      debugPrint(e.toString());
+      throw AppException('$e');
+    }
   }
 }
