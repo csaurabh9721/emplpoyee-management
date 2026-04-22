@@ -39,6 +39,8 @@ class LeaveUtils {
         return Icons.history;
       case 'REJECTED':
         return Icons.cancel_outlined;
+        case 'WITHDRAWN':
+        return Icons.delete_outline;
       default:
         return Icons.info_outline;
     }
@@ -52,6 +54,8 @@ class LeaveUtils {
         return Colors.green;
       case 'REJECTED':
         return Colors.red;
+        case 'WITHDRAWN':
+        return Colors.grey;
       default:
         return Colors.grey;
     }

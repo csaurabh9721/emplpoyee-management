@@ -17,6 +17,7 @@ class NetworkConfig {
   static const String getLeaveForApproval = "/api/leaves/getLeaveForApproval";
   static const String leaveApprove = "/api/leaves/approve";
   static const String leaveReject = "/api/leaves/reject";
+  static const String leaveWithdrawn = "/api/leaves/Withdrawn";
 
 
   static Uri getUrl(String url) {

@@ -66,7 +66,7 @@ class LeaveApplyController extends GetxController {
         endDate: endDate.value!,
         reason: reasonController.text,
       );
-      Get.back();
+      Get.back(result: true);
       Get.snackbar(
         'Success',
         "Leave request submitted successfully",

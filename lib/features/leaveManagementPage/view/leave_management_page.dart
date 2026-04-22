@@ -2,7 +2,6 @@ import 'package:clientone_ess/core/routes/routes_name.dart';
 import 'package:clientone_ess/core/utils/leave_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controllers/leave_controller.dart';
 import '../models/leave_models.dart';
 
@@ -16,47 +15,23 @@ class LeaveManagementPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FA),
       body: SafeArea(
-        child: GetBuilder<LeaveController>(
-          builder: (controller) {
-            if (controller.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (controller.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(controller.errorMessage),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => controller.refreshLeaveData(),
-                      child: const Text("Retry"),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () => controller.refreshLeaveData(),
-              child: const SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _TopBar(),
-                    SizedBox(height: 24),
-                    _LeaveBalanceSection(),
-                    SizedBox(height: 24),
-                    _RequestButton(),
-                    SizedBox(height: 30),
-                    _RecentRequestsSection(),
-                  ],
-                ),
-              ),
-            );
-          },
+        child: RefreshIndicator(
+          onRefresh: () => controller.refreshLeaveData(),
+          child: const SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _TopBar(),
+                SizedBox(height: 24),
+                _LeaveBalanceSection(),
+                SizedBox(height: 24),
+                _RequestButton(),
+                SizedBox(height: 30),
+                _RecentRequestsSection(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -87,14 +62,7 @@ class _TopBar extends GetView<LeaveController> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const Spacer(),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.indigo.shade50,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(Icons.notifications, color: Colors.indigo),
-        ),
+        const SizedBox(width: 5,),
       ],
     );
   }
@@ -105,41 +73,46 @@ class _LeaveBalanceSection extends GetView<LeaveController> {
 
   @override
   Widget build(BuildContext context) {
-    final balances = controller.leaveBalances;
-    if (balances.isEmpty) return const SizedBox.shrink();
-
-    // Map balances to layout
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Leave Balance",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 6),
-        const Text(
-          "Your available days for this year",
-          style: TextStyle(color: Colors.grey),
-        ),
-        const SizedBox(height: 20),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 1,
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Leave Balance",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          itemCount: balances.length,
-          itemBuilder: (context, index) {
-            final LeaveBalanceModel balance = balances[index];
-            return _BalanceCard(
-              data: balance,
-            );
-          },
-        ),
-      ],
+          const SizedBox(height: 6),
+          const Text(
+            "Your available days for this year",
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 20),
+          if(controller.leaveBalances.isEmpty)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text("No Leave Balance Data Found"),
+              ),
+            ),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 1,
+            ),
+            itemCount: controller.leaveBalances.length,
+            itemBuilder: (context, index) {
+              final LeaveBalanceModel balance = controller.leaveBalances[index];
+              return _BalanceCard(
+                data: balance,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -296,7 +269,7 @@ class _RequestButton extends GetView<LeaveController> {
       height: 55,
       child: ElevatedButton.icon(
         onPressed: () {
-          Get.toNamed(RoutesName.applyLeavePage, arguments: controller.leaveBalances)!.then((value){
+          Get.toNamed(RoutesName.applyLeavePage, arguments: controller.leaveBalances)!.then((value) {
             if (value != null && value == true) {
               controller.refreshLeaveData();
             }
@@ -321,8 +294,6 @@ class _RecentRequestsSection extends GetView<LeaveController> {
 
   @override
   Widget build(BuildContext context) {
-    final requests = controller.recentRequests;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -335,7 +306,11 @@ class _RecentRequestsSection extends GetView<LeaveController> {
             ),
             InkWell(
               onTap: () {
-                Get.toNamed(RoutesName.leaveHistoryScreen,arguments: controller.leaveRequests.data ?? []);
+                Get.toNamed(RoutesName.leaveHistoryScreen, arguments: controller.leaveRequests)!.then((value) {
+                  if (value != null && value == true) {
+                    controller.refreshLeaveData();
+                  }
+                });;
               },
               child: const Text(
                 "View All",
@@ -353,29 +328,31 @@ class _RecentRequestsSection extends GetView<LeaveController> {
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 20),
-        if (requests.isEmpty)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text("No recent leave requests"),
-            ),
-          )
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: requests.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 14),
-            itemBuilder: (context, index) {
-              final request = requests[index];
-              return _LeaveRequestTile(
-                title: request.type,
-                date: request.formattedDateWithDays,
-                status: request.status,
-                statusColor: request.statusColor,
-              );
-            },
-          ),
+        Obx(() {
+          final requests = controller.recentRequests;
+          return requests.isEmpty
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text("No recent leave requests"),
+                  ),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: requests.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 14),
+                  itemBuilder: (context, index) {
+                    final request = requests[index];
+                    return _LeaveRequestTile(
+                      title: request.type,
+                      date: request.formattedDateWithDays,
+                      status: request.status,
+                      statusColor: request.statusColor,
+                    );
+                  },
+                );
+        }),
       ],
     );
   }
@@ -474,11 +451,8 @@ class _LeaveRequestTile extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );
   }
-
-
 }
