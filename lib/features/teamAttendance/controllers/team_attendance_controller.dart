@@ -57,7 +57,7 @@ class TeamAttendanceController extends GetxController {
     status.value = ApiStatus.loading;
     update();
     try {
-      final data = await _service.getTeamAttendance(selectedDate.value, selectedStatus.value);
+      final data = await _service.getTeamAttendanceData(DateTime.now().subtract(const Duration(days: 30)), DateTime.now());
       teamAttendance.assignAll(data);
       status.value = ApiStatus.completed;
       update();
