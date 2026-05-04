@@ -9,6 +9,8 @@ class PngImages {
   static const polygon2 = "assets/images/Polygon_2.png";
   static const polygon3 = "assets/images/Polygon_3.png";
   static const polygon4 = "assets/images/Polygon_4.png";
+  static const splash = "assets/images/Splash.png";
+  static const logo = "assets/launcher_icon.png";
 }
 
 class SvgImages {

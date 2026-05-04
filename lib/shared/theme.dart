@@ -43,7 +43,7 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: AppColors.grey),
+        borderSide: const BorderSide(color: Colors.grey),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
@@ -51,11 +51,11 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: AppColors.grey),
+        borderSide: const BorderSide(color: Colors.grey),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: AppColors.blue),
+        borderSide: const BorderSide(color: Colors.blue),
       ),
       filled: true,
       fillColor: AppColors.white,
@@ -80,7 +80,7 @@ class AppTheme {
     textTheme: AppTextTheme.lightTextTheme,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.darkBlue,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),

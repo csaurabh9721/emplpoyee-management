@@ -27,7 +27,7 @@ class PrimaryButton extends StatelessWidget {
         onPressed: onTap,
         style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
               backgroundColor: WidgetStateProperty.all<Color>(
-                color ?? AppColors.darkBlue,
+                color ?? AppColors.primary,
               ),
             ),
         child: child ?? Text(label ?? "", textAlign: TextAlign.center),
@@ -69,7 +69,7 @@ class SecondaryButton extends StatelessWidget {
               ),
               side: WidgetStateProperty.all<BorderSide>(
                 const BorderSide(
-                  color: AppColors.darkBlue,
+                  color: AppColors.primary,
                   width: 1,
                 ),
               ),
@@ -78,7 +78,7 @@ class SecondaryButton extends StatelessWidget {
             Text(
               label ?? "",
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.darkBlue),
+              style: const TextStyle(color: AppColors.primary),
             ),
       ),
     );
@@ -113,7 +113,7 @@ class PrimaryIconButton extends StatelessWidget {
         onPressed: onTap,
         style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
               backgroundColor: WidgetStateProperty.all<Color>(
-                AppColors.darkBlue,
+                AppColors.primaryDark,
               ),
             ),
         icon: Icon(icon, color: AppColors.white),
@@ -158,17 +158,17 @@ class SecondaryIconButton extends StatelessWidget {
               ),
               side: WidgetStateProperty.all<BorderSide>(
                 const BorderSide(
-                  color: AppColors.darkBlue,
+                  color: AppColors.primary,
                   width: 1,
                 ),
               ),
             ),
-        icon: Icon(icon, color: AppColors.darkBlue),
+        icon: Icon(icon, color: AppColors.primary),
         label: child ??
             Text(
               label ?? "",
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.darkBlue),
+              style: const TextStyle(color: AppColors.primary),
             ),
       ),
     );

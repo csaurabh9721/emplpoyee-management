@@ -27,7 +27,7 @@ class _GlobalSnackBar {
   static const Map<SnackBarEnum, Map<String, dynamic>> _map = {
     SnackBarEnum.success: {
       "icon": Icons.check_circle,
-      "color": AppColors.green,
+      "color": Colors.green,
     },
     SnackBarEnum.error: {
       "icon": Icons.cancel,
@@ -35,11 +35,11 @@ class _GlobalSnackBar {
     },
     SnackBarEnum.info: {
       "icon": Icons.info,
-      "color": AppColors.blue,
+      "color": Colors.blue,
     },
     SnackBarEnum.warning: {
       "icon": Icons.warning,
-      "color": AppColors.yellow,
+      "color": Colors.yellow,
     },
   };
 

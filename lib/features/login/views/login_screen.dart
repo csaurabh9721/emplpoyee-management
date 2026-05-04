@@ -1,6 +1,8 @@
+import 'package:clientone_ess/shared/constants/png_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/routes/routes_name.dart';
+import '../../../shared/app_color.dart';
 import '../controllers/login_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,20 +13,24 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6FA),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _LogoSection(),
-                const SizedBox(height: 40),
-                _LoginCard(),
-                const SizedBox(height: 24),
-                _ForgotPasswordLink(),
-              ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.splashGradient,
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _LogoSection(),
+                  const SizedBox(height: 40),
+                  _LoginCard(),
+                  const SizedBox(height: 20),
+                  _ForgotPasswordLink(),
+                ],
+              ),
             ),
           ),
         ),
@@ -38,34 +44,25 @@ class _LogoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            color: const Color(0xFF3498DB),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: const Icon(
-            Icons.business,
-            size: 40,
-            color: Colors.white,
-          ),
+        Image.asset(
+          PngImages.logo, // update if needed
+          width: 140,
+          height: 140,
         ),
-        const SizedBox(height: 16),
         const Text(
           'Employee Portal',
           style: TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 28,
+            color: Colors.white,
+            fontSize: 26,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         const Text(
           'Sign in to your account',
           style: TextStyle(
-            color: Color(0xFF7F8C8D),
-            fontSize: 16,
+            color: Colors.white70,
+            fontSize: 14,
           ),
         ),
       ],
@@ -74,39 +71,39 @@ class _LogoSection extends StatelessWidget {
 }
 
 class _LoginCard extends StatelessWidget {
+  final LoginController controller = Get.find<LoginController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
               'Welcome Back',
               style: TextStyle(
-                color: Color(0xFF2C3E50),
-                fontSize: 24,
+                color: AppColors.textPrimary,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             _EmployeeIdField(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             _PasswordField(),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             _LoginButton(),
           ],
         ),
@@ -120,52 +117,18 @@ class _EmployeeIdField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Employee ID',
-          style: TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+    return TextFormField(
+      controller: controller.employeeIdController,
+      decoration: InputDecoration(
+        hintText: 'Employee ID',
+        prefixIcon: const Icon(Icons.badge, color: AppColors.primary),
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller.employeeIdController,
-          style: const TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 14,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Enter your employee ID',
-            hintStyle: const TextStyle(
-              color: Color(0xFF95A5A6),
-              fontSize: 14,
-            ),
-            prefixIcon: const Icon(
-              Icons.badge,
-              color: Color(0xFF3498DB),
-            ),
-            filled: true,
-            fillColor: const Color(0xFFF8F9FA),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -175,62 +138,30 @@ class _PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Password',
-          style: TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
+    return GetBuilder<LoginController>(
+      builder: (_) => TextFormField(
+        controller: controller.passwordController,
+        obscureText: controller.obscurePassword,
+        decoration: InputDecoration(
+          hintText: 'Password',
+          prefixIcon: const Icon(Icons.lock, color: AppColors.primary),
+          suffixIcon: IconButton(
+            icon: Icon(
+              controller.obscurePassword
+                  ? Icons.visibility_off
+                  : Icons.visibility,
+              color: AppColors.textSecondary,
+            ),
+            onPressed: controller.togglePasswordVisibility,
+          ),
+          filled: true,
+          fillColor: Colors.grey.shade100,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
           ),
         ),
-        const SizedBox(height: 8),
-        GetBuilder<LoginController>(
-          builder: (_) => TextFormField(
-            controller: controller.passwordController,
-            obscureText: controller.obscurePassword,
-            style: const TextStyle(
-              color: Color(0xFF2C3E50),
-              fontSize: 14,
-            ),
-            decoration: InputDecoration(
-              hintText: 'Enter your password',
-              hintStyle: const TextStyle(
-                color: Color(0xFF95A5A6),
-                fontSize: 14,
-              ),
-              prefixIcon: const Icon(
-                Icons.lock,
-                color: Color(0xFF3498DB),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  controller.obscurePassword ? Icons.visibility_off : Icons.visibility,
-                  color: const Color(0xFF7F8C8D),
-                ),
-                onPressed: controller.togglePasswordVisibility,
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF8F9FA),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0xFFE0E0E0), width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0xFF3498DB), width: 2),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -239,39 +170,36 @@ class _LoginButton extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ElevatedButton(
-        onPressed: controller.isLoading.value
-            ? null
-            : () {
-                if (controller.validateForm()) {
-                  controller.login();
-                }
-              },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF3498DB),
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          () => SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
-          elevation: 0,
+          onPressed: () {
+            if (controller.isLoading.value) return;
+            if (controller.validateForm()) {
+              controller.login();
+            }
+          },
+          child: controller.isLoading.value
+              ? const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          )
+              : const Text(
+            'Sign In',
+            style: TextStyle(fontSize: 16),
+          ),
         ),
-        child: controller.isLoading.value
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : const Text(
-                'Sign In',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
       ),
     );
   }
@@ -282,14 +210,12 @@ class _ForgotPasswordLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        // Navigate to forgot password screen
         Get.toNamed(RoutesName.forgotPassword);
       },
       child: const Text(
         'Forgot your password?',
         style: TextStyle(
-          color: Color(0xFF3498DB),
-          fontSize: 14,
+          color: Colors.white,
           fontWeight: FontWeight.w500,
         ),
       ),
