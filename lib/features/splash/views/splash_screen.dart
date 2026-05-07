@@ -11,13 +11,11 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
     _navigateToLogin();
-    _animate();
   }
 
   void _navigateToLogin() {
@@ -27,60 +25,66 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _opacityAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  void _animate() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 900),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: Offset(0, 0.1), // slight bottom to center
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: FadeTransition(
-          opacity: _opacityAnimation,
-          child: SlideTransition(
-            position: _slideAnimation,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Image.asset(
-                PngImages.splash,
-                height: double.infinity,
-                width: double.infinity,
-              ),
-            ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            PngImages.splash,
+            height: size.height,
+            width: size.width,
+            fit: BoxFit.fill,
           ),
-        ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  PngImages.logo, // update if needed
+                  width: 100,
+                  height: 100,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              const Text(
+                "Employee Management",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: size.height * 0.3),
+            ],
+          ),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "v1.0.0",
+                  style: TextStyle(fontSize: 13, color: Colors.white),
+                ),
+                Text(
+                  "Developed By",
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                Text(
+                  "www.appdevix.solution",
+                  style: TextStyle(fontSize: 13, color: Colors.white),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

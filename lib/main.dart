@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "JILIT ESS",
+      title: "EMS",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       initialRoute: RoutesName.splash,

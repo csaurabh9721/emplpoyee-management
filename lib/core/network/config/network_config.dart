@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class NetworkConfig {
   //static const String _baseUrl = "http://172.16.173.247:8080";
-  static const String _baseUrl = "http://10.176.25.64:8080";
+  static const String _baseUrl = "http://10.17.103.64:8080";
   static const String login = "/api/auth/login";
   static const String getEmployeeProfile = "/api/employees/getEmployeeProfile";
   static const String updateProfile = "/api/employees/update-profile";

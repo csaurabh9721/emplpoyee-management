@@ -44,11 +44,15 @@ class _LogoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(
-          PngImages.logo, // update if needed
-          width: 140,
-          height: 140,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.asset(
+            PngImages.logo, // update if needed
+            width: 100,
+            height: 100,
+          ),
         ),
+       const SizedBox(height: 12,),
         const Text(
           'Employee Portal',
           style: TextStyle(
