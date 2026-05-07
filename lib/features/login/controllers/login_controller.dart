@@ -10,8 +10,10 @@ class LoginController extends GetxController {
   final LoginService _loginService = LoginService();
 
   // Form controllers
-  final TextEditingController employeeIdController = TextEditingController(text: "user1@gmail.com");
-  final TextEditingController passwordController = TextEditingController(text: "user1");
+  final TextEditingController employeeIdController =
+      TextEditingController(text: "user1@gmail.com");
+  final TextEditingController passwordController =
+      TextEditingController(text: "user1");
 
   // State management
   RxBool isLoading = false.obs;
@@ -40,7 +42,7 @@ class LoginController extends GetxController {
         Sessions.setEmployeeCode(response.body!.employeeCode);
         Sessions.setAccessToken(response.body!.accessToken);
         Sessions.setRefreshToken(response.body!.accessToken);
-        Get.offAllNamed(RoutesName.dashboard);
+        Get.offAllNamed(RoutesName.landingPage);
       } else {
         throw Exception(response.message);
       }
@@ -52,7 +54,7 @@ class LoginController extends GetxController {
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
       );
-    }finally {
+    } finally {
       isLoading.value = false;
     }
   }

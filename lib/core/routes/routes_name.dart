@@ -1,8 +1,11 @@
 class RoutesName {
   static const String splash = '/';
   static const String login = '/login';
-  static const String dashboard = '/dashboard';
-  static const String attendance = '/attendance';
+  static const String landingPage = '/landing_page';
+  // static const String dashboard = '/dashboard';
+  // static const String attendance = '/attendance';
+  // static const String profile = '/profile';
+
   static const String teamAttendance = '/team_attendance';
   static const String accountBalance = '/account_balance';
   static const String accountDetail = '/account_detail';
@@ -11,7 +14,6 @@ class RoutesName {
   static const String payslipDetail = '/payslip_detail';
   static const String applyLeavePage = '/apply_leave_Page';
   static const String leaveHistoryScreen = '/leave_history_screen';
-  static const String profile = '/profile';
   static const String editProfile = '/edit_profile';
   static const String forgotPassword = '/forgot_password';
   static const String changePassword = '/change_password';

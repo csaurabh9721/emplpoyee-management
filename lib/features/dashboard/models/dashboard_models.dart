@@ -74,12 +74,6 @@ class DashboardDataModelBody {
         ],
         quickActions: [
           QuickActionModel(
-            id: "1",
-            title: "Attendance",
-            icon: "attendance",
-            route: RoutesName.attendance,
-          ),
-          QuickActionModel(
             id: "2",
             title: "Team Attendance",
             icon: "team_attendance",
@@ -109,18 +103,26 @@ class DashboardDataModelBody {
             icon: "payslip",
             route: RoutesName.payslipHistory,
           ),
-          QuickActionModel(
-            id: "7",
-            title: "Profile",
-            icon: "profile",
-            route: RoutesName.profile,
-          ),
+
           QuickActionModel(
             id: "8",
             title: "Holiday",
             icon: "holiday",
             route: RoutesName.holidayScreen,
           ),
+
+          // QuickActionModel(
+          //   id: "1",
+          //   title: "Attendance",
+          //   icon: "attendance",
+          //   route: RoutesName.attendance,
+          // ),
+          // QuickActionModel(
+          //   id: "7",
+          //   title: "Profile",
+          //   icon: "profile",
+          //   route: RoutesName.profile,
+          // ),
         ],
       );
 

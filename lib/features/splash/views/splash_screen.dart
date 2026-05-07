@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigateToLogin() {
     Future.delayed(const Duration(seconds: 3), () {
       Get.offNamed(
-          Sessions.isLoggedIn() ? RoutesName.dashboard : RoutesName.login);
+          Sessions.isLoggedIn() ? RoutesName.landingPage : RoutesName.login);
     });
   }
 

@@ -4,6 +4,7 @@ import '../../features/accountBalance/views/account_balance_screen.dart';
 import '../../features/accountBalance/views/account_detail_screen.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
 import '../../features/holiday/views/holiday_screen.dart';
+import '../../features/landingPage/view.dart';
 import '../../features/login/views/login_screen.dart';
 import '../../features/splash/views/splash_screen.dart';
 import '../../features/leaveApply/view/apply_leave_page.dart';
@@ -30,13 +31,21 @@ class AppRoutes {
       page: () => LoginScreen(),
     ),
     GetPage(
-      name: RoutesName.dashboard,
-      page: () => DashboardScreen(),
+      name: RoutesName.landingPage,
+      page: () => LandingPage(),
     ),
-    GetPage(
-      name: RoutesName.attendance,
-      page: () => const AttendanceScreen(),
-    ),
+    // GetPage(
+    //   name: RoutesName.dashboard,
+    //   page: () => DashboardScreen(),
+    // ),
+    // GetPage(
+    //   name: RoutesName.attendance,
+    //   page: () => const AttendanceScreen(),
+    // ),
+    // GetPage(
+    //   name: RoutesName.profile,
+    //   page: () => ProfileScreen(),
+    // ),
     GetPage(
       name: RoutesName.teamAttendance,
       page: () => const TeamAttendanceScreen(),
@@ -69,10 +78,7 @@ class AppRoutes {
       name: RoutesName.leaveHistoryScreen,
       page: () => const LeaveHistoryScreen(),
     ),
-    GetPage(
-      name: RoutesName.profile,
-      page: () => ProfileScreen(),
-    ),
+
     GetPage(
       name: RoutesName.editProfile,
       page: () => EditProfileScreen(),
