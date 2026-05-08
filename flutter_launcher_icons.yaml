@@ -25,12 +25,12 @@ flutter_launcher_icons:
   android: true
   ios: true
 
-  image_path: "assets/images/Full_Logo.png"
+  image_path: "assets/images/full_logo.png"
   # Android adaptive icon
-  adaptive_icon_background: "assets/images/EMS_Background.png"
-  adaptive_icon_foreground: "assets/images/Person3D.png"
+  adaptive_icon_background: "assets/images/ems_background.png"
+  adaptive_icon_foreground: "assets/images/person_3d.png"
   adaptive_icon_foreground_inset: 8
 
   # iOS (use full icon)
-  image_path_ios: "assets/images/Full_Logo.png"
+  image_path_ios: "assets/images/full_logo.png"
   remove_alpha_ios: true

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/Enums/enums.dart';
@@ -5,65 +6,50 @@ import '../models/team_attendance_model.dart';
 import '../services/team_attendance_service.dart';
 
 class TeamAttendanceController extends GetxController {
-  final TeamAttendanceService _service = TeamAttendanceService();
-
   final Rx<DateTime> selectedMonth = DateTime.now().obs;
-  final Rx<DateTime> selectedDate = DateTime.now().obs;
-  final RxString selectedStatus = 'All'.obs;
-  final RxList<DateTime> monthDates = <DateTime>[].obs;
-  final RxList<TeamAttendanceModel> teamAttendance = <TeamAttendanceModel>[].obs;
+  final RxInt selectedIndex = 0.obs;
+  final RxList<AttendanceList> attendanceList = <AttendanceList>[].obs;
   final Rx<ApiStatus> status = ApiStatus.loading.obs;
-
+  final RxString selectedStatus = 'All'.obs;
   final List<String> statusFilters = ['All', 'Present', 'Absent', 'Half Day'];
+  RxList<TeamAttendanceModel> data = <TeamAttendanceModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    _generateMonthDates();
-    fetchTeamAttendance();
-  }
-
-  void _generateMonthDates() {
-    final daysInMonth = DateTime(selectedMonth.value.year, selectedMonth.value.month + 1, 0).day;
-    monthDates.value = List.generate(
-      daysInMonth,
-      (index) => DateTime(selectedMonth.value.year, selectedMonth.value.month, index + 1),
-    );
+    _fetchTeamAttendance();
   }
 
   void onMonthChanged(DateTime date) {
     selectedMonth.value = date;
-    _generateMonthDates();
-    // If current selected date is not in the new month, default to 1st
-    if (selectedDate.value.month != date.month || selectedDate.value.year != date.year) {
-      selectedDate.value = DateTime(date.year, date.month, 1);
-    }
-    fetchTeamAttendance();
+    selectedIndex.value = 0;
+    _fetchTeamAttendance();
   }
 
-  void onDateChanged(DateTime date) {
-    selectedDate.value = date;
-    fetchTeamAttendance();
+  void onDateChanged(DateTime date, int index) {
+    selectedIndex.value = index;
+    attendanceList.clear();
+    attendanceList.addAll(data.firstWhere((e) => e.attendanceDate == date).attendanceList);
   }
 
   void onStatusChanged(String? status) {
     if (status != null) {
       selectedStatus.value = status;
-      fetchTeamAttendance();
     }
   }
 
-  Future<void> fetchTeamAttendance() async {
+  Future<void> _fetchTeamAttendance() async {
     status.value = ApiStatus.loading;
     update();
     try {
-      final data = await _service.getTeamAttendanceData(DateTime.now().subtract(const Duration(days: 30)), DateTime.now());
-      teamAttendance.assignAll(data);
-      status.value = ApiStatus.completed;
-      update();
+      final DateTime startDate = DateTime(selectedMonth.value.year, selectedMonth.value.month, 1);
+      DateTime endDate = DateTime(selectedMonth.value.year, selectedMonth.value.month + 1, 0);
+      endDate = endDate.isAfter(DateTime.now()) ? DateTime.now() : endDate;
+      data.value = await TeamAttendanceService().getTeamAttendanceData(startDate, endDate);
+      attendanceList.clear();
+      attendanceList.addAll(data.first.attendanceList);
     } catch (e) {
-      status.value = ApiStatus.error;
-      update();
+      debugPrint(e.toString());
     }
   }
 

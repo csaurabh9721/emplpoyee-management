@@ -14,50 +14,30 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Obx(
-        () => IndexedStack(
-          index: _controller.selectedIndex.value,
-          children: [
-            DashboardScreen(),
-            const AttendanceScreen(),
-            ProfileScreen(),
-          ],
-        ),
+        () => _controller.selectedIndex.value == 0
+            ? DashboardScreen()
+            : _controller.selectedIndex.value == 1
+                ? const AttendanceScreen()
+                : ProfileScreen(),
       ),
       bottomNavigationBar: Obx(
-        () => Container(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+        () => Card(
+          elevation: 5,
+          margin: const EdgeInsets.all(0),
+          color: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _item(Icons.dashboard, "Dashboard", 0),
+                _item(Icons.calendar_month, "Attendance", 1),
+                _item(Icons.person, "Profile", 2),
+              ],
             ),
-            boxShadow: [
-              /// Main soft shadow (depth)
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 15,
-                spreadRadius: 1,
-                offset: const Offset(-2, -2),
-              ),
-
-              /// Light top highlight (premium feel)
-              BoxShadow(
-                color: Colors.white.withOpacity(0.8),
-                blurRadius: 8,
-                spreadRadius: 1,
-                offset: const Offset(-2, -2),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _item(Icons.dashboard, "Dashboard", 0),
-              _item(Icons.calendar_month, "Attendance", 1),
-              _item(Icons.person, "Profile", 2),
-            ],
           ),
         ),
       ),
@@ -69,22 +49,22 @@ class LandingPage extends StatelessWidget {
 
     return InkWell(
       onTap: () => _controller.changeTab(index),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             icon,
-            color: isSelected ? AppColors.primary : Colors.grey,
+            color: isSelected ? AppColors.primaryDark : Colors.grey,
             size: 22,
           ),
           const SizedBox(height: 2),
           Text(
             label,
-            style:  TextStyle(
-              color: isSelected ? AppColors.primary : Colors.grey,
-              fontSize: 11,
-            ),
+            style: TextStyle(
+                color: isSelected ? AppColors.primaryDark : Colors.grey, fontSize: 10, fontWeight: FontWeight.bold),
           )
         ],
       ),

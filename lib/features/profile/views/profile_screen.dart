@@ -11,90 +11,63 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F6FA),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF4F6FA),
-        elevation: 0,
-        title: const Text(
-          'Profile',
-          style: TextStyle(
-            color: Color(0xFF2C3E50),
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF2C3E50)),
-          onPressed: () => Get.back(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit, color: Color(0xFF3498DB)),
-            onPressed: () {
-              Get.toNamed(RoutesName.editProfile);
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: GetBuilder<ProfileController>(
-          builder: (_) {
-            if (controller.profileData.status == ApiStatus.loading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Color(0xFF3498DB)),
-              );
-            }
-            if (controller.profileData.status == ApiStatus.error) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(
-                      controller.profileData.message,
-                      style: const TextStyle(color: Colors.red, fontSize: 16),
-                      textAlign: TextAlign.center,
+    return SafeArea(
+      child: GetBuilder<ProfileController>(
+        builder: (_) {
+          if (controller.profileData.status == ApiStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFF3498DB)),
+            );
+          }
+          if (controller.profileData.status == ApiStatus.error) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    controller.profileData.message,
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: controller.refreshProfile,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3498DB),
+                      foregroundColor: Colors.white,
                     ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: controller.refreshProfile,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3498DB),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            }
-            return RefreshIndicator(
-              onRefresh: controller.refreshProfile,
-              child: const SingleChildScrollView(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    _ProfileHeader(),
-                    SizedBox(height: 24),
-                    _PersonalInfoSection(),
-                    SizedBox(height: 24),
-                    _WorkInfoSection(),
-                    SizedBox(height: 24),
-                    _EmergencyContactSection(),
-                    SizedBox(height: 24),
-                    _BankingInfoSection(),
-                    SizedBox(height: 24),
-                    _GovernmentInfoSection(),
-                    SizedBox(height: 24),
-                    _SettingsSection(),
-                  ],
-                ),
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             );
-          },
-        ),
+          }
+          return RefreshIndicator(
+            onRefresh: controller.refreshProfile,
+            child: const SingleChildScrollView(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _ProfileHeader(),
+                  SizedBox(height: 24),
+                  _PersonalInfoSection(),
+                  SizedBox(height: 24),
+                  _WorkInfoSection(),
+                  SizedBox(height: 24),
+                  _EmergencyContactSection(),
+                  SizedBox(height: 24),
+                  _BankingInfoSection(),
+                  SizedBox(height: 24),
+                  _GovernmentInfoSection(),
+                  SizedBox(height: 24),
+                  _SettingsSection(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -417,7 +390,23 @@ class _SettingsSection extends GetView<ProfileController> {
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: const Icon(Icons.lock_outline, color: Color(0xFF3498DB)),
+          leading: const Icon(Icons.edit, color: Color(0xFF3498DB)),
+          title: const Text(
+            'Edit Profile',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF2C3E50),
+            ),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: Color(0xFF7F8C8D)),
+          onTap: () {
+            Get.toNamed(RoutesName.editProfile);
+          },
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.logout, color: Color(0xFF3498DB)),
           title: const Text(
             'Logout',
             style: TextStyle(

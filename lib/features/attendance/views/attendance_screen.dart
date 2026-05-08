@@ -14,7 +14,7 @@ class AttendanceScreen extends StatelessWidget {
     final AttendanceController controller = Get.put(AttendanceController());
     final TodayAttendance? todayAttendance = Get.arguments;
     return Scaffold(
-        backgroundColor: const Color(0xFFF4F6FA),
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: const Text('Attendance'),
           backgroundColor: Colors.white,

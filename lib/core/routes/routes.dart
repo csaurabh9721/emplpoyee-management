@@ -48,7 +48,7 @@ class AppRoutes {
     // ),
     GetPage(
       name: RoutesName.teamAttendance,
-      page: () => const TeamAttendanceScreen(),
+      page: () =>  TeamAttendanceScreen(),
     ),
     GetPage(
       name: RoutesName.accountBalance,

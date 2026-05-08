@@ -13,44 +13,41 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: GetBuilder<DashboardController>(
-        builder: (_) {
-          if (controller.dashboardData.status == ApiStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return GetBuilder<DashboardController>(
+      builder: (_) {
+        if (controller.dashboardData.status == ApiStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (controller.dashboardData.status == ApiStatus.error) {
-            return Center(child: Text(controller.dashboardData.message));
-          }
+        if (controller.dashboardData.status == ApiStatus.error) {
+          return Center(child: Text(controller.dashboardData.message));
+        }
 
-          final data = controller.dashboardData.data!;
+        final data = controller.dashboardData.data!;
 
-          return Column(
-            children: [
-              /// 🔥 HEADER
-              _HeaderSection(data: data),
+        return Column(
+          children: [
+            /// 🔥 HEADER
+            _HeaderSection(data: data),
 
-              /// 🔥 BODY
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: controller.refreshDashboard,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const _NextShiftCard(),
-                        _QuickActionsSection(data: data.quickActions),
-                        const _AnnouncementsSection(),
-                      ],
-                    ),
+            /// 🔥 BODY
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: controller.refreshDashboard,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const _NextShiftCard(),
+                      _QuickActionsSection(data: data.quickActions),
+                      const _AnnouncementsSection(),
+                    ],
                   ),
                 ),
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -103,7 +100,7 @@ class _HeaderSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.notifications, color: Colors.white),
@@ -203,160 +200,6 @@ class _NextShiftCard extends GetView<DashboardController> {
   }
 }
 
-// class _QuickActions extends GetView<DashboardController> {
-//   const _QuickActions();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final DashboardDataModelBody data = controller.dashboardData.data!;
-//
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const Text(
-//           "Quick Actions",
-//           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//         ),
-//         const SizedBox(height: 16),
-//         GridView.builder(
-//           shrinkWrap: true,
-//           physics: const NeverScrollableScrollPhysics(),
-//           itemCount: data.quickActions.length,
-//           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount: 3,
-//             mainAxisSpacing: 10,
-//             crossAxisSpacing: 10,
-//             childAspectRatio: 0.85,
-//           ),
-//           itemBuilder: (context, index) {
-//             final item = data.quickActions[index];
-//             return _QuickActionItem(
-//               icon: _getIconForAction(item.icon),
-//               label: item.title,
-//               color: _getColorForAction(item.icon),
-//               onTap: () {
-//                 if ("Attendance" == item.title) {
-//                   Get.toNamed(item.route,
-//                       arguments:
-//                           controller.dashboardData.data!.todayAttendance);
-//                 } else {
-//                   Get.toNamed(item.route);
-//                 }
-//               },
-//             );
-//           },
-//         )
-//       ],
-//     );
-//   }
-//
-//   IconData _getIconForAction(String icon) {
-//     switch (icon.toLowerCase()) {
-//       case 'leave':
-//         return Icons.event_busy;
-//       case 'payslip':
-//         return Icons.receipt_long;
-//       case 'profile':
-//         return Icons.person;
-//       case 'attendance':
-//         return Icons.calendar_month;
-//       case 'approval':
-//         return Icons.verified;
-//       case 'holiday':
-//         return Icons.holiday_village;
-//       case 'balance':
-//         return Icons.account_balance_wallet;
-//       case 'team_attendance':
-//         return Icons.group;
-//       case 'account_balance':
-//         return Icons.account_balance;
-//       case 'account_detail':
-//         return Icons.account_balance_wallet;
-//       case 'leave_management':
-//         return Icons.event_available;
-//       case 'leave_approval':
-//         return Icons.verified;
-//
-//       default:
-//         return Icons.dashboard;
-//     }
-//   }
-//
-//   Color _getColorForAction(String icon) {
-//     switch (icon.toLowerCase()) {
-//       case 'leave':
-//         return Colors.blue;
-//       case 'payslip':
-//         return Colors.green;
-//       case 'profile':
-//         return Colors.purple;
-//       case 'attendance':
-//         return Colors.orange;
-//       case 'approval':
-//         return Colors.teal;
-//       case 'holiday':
-//         return Colors.red;
-//       case 'balance':
-//         return Colors.indigo;
-//       case 'team_attendance':
-//         return Colors.pink;
-//       case 'account_balance':
-//         return Colors.indigo;
-//       case 'account_detail':
-//         return Colors.indigo;
-//       case 'leave_management':
-//         return Colors.blue;
-//       case 'leave_approval':
-//         return Colors.teal;
-//       case 'leave_history':
-//         return Colors.blue;
-//
-//       default:
-//         return Colors.grey;
-//     }
-//   }
-// }
-// class _QuickActionItem extends StatelessWidget {
-//   final IconData icon;
-//   final String label;
-//   final Color color;
-//   final VoidCallback? onTap;
-//
-//   const _QuickActionItem({
-//     required this.icon,
-//     required this.label,
-//     required this.color,
-//     this.onTap,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: onTap,
-//       borderRadius: BorderRadius.circular(35),
-//       child: Column(
-//         children: [
-//           Container(
-//             height: 70,
-//             width: 70,
-//             decoration: BoxDecoration(
-//               color: color.withValues(alpha: 0.15),
-//               shape: BoxShape.circle,
-//             ),
-//             child: Icon(icon, color: color),
-//           ),
-//           const SizedBox(height: 8),
-//           Text(
-//             label,
-//             textAlign: TextAlign.center,
-//             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 class _QuickActionsSection extends StatelessWidget {
   final List<QuickActionModel> data;
 
@@ -377,28 +220,32 @@ class _QuickActionsSection extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          SizedBox(
-            height: 144,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: data.length,
-              padding: const EdgeInsets.only(
-                  top: 12, left: 12, right: 12, bottom: 14),
-              itemBuilder: (context, index) {
-                final QuickActionModel item = data[index];
-                return _QuickActionCard(
-                  title: item.title,
-                  icon: _getIconForAction(item.icon),
-                  color: _getColorForAction(item.icon),
-                  onTap: () => Get.toNamed(item.route),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const SizedBox(
-                width: 16,
-              ),
-            ),
-          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              const spacing = 8.0;
+              const itemsPerRow = 3;
+              final itemWidth =
+                  (constraints.maxWidth - (spacing * (itemsPerRow - 1))) /
+                      itemsPerRow;
+              return Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                children: List.generate(
+                  data.length,
+                      (index) => SizedBox(
+                    width: itemWidth,
+                    height: 144,
+                    child: _QuickActionCard(
+                      title: data[index].title,
+                      icon: _getIconForAction(data[index].icon),
+                      color: _getColorForAction(data[index].icon),
+                      onTap: () => Get.toNamed(data[index].route),
+                    ),
+                  ),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
@@ -489,14 +336,13 @@ class _QuickActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 95,
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               blurRadius: 6,
               offset: const Offset(6, 6),
             ),
@@ -510,7 +356,7 @@ class _QuickActionCard extends StatelessWidget {
               height: 44,
               width: 44,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
+                color: color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: color, size: 22),
@@ -623,25 +469,20 @@ class _AnnouncementCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.orange.shade100,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     tag,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepOrange),
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepOrange),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -686,8 +527,7 @@ class _AnnouncementCard extends StatelessWidget {
                   child: Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.grey.shade400),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade400),
                     ),
                   ),
                 );

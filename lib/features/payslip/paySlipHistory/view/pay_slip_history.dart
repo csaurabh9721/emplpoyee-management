@@ -18,8 +18,6 @@ class PayslipHistoryPage extends StatelessWidget {
             children: [
               _TopBar(),
               SizedBox(height: 24),
-              _TabSection(),
-              SizedBox(height: 24),
               _CurrentSummary(),
               SizedBox(height: 30),
               _PreviousPayslips(),
@@ -36,70 +34,26 @@ class _TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.indigo.shade50,
-            borderRadius: BorderRadius.circular(12),
+        InkWell(
+          onTap: (){
+            Get.back();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.indigo.shade50,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back, color: Colors.indigo),
           ),
-          child: const Icon(Icons.arrow_back, color: Colors.indigo),
         ),
-        const Spacer(),
         const Text(
           "Payslip History",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const Spacer(),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.indigo.shade50,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(Icons.download, color: Colors.indigo),
-        ),
-      ],
-    );
-  }
-}
-class _TabSection extends StatelessWidget {
-  const _TabSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Recent",
-              style: TextStyle(
-                color: Colors.indigo,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 6),
-            SizedBox(
-              width: 60,
-              child: Divider(
-                thickness: 3,
-                color: Colors.indigo,
-              ),
-            )
-          ],
-        ),
-        SizedBox(width: 30),
-        Text(
-          "Archive",
-          style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-        )
+        const SizedBox(width: 1,),
       ],
     );
   }
