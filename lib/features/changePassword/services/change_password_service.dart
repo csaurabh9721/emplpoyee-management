@@ -1,7 +1,6 @@
 import 'package:clientone_ess/core/network/apiClients/put_api_base.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../core/network/config/network_config.dart';
-import '../../../core/service/sessionManagement/sessions.dart';
 import '../models/change_password_model.dart';
 
 class ChangePasswordService {
