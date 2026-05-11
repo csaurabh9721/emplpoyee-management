@@ -146,33 +146,32 @@ class TeamAttendanceScreen extends StatelessWidget {
   }
 
   Future<void> _selectMonth(BuildContext context) async {
-    RxInt selectedYear = DateTime.now().year.obs;
-
+    final RxInt selectedYear = DateTime.now().year.obs;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           insetPadding: const EdgeInsets.all(12),
-          child:  Obx(
-                () => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Select Month",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryDark,
+          child: Obx(
+            () => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Select Month",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryDark,
+                          ),
                         ),
-                      ),
-                     PopupMenuButton<int>(
+                        PopupMenuButton<int>(
                           initialValue: selectedYear.value,
                           onSelected: (year) {
                             selectedYear.value = year;
@@ -214,11 +213,11 @@ class TeamAttendanceScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(),
-                 Padding(
+                  const Divider(),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: GridView.builder(
                       shrinkWrap: true,
@@ -259,10 +258,10 @@ class TeamAttendanceScreen extends StatelessWidget {
                       },
                     ),
                   ),
-
-              ],
+                ],
+              ),
             ),
-          ),),
+          ),
         );
       },
     );

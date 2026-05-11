@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/service/sessionManagement/sessions.dart';
 import '../../../core/utils/base_api_response.dart';
 import '../models/change_password_model.dart';
 import '../services/change_password_service.dart';
@@ -20,21 +21,19 @@ class ChangePasswordController extends GetxController {
 
   Future<void> changePassword() async {
     if (!validateForm()) return;
-
     try {
       changePasswordResponse = BaseApiResponse.loading();
       update();
-
       final request = ChangePasswordRequest(
-        oldPassword: oldPasswordController.text.trim(),
-        newPassword: newPasswordController.text.trim(),
+        id: Sessions.getUserId(),
+        oldPassword:  oldPasswordController.text.trim(),
+        newPassword:  newPasswordController.text.trim(),
+        confirmPassword:  confirmPasswordController.text.trim(),
       );
-
       final response = await _changePasswordService.changePassword(request);
       changePasswordResponse = BaseApiResponse.success(data: response);
       update();
-
-      if (response.success) {
+      if (response.body) {
         Get.snackbar(
           'Success',
           response.message,
@@ -42,12 +41,10 @@ class ChangePasswordController extends GetxController {
           colorText: Colors.white,
           duration: const Duration(seconds: 3),
         );
-        
-        // Clear fields and potentially go back
         oldPasswordController.clear();
         newPasswordController.clear();
         confirmPasswordController.clear();
-        Future.delayed(const Duration(seconds: 2), () => Get.back());
+         Get.back();
       } else {
         Get.snackbar(
           'Error',

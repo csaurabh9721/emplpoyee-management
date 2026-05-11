@@ -1,22 +1,22 @@
+import 'package:clientone_ess/core/network/apiClients/put_api_base.dart';
+import 'package:flutter/cupertino.dart';
+import '../../../core/network/config/network_config.dart';
+import '../../../core/service/sessionManagement/sessions.dart';
 import '../models/change_password_model.dart';
 
 class ChangePasswordService {
+  final PutApiBase _apiClient = PutApiBase.instance;
+
   Future<ChangePasswordResponse> changePassword(ChangePasswordRequest request) async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
     try {
-      if (request.oldPassword == 'password123') { // Mock check
-        return ChangePasswordResponse(
-          success: true,
-          message: 'Password changed successfully.',
-        );
-      } else {
-        return ChangePasswordResponse(
-          success: false,
-          message: 'Incorrect old password.',
-        );
-      }
+      final response = await _apiClient.putApi(
+        url: NetworkConfig.changePassword,
+        body: request.toJson(),
+      );
+
+      return ChangePasswordResponse.fromJson(response);
     } catch (e) {
+      debugPrint(e.toString());
       throw Exception('Failed to change password: $e');
     }
   }

@@ -27,7 +27,7 @@ class Sessions {
   // Getters
 
   static int getUserId() {
-    return _box.read(SessionKeys.userId);
+    return _box.read(SessionKeys.userId) ?? 0;
   }
 
   static String getEmpName() {

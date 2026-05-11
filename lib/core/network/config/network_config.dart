@@ -20,6 +20,7 @@ class NetworkConfig {
   static const String leaveReject = "/api/leaves/reject";
   static const String leaveWithdrawn = "/api/leaves/Withdrawn";
   static const String getAttendanceForMangerByDateRange = "/api/attendance/getAttendanceForMangerByDateRange";
+  static const String changePassword = "/api/users/changePassword";
 
   static Uri getUrl(String url) {
     final String fullUrl = _baseUrl + url;
