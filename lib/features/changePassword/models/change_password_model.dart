@@ -1,11 +1,11 @@
+import 'package:clientone_ess/core/service/sessionManagement/sessions.dart';
+
 class ChangePasswordRequest {
-  final int id;
   final String oldPassword;
   final String newPassword;
   final String confirmPassword;
 
   ChangePasswordRequest({
-    required this.id,
     required this.oldPassword,
     required this.newPassword,
     required this.confirmPassword,
@@ -13,7 +13,7 @@ class ChangePasswordRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': Sessions.getUserId(),
       'oldPassword': oldPassword,
       'newPassword': newPassword,
       'confirmPassword': confirmPassword,
@@ -22,19 +22,19 @@ class ChangePasswordRequest {
 }
 
 class ChangePasswordResponse {
-  final int success;
+  final int statusCode;
   final String message;
   final bool body;
 
   ChangePasswordResponse({
-    required this.success,
+    required this.statusCode,
     required this.message,
     required this.body,
   });
 
   factory ChangePasswordResponse.fromJson(Map<String, dynamic> json) {
     return ChangePasswordResponse(
-      success: json['success'] ?? false,
+      statusCode: json['statusCode'] ?? false,
       message: json['message'] ?? '',
       body: json['body'] ?? '',
     );

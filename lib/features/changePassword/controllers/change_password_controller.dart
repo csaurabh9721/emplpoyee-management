@@ -1,39 +1,41 @@
+import 'package:clientone_ess/core/exceptions/api_exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/service/sessionManagement/sessions.dart';
-import '../../../core/utils/base_api_response.dart';
 import '../models/change_password_model.dart';
 import '../services/change_password_service.dart';
 
 class ChangePasswordController extends GetxController {
-  final ChangePasswordService _changePasswordService = ChangePasswordService();
-
-  // Form controllers
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-
-  // State management
-  BaseApiResponse<ChangePasswordResponse> changePasswordResponse = BaseApiResponse.initial();
   bool obscureOldPassword = true;
   bool obscureNewPassword = true;
   bool obscureConfirmPassword = true;
+  RxBool isLoading = false.obs;
 
   Future<void> changePassword() async {
-    if (!validateForm()) return;
+    if (!formKey.currentState!.validate()) return;
     try {
-      changePasswordResponse = BaseApiResponse.loading();
-      update();
+      if(  oldPasswordController.text.trim() ==
+          newPasswordController.text.trim() ||
+          oldPasswordController.text.trim() ==
+              confirmPasswordController.text.trim()){
+        throw AppException("New password can not be same as old passwprd.");
+      }
+      isLoading.value = true;
       final request = ChangePasswordRequest(
-        id: Sessions.getUserId(),
-        oldPassword:  oldPasswordController.text.trim(),
-        newPassword:  newPasswordController.text.trim(),
-        confirmPassword:  confirmPasswordController.text.trim(),
+        oldPassword: oldPasswordController.text.trim(),
+        newPassword: newPasswordController.text.trim(),
+        confirmPassword: confirmPasswordController.text.trim(),
       );
-      final response = await _changePasswordService.changePassword(request);
-      changePasswordResponse = BaseApiResponse.success(data: response);
-      update();
+      final response = await ChangePasswordService().changePassword(request);
       if (response.body) {
+        oldPasswordController.clear();
+        newPasswordController.clear();
+        confirmPasswordController.clear();
+        Get.back();
         Get.snackbar(
           'Success',
           response.message,
@@ -41,10 +43,7 @@ class ChangePasswordController extends GetxController {
           colorText: Colors.white,
           duration: const Duration(seconds: 3),
         );
-        oldPasswordController.clear();
-        newPasswordController.clear();
-        confirmPasswordController.clear();
-         Get.back();
+
       } else {
         Get.snackbar(
           'Error',
@@ -55,32 +54,16 @@ class ChangePasswordController extends GetxController {
         );
       }
     } catch (e) {
-      changePasswordResponse = BaseApiResponse.error(e.toString());
-      update();
       Get.snackbar(
         'Error',
-        'Failed to change password. Please try again.',
+        e.toString(),
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
       );
+    } finally {
+      isLoading.value = false;
     }
-  }
-
-  bool validateForm() {
-    if (oldPasswordController.text.trim().isEmpty) {
-      Get.snackbar('Validation Error', 'Old password is required');
-      return false;
-    }
-    if (newPasswordController.text.trim().length < 6) {
-      Get.snackbar('Validation Error', 'New password must be at least 6 characters');
-      return false;
-    }
-    if (newPasswordController.text != confirmPasswordController.text) {
-      Get.snackbar('Validation Error', 'Passwords do not match');
-      return false;
-    }
-    return true;
   }
 
   void toggleOldPasswordVisibility() {

@@ -1,3 +1,4 @@
+import 'package:clientone_ess/core/exceptions/api_exceptions.dart';
 import 'package:clientone_ess/core/network/apiClients/put_api_base.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../core/network/config/network_config.dart';
@@ -16,7 +17,7 @@ class ChangePasswordService {
       return ChangePasswordResponse.fromJson(response);
     } catch (e) {
       debugPrint(e.toString());
-      throw Exception('Failed to change password: $e');
+      throw AppException('$e');
     }
   }
 }

@@ -48,7 +48,7 @@ class PutApiBase {
           .timeout(const Duration(seconds: 10));
       return _handleResponse(response);
     } catch (e) {
-      throw AppException("Request Time out");
+      throw AppException(e.toString());
     }
   }
 
