@@ -9,14 +9,16 @@ import '../models/team_attendance_model.dart';
 class TeamAttendanceScreen extends StatelessWidget {
   TeamAttendanceScreen({super.key});
 
-  final TeamAttendanceController _controller = Get.put(TeamAttendanceController());
+  final TeamAttendanceController _controller =
+      Get.put(TeamAttendanceController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FD),
       appBar: AppBar(
-        title: const Text('Team Attendance', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Team Attendance',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -36,20 +38,26 @@ class TeamAttendanceScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () => _selectMonth(context),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             color: Colors.indigo.shade50,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.calendar_month, size: 18, color: Colors.indigo),
+                              const Icon(Icons.calendar_month,
+                                  size: 18, color: Colors.indigo),
                               const SizedBox(width: 8),
                               Text(
-                                _controller.getMonthName(_controller.selectedMonth.value),
-                                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
+                                _controller.getMonthName(
+                                    _controller.selectedMonth.value),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.indigo),
                               ),
-                              const Icon(Icons.arrow_drop_down, color: Colors.indigo),
+                              const Icon(Icons.arrow_drop_down,
+                                  color: Colors.indigo),
                             ],
                           ),
                         ),
@@ -65,8 +73,12 @@ class TeamAttendanceScreen extends StatelessWidget {
                           child: DropdownButton<String>(
                             value: _controller.selectedStatus.value,
                             isExpanded: true,
-                            style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
-                            items: _controller.statusFilters.map((String value) {
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                            items:
+                                _controller.statusFilters.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -88,41 +100,50 @@ class TeamAttendanceScreen extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: _controller.data.length,
+                itemCount: _controller.dates.length,
                 itemBuilder: (context, index) {
-                  final DateTime date = _controller.data[index].attendanceDate!;
-
+                  final DateTime date = _controller.dates[index];
                   return GestureDetector(
                     onTap: () => _controller.onDateChanged(date, index),
-                    child: Container(
-                      width: 60,
-                      margin: const EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
-                        color: _controller.selectedIndex.value == index ? Colors.indigo : Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                            color: _controller.selectedIndex.value == index ? Colors.indigo : Colors.grey.shade200),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            DateFormat('EEE').format(date),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: _controller.selectedIndex.value == index ? Colors.white70 : Colors.grey,
+                    child: Obx(
+                      () => Container(
+                        width: 60,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          color: _controller.selectedIndex.value == index
+                              ? Colors.indigo
+                              : Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                              color: _controller.selectedIndex.value == index
+                                  ? Colors.indigo
+                                  : Colors.grey.shade200),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat('EEE').format(date),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: _controller.selectedIndex.value == index
+                                    ? Colors.white70
+                                    : Colors.grey,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            date.day.toString(),
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: _controller.selectedIndex.value == index ? Colors.white : Colors.black87,
+                            const SizedBox(height: 4),
+                            Text(
+                              date.day.toString(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: _controller.selectedIndex.value == index
+                                    ? Colors.white
+                                    : Colors.black87,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -135,7 +156,8 @@ class TeamAttendanceScreen extends StatelessWidget {
                 itemCount: _controller.attendanceList.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  return _EmployeeAttendanceCard(attendance: _controller.attendanceList[index]);
+                  return _EmployeeAttendanceCard(
+                      attendance: _controller.attendanceList[index]);
                 },
               ),
             ),
@@ -223,7 +245,8 @@ class TeamAttendanceScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: AppConstant.monthList.length,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 4,
                         crossAxisSpacing: 4,
@@ -231,20 +254,25 @@ class TeamAttendanceScreen extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         final String month = AppConstant.monthList[index];
-                        final bool isDisable = selectedYear.value == DateTime.now().year &&
-                            AppConstant.getMonthIntMap[month]! > DateTime.now().month;
+                        final bool isDisable =
+                            selectedYear.value == DateTime.now().year &&
+                                AppConstant.getMonthIntMap[month]! >
+                                    DateTime.now().month;
 
                         return InkWell(
                           borderRadius: BorderRadius.circular(8),
                           onTap: () {
                             if (isDisable) return;
-                            final DateTime dateIs = DateTime(selectedYear.value, AppConstant.getMonthIntMap[month]!);
+                            final DateTime dateIs = DateTime(selectedYear.value,
+                                AppConstant.getMonthIntMap[month]!);
                             Navigator.pop(context);
                             _controller.onMonthChanged(dateIs);
                           },
                           child: Card(
                             margin: EdgeInsets.zero,
-                            color: isDisable ? Colors.grey.shade300 : AppColors.white,
+                            color: isDisable
+                                ? Colors.grey.shade300
+                                : AppColors.white,
                             child: Center(
                               child: Text(
                                 month,
@@ -280,7 +308,12 @@ class _EmployeeAttendanceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Row(
         children: [
@@ -295,21 +328,26 @@ class _EmployeeAttendanceCard extends StatelessWidget {
               children: [
                 Text(
                   attendance.employeeName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
-                Text(attendance.getCombine, style: const TextStyle(fontSize: 12)),
+                Text(attendance.getCombine,
+                    style: const TextStyle(fontSize: 12)),
               ],
             ),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(attendance.workHour, style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text(attendance.workHour,
+                  style: const TextStyle(fontWeight: FontWeight.w500)),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(attendance.status).withValues(alpha: 0.1),
+                  color:
+                      _getStatusColor(attendance.status).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

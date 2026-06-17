@@ -1,20 +1,26 @@
 import '../../../core/utils/date_formatter.dart';
 
 class TeamAttendanceModel {
-  final DateTime? attendanceDate;
-  final List<AttendanceList> attendanceList;
+  int employeeId;
+  String employeeName;
+  String employeeCode;
+  List<AttendanceList> attendanceList;
 
   TeamAttendanceModel({
-    required this.attendanceDate,
+    required this.employeeId,
+    required this.employeeName,
+    required this.employeeCode,
     required this.attendanceList,
   });
 
   factory TeamAttendanceModel.fromJson(Map<String, dynamic> json) => TeamAttendanceModel(
-        attendanceDate: DateTime.tryParse(json["attendanceDate"] ?? ""),
-        attendanceList: json["attendanceList"] == null
-            ? []
-            : List<AttendanceList>.from(json["attendanceList"].map((x) => AttendanceList.fromJson(x))),
-      );
+    employeeId: json["employeeId"] ?? 0,
+    employeeName: json["employeeName"] ?? "",
+    employeeCode: json["employeeCode"] ?? "",
+    attendanceList: json["attendance"] == null
+        ? []
+        : List<AttendanceList>.from(json["attendance"].map((x) => AttendanceList.fromJson(x))),
+  );
 }
 
 class AttendanceList {

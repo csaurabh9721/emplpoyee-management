@@ -18,18 +18,31 @@ class TeamAttendanceController extends GetxController {
   void onInit() {
     super.onInit();
     _fetchTeamAttendance();
+    _generateDateOfSelectedMonth(selectedMonth.value);
+  }
+
+  final List<DateTime> dates = [];
+  void _generateDateOfSelectedMonth(DateTime selectedMonth) {
+    final int lastDate =
+        DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
+    final List<DateTime> dates = List.generate(
+        lastDate,
+        (index) =>
+            DateTime(selectedMonth.year, selectedMonth.month, index + 1));
+    this.dates.clear();
+    this.dates.addAll(dates);
   }
 
   void onMonthChanged(DateTime date) {
     selectedMonth.value = date;
     selectedIndex.value = 0;
+    _generateDateOfSelectedMonth(selectedMonth.value);
     _fetchTeamAttendance();
   }
 
   void onDateChanged(DateTime date, int index) {
     selectedIndex.value = index;
-    attendanceList.clear();
-    attendanceList.addAll(data.firstWhere((e) => e.attendanceDate == date).attendanceList);
+    //attendanceList.addAll(data.firstWhere((e) => e.attendanceDate == date).attendanceList);
   }
 
   void onStatusChanged(String? status) {
@@ -42,10 +55,13 @@ class TeamAttendanceController extends GetxController {
     status.value = ApiStatus.loading;
     update();
     try {
-      final DateTime startDate = DateTime(selectedMonth.value.year, selectedMonth.value.month, 1);
-      DateTime endDate = DateTime(selectedMonth.value.year, selectedMonth.value.month + 1, 0);
+      final DateTime startDate =
+          DateTime(selectedMonth.value.year, selectedMonth.value.month, 1);
+      DateTime endDate =
+          DateTime(selectedMonth.value.year, selectedMonth.value.month + 1, 0);
       endDate = endDate.isAfter(DateTime.now()) ? DateTime.now() : endDate;
-      data.value = await TeamAttendanceService().getTeamAttendanceData(startDate, endDate);
+      data.value = await TeamAttendanceService()
+          .getTeamAttendanceData(startDate, endDate);
       attendanceList.clear();
       attendanceList.addAll(data.first.attendanceList);
     } catch (e) {

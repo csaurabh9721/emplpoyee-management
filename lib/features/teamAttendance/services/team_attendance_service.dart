@@ -8,8 +8,7 @@ class TeamAttendanceService {
 
   final GetApiBase _apiBase = GetApiBase.instance;
 
-  Future<List<TeamAttendanceModel>> getTeamAttendanceData(
-      DateTime startDate, DateTime endDate) async {
+  Future<List<TeamAttendanceModel>> getTeamAttendanceData(DateTime startDate, DateTime endDate) async {
     try {
       final String sDate = startDate.yyyyMMDDDash();
       final String eDate = endDate.yyyyMMDDDash();
